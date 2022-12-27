@@ -1,5 +1,5 @@
 <h1 align="center">
-<a href="http://kolakrhd.beget.tech/" target="_blank"><img src="banner.svg" width="800" alt="VKUI logo"></a>
+<a href="http://kolakrhd.beget.tech/" target="_blank"><img src="assets/banner.svg" width="800" alt="VKUI logo"></a>
 </h1>
 <p align="center">
 Мама, я повар! — это платформа,
