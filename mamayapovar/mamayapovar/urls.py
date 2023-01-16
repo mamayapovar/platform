@@ -7,8 +7,9 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('recipes.urls')),
-    # path('__debug__/', include('debug_toolbar.urls')),
 ]
+
+handler404 = 'recipes.views.error_404'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -28,8 +28,11 @@
                                     <li class="content-more-menu__item">
                                             <button class="btn-reset  content-more-menu__button" data-post-button-delete data-url_root="{% url 'delete_recipe' recipe.id %}">Удалить</button>
                                     </li>
+                                    <li class="content-more-menu__item">
+                                        <a href="{% url 'edit_recipe' recipe.id %}"><button class="btn-reset  content-more-menu__button">Редактировать</button></a>
+                                    </li>
                             </ul>
-                        {% else %}
+                        {% elif request.user.is_authenticated and request.user.id != recipe.author_id.id %}
                             <button class="btn-reset  content-more__toggle  disabled" aria-label="Открыть меню действий" aria-expanded="false" data-more-menu-toggle>
                                     <svg class="icon" aria-hidden="true" focusable="false">
                                             <use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal"/>

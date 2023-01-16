@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block concon %}
+<main class="new-recipe">
+    <h1 class="visually-hidden">Создание рецепта</h1>
+    <form id="edit-recipe-form" action="{% url 'edit_recipe' recipe.id %}" method="POST" class="new-recipe__form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-section  new-recipe-section  new-recipe-section--main" id="new-recipe-main">
+            <legend class="section-h2  form-section__title">Основное</legend>
+            <div class="form-field  new-recipe-section__field  new-recipe-section__field--title">
+                <label class="form-field__label" for="title">Название рецепта</label>
+                <input type="text" name="title" id="title" class="input" value="{{ recipe.title }}" placeholder="Шарлотка с яблоками" autofocus autocomplete="off" maxlength="100" required>
+                <label class="form-field__error  hidden" for="title">
+                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                        <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+                    </svg>
+                    <span class="form-field__text">Здесь будет текст ошибки</span>
+                </label>
+            </div>
+            <div class="form-field  new-recipe-section__field  new-recipe-section__field--desc">
+                <label class="form-field__label" for="description">Описание рецепта</label>
+                <textarea name="description" id="description" class="input  input--textarea" placeholder="Старый, испытанный временем, но всегда желанный рецепт классической ароматной шарлотки. Уютный запах корицы и чашечка горячего чая с мелиссой..." autocomplete="off" maxlength="200">{{ recipe.description }}</textarea>
+                <label class="form-field__error  hidden" for="description">
+                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                        <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+                    </svg>
+                    <span class="form-field__text">Здесь будет текст ошибки</span>
+                </label>
+            </div>
+            <div class="form-field  new-recipe-section__field  new-recipe-section__field--cat">
+                <label class="form-field__label">Категория блюда</label>
+                <div class="select">
+                    {% if recipe.cat.name == 'Выпечка' %}
+                        <select name="cat" required>
+                            <option value="">——</option>
+                            <option selected>Выпечка</option>
+                            <option>Супы</option>
+                            <option>Салаты</option>
+                            <option>Горячие блюда</option>
+                        </select>
+                    {% elif recipe.cat.name == 'Супы' %}
+                        <select name="cat" required>
+                            <option value="">——</option>
+                            <option>Выпечка</option>
+                            <option selected>Супы</option>
+                            <option>Салаты</option>
+                            <option>Горячие блюда</option>
+                        </select>
+                    {% elif recipe.cat.name == 'Салаты' %}
+                        <select name="cat" required>
+                            <option value="">——</option>
+                            <option>Выпечка</option>
+                            <option>Супы</option>
+                            <option selected>Салаты</option>
+                            <option>Горячие блюда</option>
+                        </select>
+                    {% elif recipe.cat.name == 'Горячие блюда' %}
+                        <select name="cat" required>
+                            <option value="">——</option>
+                            <option>Выпечка</option>
+                            <option>Супы</option>
+                            <option>Салаты</option>
+                            <option selected>Горячие блюда</option>
+                        </select>
+                    {% endif %}
+                    <svg class="icon" aria-hidden="true" focusable="false">
+                        <use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
+                    </svg>
+                </div>
+                <label class="form-field__error  hidden">
+                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                        <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+                    </svg>
+                    <span class="form-field__text">Здесь будет текст ошибки</span>
+                </label>
+            </div>
+            <div class="new-recipe-section__group">
+                <div class="form-field  new-recipe-section__field  new-recipe-section__field--persons">
+                    <label class="form-field__label" for="persons">Кол-во порций</label>
+                    <div class="counter">
+                        <button type="button" class="btn  counter__btn  counter__btn--minus  disabled" aria-label="Убрать порцию">
+                            <svg class="icon" aria-hidden="true" focusable="false">
+                                <use href="{% static 'recipes/img/sprite.svg' %}#minus" />
+                            </svg>
+                        </button>
+                        <input type="number" name="persons" id="persons" value="{{ recipe.persons }}" class="input  counter__input" autocomplete="off" required>
+                        <button type="button" class="btn  counter__btn  counter__btn--plus" aria-label="Добавить порцию">
+                            <svg class="icon" aria-hidden="true" focusable="false">
+                                <use href="{% static 'recipes/img/sprite.svg' %}#plus" />
+                            </svg>
+                        </button>
+                    </div>
+                    <label class="form-field__error  hidden" for="persons">
+                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+                        </svg>
+                        <span class="form-field__text">Здесь будет текст ошибки</span>
+                    </label>
+                </div>
+                <div class="form-field  new-recipe-section__field  new-recipe-section__field--time">
+                    <label class="form-field__label" for="minutes">Время приготовления</label>
+                    {% for hours, minutes in recipe.cooking_time %}
+                        <div class="form-field  new-recipe-section__field  new-recipe-section__field--hours">
+                            <input type="number" name="cooking_time_hours" value="{{ hours }}" id="hours" placeholder="0" class="input new-recipe-section__field__input" autocomplete="off">
+                        </div>
+                        <div class="form-field  new-recipe-section__field  new-recipe-section__field--minutes">
+                            <input type="number" name="cooking_time_minutes" id="minutes" value="{{minutes}}" placeholder="0" class="input  new-recipe-section__field__input" min="1" autocomplete="off" required>
+                        </div>
+                    {% endfor %}
+                    <label class="form-field__error  hidden" for="minutes">
+                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+                        </svg>
+                        <span class="form-field__text">Здесь будет текст ошибки</span>
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="form-section  new-recipe-section  new-recipe-section--ingredient  ingredient" id="new-recipe-ingredient">
+            <legend class="section-h2  form-section__title">Ингредиенты</legend>
+            <div class="ingredient__list">
+                {% for title, amount, measure, amigo in recipe.ingredients %}
+                    <div class="ingredient-item" id="ingredient-{{ amigo }}">
+                        <input type="text" name="ingredient-name-{{ amigo }}"
+                            class="input  ingredient-item__input  ingredient-item__input--name"
+                            placeholder="Название ингредиента" autocomplete="off" value="{{ title }}" required>
+                        <input type="number" name="ingredient-amount-{{ amigo }}"
+                            class="input  ingredient-item__input  ingredient-item__input--amount" placeholder="0" value="1"
+                            min="0.1" max="999" step="0.1" autocomplete="off" value="{{ amount }}" required>
+                        <div class="select  ingredient-item__select">
+                            <select name="ingredient-measure-{{ amigo }}" aria-label="Единица измерения" required>
+                                <option value="">Ед. измерения</option>
+                                {% if measure == 'шт' %}
+                                    <option selected>шт</option>
+                                    <option>г</option>
+                                    <option>кг</option>
+                                    <option>мл</option>
+                                    <option>л</option>
+                                    <option>стакан</option>
+                                    <option>чайная ложка</option>
+                                    <option>столовая ложка</option>
+                                    <option>щепотка</option>
+                                    <option>зубчик</option>
+                                {% elif measure == 'г' %}
+                                    <option>шт</option>
+                                    <option selected>г</option>
+                                    <option>кг</option>
+                                    <option>мл</option>
+                                    <option>л</option>
+                                    <option>стакан</option>
+                                    <option>чайная ложка</option>
+                                    <option>столовая ложка</option>
+                                    <option>щепотка</option>
+                                    <option>зубчик</option>
+                                {% elif measure == 'кг' %}
+                                    <option>шт</option>
+                                    <option>г</option>
+                                    <option selected>кг</option>
+                                    <option>мл</option>
+                                    <option>л</option>
+                                    <option>стакан</option>
+                                    <option>чайная ложка</option>
+                                    <option>столовая ложка</option>
+                                    <option>щепотка</option>
+                                    <option>зубчик</option>
+                                {% elif measure == 'мл' %}
+                                    <option>шт</option>
+                                    <option>г</option>
+                                    <option>кг</option>
+                                    <option selected>мл</option>
+                                    <option>л</option>
+                                    <option>стакан</option>
+                                    <option>чайная ложка</option>
+                                    <option>столовая ложка</option>
+                                    <option>щепотка</option>
+                                    <option>зубчик</option>
+                                {% elif measure == 'л' %}
+                                    <option>шт</option>
+                                    <option>г</option>
+                                    <option>кг</option>
+                                    <option>мл</option>
+                                    <option selected>л</option>
+                                    <option>стакан</option>
+                                    <option>чайная ложка</option>
+                                    <option>столовая ложка</option>
+                                    <option>щепотка</option>
+                                    <option>зубчик</option>
+                                {% elif measure == 'стакан' %}
+                                    <option>шт</option>
+                                    <option>г</option>
+                                    <option>кг</option>
+                                    <option>мл</option>
+                                    <option>л</option>
+                                    <option selected>стакан</option>
+                                    <option>чайная ложка</option>
+                                    <option>столовая ложка</option>
+                                    <option>щепотка</option>
+                                    <option>зубчик</option>
+                                {% elif measure == 'чайная ложка' %}
+                                    <option>шт</option>
+                                    <option>г</option>
+                                    <option>кг</option>
+                                    <option>мл</option>
+                                    <option>л</option>
+                                    <option>стакан</option>
+                                    <option selected>чайная ложка</option>
+                                    <option>столовая ложка</option>
+                                    <option>щепотка</option>
+                                    <option>зубчик</option>
+                                {% elif measure == 'столовая ложка' %}
+                                    <option>шт</option>
+                                    <option>г</option>
+                                    <option>кг</option>
+                                    <option>мл</option>
+                                    <option>л</option>
+                                    <option>стакан</option>
+                                    <option>чайная ложка</option>
+                                    <option selected>столовая ложка</option>
+                                    <option>щепотка</option>
+                                    <option>зубчик</option>
+                                {% elif measure == 'щепотка' %}
+                                    <option>шт</option>
+                                    <option>г</option>
+                                    <option>кг</option>
+                                    <option>мл</option>
+                                    <option>л</option>
+                                    <option>стакан</option>
+                                    <option>чайная ложка</option>
+                                    <option>столовая ложка</option>
+                                    <option selected>щепотка</option>
+                                    <option>зубчик</option>
+                                {% elif measure == 'зубчик' %}
+                                    <option>шт</option>
+                                    <option>г</option>
+                                    <option>кг</option>
+                                    <option>мл</option>
+                                    <option>л</option>
+                                    <option>стакан</option>
+                                    <option>чайная ложка</option>
+                                    <option>столовая ложка</option>
+                                    <option>щепотка</option>
+                                    <option selected>зубчик</option>
+                                {% endif %}
+                            </select>
+                            <svg class="icon" aria-hidden="true" focusable="false">
+                                <use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
+                            </svg>
+                        </div>
+                        <button type="button" class="btn-reset  ingredient-item__delete" aria-label="Удалить ингредиент">
+                            <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                                <use href="{% static 'recipes/img/sprite.svg' %}#cross" />
+                            </svg>
+                        </button>
+                        <label class="form-field__error  hidden">
+                            <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                                <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+                            </svg>
+                            <span class="form-field__text">Здесь будет текст ошибки</span>
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn  btn--third  btn--left  ingredient__btn">
+                Добавить ингредиент
+                <svg class="icon" aria-hidden="true" focusable="false">
+                    <use href="{% static 'recipes/img/sprite.svg' %}#circle-plus" />
+                </svg>
+            </button>
+        </fieldset>
+        <fieldset class="form-section  new-recipe-section  new-recipe-section--photo  photo" id="new-recipe-photo">
+            <legend class="section-h2  form-section__title">Фото блюда</legend>
+            <div class="imageuploader" data-image-url="{{ recipe.photo.url }}" data-image-name="{{ recipe.photo.name }}">
+                <label class="input  input--photo  imageuploader__input">
+                    <input type="file" name="photo" accept=".jpg, .jpeg, .png">
+                    <div class="imageuploader__placeholder  hidden">
+                        <svg class="icon" aria-hidden="true" focusable="false">
+                            <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
+                        </svg>
+                        Загрузите фото блюда
+                    </div>
+                </label>
+                <button type="button" class="btn  btn--other  imageuploader__btn">
+                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                        <use href="{% static 'recipes/img/sprite.svg' %}#delete" />
+                    </svg>
+                </button>
+                <label class="form-field__error  hidden">
+                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                        <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+                    </svg>
+                    <span class="form-field__text">Здесь будет текст ошибки</span>
+                </label>
+            </div>
+        </fieldset>
+        <fieldset class="form-section  new-recipe-section  new-recipe-section--step  step" id="new-recipe-step">
+            <legend class="section-h2  form-section__title">Инструкция приготовления</legend>
+            <div class="step__list">
+                {% for num, text, numero, photo in recipe.steps %}
+                    <div class="step-item" id="step-{{ numero }}">
+                        <label class="form-field__label  step-item__number" for="step-description-{{ numero }}"></label>
+                        <button type="button" class="btn-reset  step-item__delete" aria-label="Удалить шаг">
+                            <svg class="icon" aria-hidden="true" focusable="false">
+                                <use href="{% static 'recipes/img/sprite.svg' %}#cross"/>
+                            </svg>
+                        </button>
+                        <div class="step-item__body">
+                            <div class="imageuploader  imageuploader--small  step-item__imageuploader"  data-image-url="{{ photo.url }}" data-image-name="{{ photo.name }}">
+                                <label class="input  input--photo  imageuploader__input">
+                                    <input type="file" name="step-photo-{{ numero }}" accept=".jpg, .jpeg, .png">
+                                    <div class="imageuploader__placeholder  hidden">
+                                        <svg class="icon" aria-hidden="true" focusable="false">
+                                            <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
+                                        </svg>
+                                        Загрузите фото шага
+                                    </div>
+                                </label>
+                                <button type="button" class="btn  btn--other  imageuploader__btn">
+                                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                                        <use href="{% static 'recipes/img/sprite.svg' %}#delete" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <textarea name="step-description-{{ numero }}" id="step-description-{{ numero }}" class="input  input--textarea  step-item__input" placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..." autocomplete="off" maxlength="5000" required>{{ text }}</textarea>
+                            <label class="form-field__error  hidden" for="step-description-{{ numero }}">
+                                <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                                    <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+                                </svg>
+                                <span class="form-field__text">Здесь будет текст ошибки</span>
+                            </label>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn  btn--third  btn--left  step__btn">
+                Добавить шаг
+                <svg class="icon" aria-hidden="true" focusable="false">
+                    <use href="{% static 'recipes/img/sprite.svg' %}#circle-plus" />
+                </svg>
+            </button>
+        </fieldset>
+    </form>
+</main>
+{% endblock %}

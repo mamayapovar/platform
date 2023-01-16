@@ -17,12 +17,21 @@
     <link rel="stylesheet" href="{% static 'recipes/css/vendor.css' %}">
     <link rel="stylesheet" href="{% static 'recipes/css/main.css' %}">
     <script defer src="{% static 'recipes/js/main.js' %}"></script>
+    {% if 'edit_recipe' in request.get_full_path %}
+        <script src="{% static 'recipes/js/edit.js' %}"></script>
+    {% endif %}
 </head>
 <body class="page__body">
-{% if request.get_full_path == '/new-recipe/' %}
+{% if request.get_full_path == '/new-recipe/' or 'edit_recipe' in request.get_full_path %}
     {% block navnav %}
 
     {% include "inc2/_nav.html" %}
+
+    {% endblock %}
+{% elif 'settings' in request.get_full_path %}
+    {% block nav %}
+
+    {% include "inc3/_nav.html" %}
 
     {% endblock %}
 {% else %}
@@ -35,9 +44,13 @@
 
 <div class="container">
     <div class="site-container">
-        {% if request.get_full_path == '/new-recipe/' %}
+        {% if request.get_full_path == '/new-recipe/' or 'edit_recipe' in request.get_full_path  %}
             {% block sideside %}
             {% include "inc2/_side.html" %}
+            {% endblock %}
+        {% elif 'settings' in request.get_full_path %}
+            {% block side %}
+            {% include "inc3/_side.html" %}
             {% endblock %}
         {% else %}
             {% block sidebar %}
@@ -48,7 +61,7 @@
         <main class="index">
             {% block content %}{% endblock %}
         </main>
-        {% elif request.get_full_path == '/new-recipe/' %}
+        {% elif request.get_full_path == '/new-recipe/' or 'edit_recipe' in request.get_full_path  %}
         {% block concon %}{% endblock %}
         {% else %}
         {% block post %}{% endblock %}
@@ -59,6 +72,14 @@
 {% block modal %}
 {% include "inc/_modals.html" %}
 {% endblock %}
+
+{% if 'edit_recipe' in request.get_full_path %}
+    <script>
+        let uploadedImage = `{{ recipe.photo.url }}`;
+    </script>
+    <script src="{% static 'recipes/js/edit.js' %}"></script>
+{% endif %}
+
 <script>
     const svgHeart = `{% static 'recipes/img/sprite.svg' %}#heart`;
     const svgBookmark = `{% static 'recipes/img/sprite.svg' %}#bookmark`;

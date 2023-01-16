@@ -87,3 +87,40 @@ def get_correct_path(id_):
 @register.simple_tag
 def get_server_media_url(url):
     return "/".join(url.split("/")[1:])
+
+
+@register.simple_tag
+def get_category_id_from_url(url):
+    return int(url[:-1].split('/')[-1])
+
+
+@register.simple_tag
+def get_category_id_from_recipe(url):
+    idf = int(url[:-1].split('/')[-1])
+    return Recipe.objects.get(id=idf).cat_id
+
+
+@register.simple_tag
+def get_user(url):
+    idf = int(url[:-1].split('/')[-1])
+    return User.objects.get(id=idf)
+
+
+@register.simple_tag
+def get_email(id_):
+    return User.objects.get(id=id_).email
+
+
+@register.simple_tag
+def get_user_profile(id_):
+    try:
+        profile_data = UserProfile.objects.get(user_id=id_)
+    except:
+        profile_data = None
+    return profile_data
+
+
+@register.simple_tag
+def get_amount(id_):
+    return 
+

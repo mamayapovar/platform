@@ -172,30 +172,70 @@
                 {% endif %}
             </ul>
             <ul class="list-reset sidebar-tree__list" id="sidebar-links">
-            {% if request.get_full_path == '/' %}
-                {% for cat in cats %}
-                    <li class="sidebar-tree__item">
-                      <a href="{% url 'category' cat.id %}" class="sidebar-tree__link">
-                        <img src="{% get_static_prefix %}recipes/img/category/{{ cat.id }}.svg" class="sidebar-tree__avatar" loading="lazy" alt="">
-                        <span>{{ cat.name }}</span>
-                      </a>
-                    </li>
-                {% endfor %}
-            {% elif '/recipe/' in request.get_full_path %}
+                {% if 'user' in request.get_full_path %}
+                    {% get_user request.get_full_path as user %}
+                    {% get_correct_path user.id as papath %}
                     <li class="sidebar-tree__item active">
-                      <a href="{% url 'category' recipe.cat.id %}" class="sidebar-tree__link">
-                        <img src="{% get_static_prefix %}recipes/img/category/{{ recipe.cat.id }}.svg" class="sidebar-tree__avatar" loading="lazy" alt="">
-                        <span>{{ recipe.cat.name }}</span>
-                      </a>
+                        <a href="{% url 'user_profile' user.id %}" class="sidebar-tree__link">
+                            {% get_avatar_url user.id as avatar %}
+                            {% if avatar %}
+                                <img src="{% get_avatar_url user.id %}" class="sidebar-tree__avatar" loading="lazy" alt="">
+                                <span>{{ user.username }}</span>
+                            {% else %}
+                                <img src="{% static 'recipes/img/placeholder-avatar-dark.jpg' %}" class="sidebar-tree__avatar" loading="lazy" alt="">
+                                <span>{{ user.username }}</span>
+                            {% endif %}
+                        </a>
                     </li>
-            {% elif '/category/' in request.get_full_path %}
-                <li class="sidebar-tree__item active">
-                  <a href="{% url 'category' cat.id %}" class="sidebar-tree__link">
-                    <img src="{% get_static_prefix %}recipes/img/category/{{ cat.id }}.svg" class="sidebar-tree__avatar" loading="lazy" alt="">
-                    <span>{{ cat.name }}</span>
-                  </a>
-                </li>
-            {% endif %}
+                {% endif %}
+                {% if 'category' in request.get_full_path %}
+                    {% for cat in cats %}
+                        {% get_category_id_from_url request.get_full_path as cat_id %}
+                        {% if cat.id == cat_id %}
+                            <li class="sidebar-tree__item active">
+                              <a href="{% url 'category' cat.id %}" class="sidebar-tree__link">
+                                <img src="{% get_static_prefix %}recipes/img/category/{{ cat.id }}.svg" class="sidebar-tree__avatar" loading="lazy" alt="">
+                                <span>{{ cat.name }}</span>
+                              </a>
+                            </li>
+                        {% else %}
+                            <li class="sidebar-tree__item">
+                              <a href="{% url 'category' cat.id %}" class="sidebar-tree__link">
+                                <img src="{% get_static_prefix %}recipes/img/category/{{ cat.id }}.svg" class="sidebar-tree__avatar" loading="lazy" alt="">
+                                <span>{{ cat.name }}</span>
+                              </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% elif 'recipe' in request.get_full_path %}
+                    {% for cat in cats %}
+                        {% get_category_id_from_recipe request.get_full_path as cat_id %}
+                        {% if cat.id == cat_id %}
+                            <li class="sidebar-tree__item active">
+                              <a href="{% url 'category' cat.id %}" class="sidebar-tree__link">
+                                <img src="{% get_static_prefix %}recipes/img/category/{{ cat.id }}.svg" class="sidebar-tree__avatar" loading="lazy" alt="">
+                                <span>{{ cat.name }}</span>
+                              </a>
+                            </li>
+                        {% else %}
+                            <li class="sidebar-tree__item">
+                              <a href="{% url 'category' cat.id %}" class="sidebar-tree__link">
+                                <img src="{% get_static_prefix %}recipes/img/category/{{ cat.id }}.svg" class="sidebar-tree__avatar" loading="lazy" alt="">
+                                <span>{{ cat.name }}</span>
+                              </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% elif request.get_full_path == '/' or 'user' in request.get_full_path %}
+                    {% for cat in cats %}
+                        <li class="sidebar-tree__item">
+                          <a href="{% url 'category' cat.id %}" class="sidebar-tree__link">
+                            <img src="{% get_static_prefix %}recipes/img/category/{{ cat.id }}.svg" class="sidebar-tree__avatar" loading="lazy" alt="">
+                            <span>{{ cat.name }}</span>
+                          </a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
         <div class="sidebar-footer">

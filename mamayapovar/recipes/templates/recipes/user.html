@@ -31,7 +31,7 @@
 					{% endif %}
 					<h1 class="section-h1  info__name">{{ user.username }}</h1>
 					<p class="info__desc">{{ profile_data.description }}</p>
-					<a href="settings-profile.html" class="section-link  info__link">Изменить описание</a>
+					<a href="{% url 'settings_profile' %}" class="section-link  info__link">Изменить описание</a>
 				</div>
 				<div class="info-stats">
 					<dl class="info-stats__item">
@@ -47,7 +47,7 @@
 						<dd class="info-stats__amount">{% get_likes_count_of_user user.id %}</dd>
 					</dl>
 				</div>
-				<a href="settings-profile.html" class="btn  btn--second  btn--icon  btn--small info__btn" aria-label="Перейти в настройки">
+				<a href="{% url 'settings_profile' %}" class="btn  btn--second  btn--icon  btn--small info__btn" aria-label="Перейти в настройки">
 					<svg class="icon" aria-hidden="true" focusable="false">
 						<use href="{% static 'recipes/img/sprite.svg' %}#settings"/>
 					</svg>

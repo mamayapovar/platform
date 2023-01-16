@@ -2,25 +2,29 @@
 
 {% load static recipes_extra %}
 {% block post %}
+{% get_user_profile request.user.id as user_profile %}
 <main class="settings  settings--profile">
     <h1 class="visually-hidden">Настройки профиля</h1>
-    <form id="settings-profile-form" action="https://echo.htmlacademy.ru" method="POST" class="settings__form  settings__form--profile">
+    <form id="settings-profile-form" action="{% url 'settings_profile' %}" method="POST" class="settings__form  settings__form--profile" enctype="multipart/form-data">
+        {% csrf_token %}
         <fieldset class="form-section  settings-section">
             <legend class="section-h2  form-section__title">Профиль</legend>
             <div class="settings-section__group  settings-section__group--avatar">
                 <div class="form-field  settings-section__field  settings-section__field--username">
                     <label class="form-field__label" for="settings-username">Отображаемое имя</label>
-                    <input type="text" name="username" id="settings-username" class="input" placeholder="Имя и фамилия" value="Николай Крылов" autocomplete="off" pattern="[A-Za-zА-Яа-яЁё\s]{0,100}" minlength="0" maxlength="100" required>
-                    <label class="form-field__error  hidden" for="settings-username">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text">Здесь будет текст ошибки</span>
-                    </label>
+                    <input type="text" name="username" id="settings-username" class="input" placeholder="Имя и фамилия" value="{{ username }}" autocomplete="off" pattern="[A-Za-zА-Яа-яЁё\s]{0,100}" minlength="0" maxlength="100">
+                    {% if error %}
+                        <label class="form-field__error" for="settings-username">
+                            <svg class="icon  icon--16" aria-hidden="true" focusable="false">
+                                <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+                            </svg>
+                                <span class="form-field__text">{{ error }}</span>
+                        </label>
+                    {% endif %}
                 </div>
                 <div class="form-field  settings-section__field  settings-section__field--desc">
                     <label class="form-field__label" for="description">Описание профиля</label>
-                    <textarea name="description" id="description" class="input  input--textarea" placeholder="Пара слов о себе" autocomplete="off" maxlength="120"></textarea>
+                    <textarea name="description" id="description" class="input  input--textarea" placeholder="Пара слов о себе" autocomplete="off" maxlength="120">{{ user_profile.description }}</textarea>
                     <label class="form-field__error  hidden" for="description">
                         <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                             <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
@@ -30,16 +34,29 @@
                 </div>
                 <div class="form-field  settings-section__field  settings-section__field--avatar">
                     <label class="form-field__label" for="photo">Фото профиля</label>
-                    <div class="info-avatar  info-avatar--change">
-                        <label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');" class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
-                            <input type="file" name="photo" id="photo" accept=".jpg, .jpeg, .png">
-                            <div class="info-avatar__placeholder">
-                                <svg class="icon" aria-hidden="true" focusable="false">
-                                    <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
-                                </svg>
+                        {% if not user_profile.avatar %}
+                            <div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
+                                <label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');" class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
+                                    <input type="file" name="photo" accept=".jpg, .jpeg, .png"  id="user_photo">
+                                    <div class="info-avatar__placeholder">
+                                        <svg class="icon" aria-hidden="true" focusable="false">
+                                            <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
+                                        </svg>
+                                    </div>
+                                </label>
                             </div>
-                        </label>
-                    </div>
+                        {% else %}
+                            <div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
+                                <label style="background-image: url('{{ user_profile.avatar.url }}');" class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
+                                    <input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
+                                    <div class="info-avatar__placeholder">
+                                        <svg class="icon" aria-hidden="true" focusable="false">
+                                            <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
+                                        </svg>
+                                    </div>
+                                </label>
+                            </div>
+                        {% endif %}
                 </div>
             </div>
             <div class="settings-section__bottom">

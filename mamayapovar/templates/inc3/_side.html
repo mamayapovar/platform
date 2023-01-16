@@ -1,0 +1,52 @@
+{% load static %}
+
+{% block side %}
+<aside class="sidebar  sidebar--second">
+    <div class="sidebar__inner">
+        <div class="sidebar-tree">
+          {% if 'profile' in request.get_full_path %}
+              <ul class="list-reset sidebar-tree__list">
+                  <li class="sidebar-tree__item  active">
+                      <a href="{% url 'settings_profile' %}" class="sidebar-tree__link">
+                          <svg class="icon" aria-hidden="true" focusable="false">
+                              <use href="{% static 'recipes/img/sprite.svg' %}#user"/>
+                          </svg>
+                          <span>Профиль</span>
+                      </a>
+                  </li>
+                  <li class="sidebar-tree__item">
+                      <a href="{% url 'settings_account' %}" class="sidebar-tree__link">
+                          <svg class="icon" aria-hidden="true" focusable="false">
+                              <use href="{% static 'recipes/img/sprite.svg' %}#settings"/>
+                          </svg>
+                          <span>Аккаунт</span>
+                      </a>
+                  </li>
+              </ul>
+          {% elif 'account' in request.get_full_path %}
+            <ul class="list-reset sidebar-tree__list">
+                  <li class="sidebar-tree__item">
+                      <a href="{% url 'settings_profile' %}" class="sidebar-tree__link">
+                          <svg class="icon" aria-hidden="true" focusable="false">
+                              <use href="{% static 'recipes/img/sprite.svg' %}#user"/>
+                          </svg>
+                          <span>Профиль</span>
+                      </a>
+                  </li>
+                  <li class="sidebar-tree__item  active">
+                      <a href="{% url 'settings_account' %}" class="sidebar-tree__link">
+                          <svg class="icon" aria-hidden="true" focusable="false">
+                              <use href="{% static 'recipes/img/sprite.svg' %}#settings"/>
+                          </svg>
+                          <span>Аккаунт</span>
+                      </a>
+                  </li>
+              </ul>
+          {% endif %}
+        </div>
+        <div class="sidebar-footer">
+            <a href="{% url 'logout' %}" class="btn  btn--second">Выйти</a>
+        </div>
+    </div>
+</aside>
+{% endblock %}
