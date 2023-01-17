@@ -35,7 +35,8 @@ def get_formatted_recipe(recipes):
         pers = int(recipe.persons)
         recipe.persons = f"{pers} {morph.parse('порция')[0].make_agree_with_number(pers).word}"
 
-        # cooking_time
+        print(recipe.cooking_time)
+        # cooking_time  
         if len(recipe.cooking_time.split(':')) == 2 and recipe.cooking_time.split(':')[0] != '':
             if recipe.cooking_time.split(':')[1] == '0':
                 cook = recipe.cooking_time.split(':')
@@ -650,7 +651,10 @@ def edit_recipe(request, id):
             recipe.description = form.cleaned_data['description'].capitalize()
             recipe.cat_id = categories[form.cleaned_data['cat']]
             recipe.persons = form.cleaned_data['persons']
-            recipe.cooking_time = f'{form.cleaned_data["cooking_time_hours"]}:{form.cleaned_data["cooking_time_minutes"]}'
+            try:
+                recipe.cooking_time = f'{form.cleaned_data["cooking_time_hours"]}:{form.cleaned_data["cooking_time_minutes"]}'
+            except Exception:
+                recipe.cooking_time = f'0:{form.cleaned_data["cooking_time_minutes"]}'
 
             ings = []
             ingredient = ''
