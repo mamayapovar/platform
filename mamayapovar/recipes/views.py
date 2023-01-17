@@ -700,13 +700,10 @@ def edit_recipe(request, id):
                 uploaded_filename = '_'.join(transliterate.translit(request.FILES['photo'].name, reversed=True).split())
             except transliterate.exceptions.LanguageDetectionError:
                 uploaded_filename = '_'.join(request.FILES['photo'].name.split())
-            
-            print('------ photo name: ', uploaded_filename)
 
             full_filename = os.path.join(
                 settings.MEDIA_ROOT, folder, second_folder, uploaded_filename)
             
-            print('------ full filename: ', full_filename)
             fout = open(full_filename, 'wb+')
 
             file_content = ContentFile(request.FILES['photo'].read())
