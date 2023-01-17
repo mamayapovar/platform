@@ -63,7 +63,6 @@ def index(request):
     recipes = Recipe.objects.all()
 
     new_recipes = get_formatted_recipe(recipes)
-    new_recipes = get_formatted_recipe(recipes)
     content = {
         'recipes': new_recipes,
         'is_auth': request.user.is_authenticated,
