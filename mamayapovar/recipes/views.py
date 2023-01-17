@@ -1,8 +1,6 @@
 import json
 import os
 import random
-from django.urls import reverse
-from django.urls import reverse
 import transliterate
 from shutil import rmtree
 
@@ -16,21 +14,14 @@ from django.core.files.base import ContentFile
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render
-from django.http.response import Http404
-from django.utils import datastructures
-from django.core.cache import cache
-from django.http.response import Http404
-from django.utils import datastructures
 from django.core.cache import cache
 
-from .forms import *
 from .forms import *
 from .models import Like, Recipe, Bookmark, UserProfile, StepImages, Subscribe, Category
 
 morph = pymorphy2.MorphAnalyzer()
 
 
-def get_formatted_recipe(recipes):
 def get_formatted_recipe(recipes):
     for recipe in recipes:
         # user
@@ -114,18 +105,12 @@ def postlogin(request):
                         'form_id': 'password-auth',
                         'status': 400,
                         'error': 'Неправильная почта или пароль'
-                        'form_id': 'password-auth',
-                        'status': 400,
-                        'error': 'Неправильная почта или пароль'
                     },
                     status=200
                 )
             elif password:
                 return JsonResponse(
                     data={
-                        'form_id': 'email-auth',
-                        'status': 400,
-                        'error': 'Пожалуйста, введите почту'
                         'form_id': 'email-auth',
                         'status': 400,
                         'error': 'Пожалуйста, введите почту'
@@ -138,9 +123,6 @@ def postlogin(request):
                         'form_id': 'password-auth',
                         'status': 400,
                         'error': 'Пожалуйста, введите пароль'
-                        'form_id': 'password-auth',
-                        'status': 400,
-                        'error': 'Пожалуйста, введите пароль'
                     },
                     status=200
                 )
@@ -149,13 +131,9 @@ def postlogin(request):
                     'form_id': 'password-auth',
                     'status': 400,
                     'error': 'Пожалуйста, введите почту и пароль'
-                    'form_id': 'password-auth',
-                    'status': 400,
-                    'error': 'Пожалуйста, введите почту и пароль'
                 },
                 status=200
             )
-
 
 
 def postlogout(request):
