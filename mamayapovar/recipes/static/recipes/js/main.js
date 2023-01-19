@@ -199,20 +199,32 @@
                             btn.setAttribute('tabindex', '-1')
                         }
                 
-                        counterInput.addEventListener('change', () => {
+                        function plusValidate() {
                             if (counterInput.value > counterMax - 1) {
                                 counterInput.value = counterMax
                                 disableButton(counterPlus)
                             } else {
                                 enableButton(counterPlus)
                             }
+                        }
                 
+                        function minusValidate() {
                             if (counterInput.value <= 1) {
                                 counterInput.value = 1
                                 disableButton(counterMinus)
                             } else {
                                 enableButton(counterMinus)
                             }
+                        }
+                
+                        document.addEventListener('DOMContentLoaded', () => {
+                            plusValidate()
+                            minusValidate()
+                        })
+                
+                        counterInput.addEventListener('change', () => {
+                            plusValidate()
+                            minusValidate()
                         })
                 
                         counterPlus.addEventListener('click', (e) => {
@@ -222,13 +234,7 @@
                             currentValue++
                             counterInput.value = currentValue
                             enableButton(counterMinus)
-                
-                            if (counterInput.value > counterMax - 1) {
-                                counterInput.value = counterMax
-                                disableButton(counterPlus)
-                            } else {
-                                enableButton(counterPlus)
-                            }
+                            plusValidate()
                         })
                 
                         counterMinus.addEventListener('click', (e) => {
@@ -238,13 +244,7 @@
                             currentValue--
                             counterInput.value = currentValue
                             enableButton(counterPlus)
-                
-                            if (counterInput.value <= 1) {
-                                counterInput.value = 1
-                                disableButton(counterMinus)
-                            } else {
-                                enableButton(counterMinus)
-                            }
+                            minusValidate()
                         })
                     }
                 })();
