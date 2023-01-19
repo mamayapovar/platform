@@ -182,54 +182,72 @@
       \***************************************/
     /***/ (() => {
 
-                if (document.querySelector('.counter__input')) {
-                    (function () {
-                        const counterInput = document.querySelector('.counter__input');
-                        const counterPlus = document.querySelector('.counter__btn--plus');
-                        const counterMinus = document.querySelector('.counter__btn--minus');
-                        const counterMax = 20;
+                (function(){
+                    if (document.querySelector('.counter__input')) {
+                        const counterInput = document.querySelector('.counter__input')
+                        const counterPlus = document.querySelector('.counter__btn--plus')
+                        const counterMinus = document.querySelector('.counter__btn--minus')
+                        const counterMax = 20
+                
+                        function enableButton(btn) {
+                            btn.classList.remove('disabled')
+                            btn.removeAttribute('tabindex')
+                        }
+                
+                        function disableButton(btn) {
+                            btn.classList.add('disabled')
+                            btn.setAttribute('tabindex', '-1')
+                        }
+                
                         counterInput.addEventListener('change', () => {
                             if (counterInput.value > counterMax - 1) {
-                                counterInput.value = counterMax;
-                                counterPlus.classList.add('disabled');
+                                counterInput.value = counterMax
+                                disableButton(counterPlus)
                             } else {
-                                counterPlus.classList.remove('disabled');
+                                enableButton(counterPlus)
                             }
+                
                             if (counterInput.value <= 1) {
-                                counterInput.value = 1;
-                                counterMinus.classList.add('disabled');
+                                counterInput.value = 1
+                                disableButton(counterMinus)
                             } else {
-                                counterMinus.classList.remove('disabled');
+                                enableButton(counterMinus)
                             }
-                        });
-                        counterPlus.addEventListener('click', e => {
-                            e.preventDefault();
-                            let currentValue = parseInt(counterInput.value);
-                            currentValue++;
-                            counterInput.value = currentValue;
-                            counterMinus.classList.remove('disabled');
+                        })
+                
+                        counterPlus.addEventListener('click', (e) => {
+                            e.preventDefault()
+                            let currentValue = parseInt(counterInput.value)
+                
+                            currentValue++
+                            counterInput.value = currentValue
+                            enableButton(counterMinus)
+                
                             if (counterInput.value > counterMax - 1) {
-                                counterInput.value = counterMax;
-                                counterPlus.classList.add('disabled');
+                                counterInput.value = counterMax
+                                disableButton(counterPlus)
                             } else {
-                                counterPlus.classList.remove('disabled');
+                                enableButton(counterPlus)
                             }
-                        });
-                        counterMinus.addEventListener('click', e => {
-                            e.preventDefault();
-                            let currentValue = parseInt(counterInput.value);
-                            currentValue--;
-                            counterInput.value = currentValue;
-                            counterPlus.classList.remove('disabled');
+                        })
+                
+                        counterMinus.addEventListener('click', (e) => {
+                            e.preventDefault()
+                            let currentValue = parseInt(counterInput.value)
+                
+                            currentValue--
+                            counterInput.value = currentValue
+                            enableButton(counterPlus)
+                
                             if (counterInput.value <= 1) {
-                                counterInput.value = 1;
-                                counterMinus.classList.add('disabled');
+                                counterInput.value = 1
+                                disableButton(counterMinus)
                             } else {
-                                counterMinus.classList.remove('disabled');
+                                enableButton(counterMinus)
                             }
-                        });
-                    })();
-                }
+                        })
+                    }
+                })();
 
                 /***/
 }),
@@ -238,50 +256,51 @@
     /*!*********************************************!*\
       !*** ./src/js/components/_imageuploader.js ***!
       \*********************************************/
-    /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+    /***/ (() => {
 
-                "use strict";
-                __webpack_require__.r(__webpack_exports__);
-    /* harmony import */ var _vars__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../_vars */ "./src/js/_vars.js");
-
-                if (document.querySelector('.imageuploader')) {
-                    (function () {
-                        let uploadedImage = "";
-                        document.addEventListener('click', e => {
-                            const target = e.target;
+                (function(){
+                    if (document.querySelector('.imageuploader')) {
+                        let uploadedImage = ""
+                        document.addEventListener('click', (e) => {
+                            const target = e.target
                             if (target.classList.contains('imageuploader__input')) {
-                            const image = target;
-                            const input = image.querySelector('input[type="file"]');
-                            const placeholder = image.querySelector('.imageuploader__placeholder');
-                            const delBtn = target.parentNode.querySelector('.imageuploader__btn');
-                            input.addEventListener('change', () => {
-                                if (!input.value == "") {
-                                    const reader = new FileReader();
-                                    reader.addEventListener('load', () => {
-                                        uploadedImage = reader.result;
-                                        image.style.backgroundImage = `url(${uploadedImage})`;
-                                        placeholder.classList.add('hidden');
-                                        delBtn.classList.remove('hidden');
-                                    });
-                                    reader.readAsDataURL(input.files[0]);
-                                }
-                            });
+                                const image = target
+                                const input = image.querySelector('input[type="file"]')
+                                const placeholder = image.querySelector('.imageuploader__placeholder')
+                                const delBtn = target.parentNode.querySelector('.imageuploader__btn')
+                
+                                input.addEventListener('change', () => {
+                                    if (!input.value == "") {
+                                        const reader = new FileReader()
+                                        file = input.files[0] || input.dataTransfer.files[0]
+                
+                                        reader.addEventListener('load', () => {
+                                            uploadedImage = reader.result
+                                            image.style.backgroundImage = `url(${uploadedImage})`
+                                            placeholder.classList.add('hidden')
+                                            delBtn.classList.remove('hidden')
+                                        })
+                                        reader.readAsDataURL(file)
+                                    }
+                                })
                             }
+                
                             if (target.classList.contains('imageuploader__btn')) {
-                                const image = target.parentNode.querySelector('.imageuploader__input');
-                                const input = image.querySelector('input[type="file"]');
-                                const placeholder = image.querySelector('.imageuploader__placeholder');
-                                const delBtn = target;
-                                e.preventDefault();
+                                const image = target.parentNode.querySelector('.imageuploader__input')
+                                const input = image.querySelector('input[type="file"]')
+                                const placeholder = image.querySelector('.imageuploader__placeholder')
+                                const delBtn = target
+                
+                                e.preventDefault()
                                 input.value = "";
-                                uploadedImage = "";
-                                image.style.backgroundImage = 'none';
-                                placeholder.classList.remove('hidden');
-                                delBtn.classList.add('hidden');
+                                uploadedImage = ""
+                                image.style.backgroundImage = 'none'
+                                placeholder.classList.remove('hidden')
+                                delBtn.classList.add('hidden')
                             }
-                        });
-                    })();
-                }
+                        })
+                    }
+                })();
 
                 /***/
 }),
