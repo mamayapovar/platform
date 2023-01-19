@@ -79,7 +79,7 @@
                 <div class="form-field  new-recipe-section__field  new-recipe-section__field--persons">
                     <label class="form-field__label" for="persons">Кол-во порций</label>
                     <div class="counter">
-                        <button type="button" class="btn  counter__btn  counter__btn--minus  disabled" aria-label="Убрать порцию">
+                        <button type="button" class="btn  counter__btn  counter__btn--minus  disabled" tabindex="-1" aria-label="Убрать порцию">
                             <svg class="icon" aria-hidden="true" focusable="false">
                                 <use href="{% static 'recipes/img/sprite.svg' %}#minus" />
                             </svg>
@@ -272,15 +272,15 @@
             <legend class="section-h2  form-section__title">Фото блюда</legend>
             <div class="imageuploader" data-image-url="{{ recipe.photo.url }}" data-image-name="{{ recipe.photo.name }}">
                 <label class="input  input--photo  imageuploader__input">
-                    <input type="file" name="photo" accept=".jpg, .jpeg, .png">
-                    <div class="imageuploader__placeholder  hidden">
+                    <input type="file" name="photo" accept=".jpg, .jpeg, .png" required> 
+                    <div class="imageuploader__placeholder">
                         <svg class="icon" aria-hidden="true" focusable="false">
                             <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
                         </svg>
                         Загрузите фото блюда
                     </div>
                 </label>
-                <button type="button" class="btn  btn--other  imageuploader__btn">
+                <button type="button" class="btn  btn--other  imageuploader__btn  hidden">
                     <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                         <use href="{% static 'recipes/img/sprite.svg' %}#delete" />
                     </svg>
@@ -308,14 +308,14 @@
                             <div class="imageuploader  imageuploader--small  step-item__imageuploader"  data-image-url="{{ photo.url }}" data-image-name="{{ photo.name }}">
                                 <label class="input  input--photo  imageuploader__input">
                                     <input type="file" name="step-photo-{{ numero }}" accept=".jpg, .jpeg, .png">
-                                    <div class="imageuploader__placeholder  hidden">
+                                    <div class="imageuploader__placeholder">
                                         <svg class="icon" aria-hidden="true" focusable="false">
                                             <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
                                         </svg>
                                         Загрузите фото шага
                                     </div>
                                 </label>
-                                <button type="button" class="btn  btn--other  imageuploader__btn">
+                                <button type="button" class="btn  btn--other  imageuploader__btn  hidden">
                                     <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                                         <use href="{% static 'recipes/img/sprite.svg' %}#delete" />
                                     </svg>
