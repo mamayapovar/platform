@@ -8,7 +8,7 @@
                 <a href="/" class="header__logo" title="Вернуться на главную страницу">
                     <img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
                 </a>
-                {% if 'new_recipe' in request.get_full_path %}
+                {% if 'new-recipe' in request.get_full_path %}
                     <span class="header__text">Новый рецепт</span>
                 {% elif 'edit_recipe' in request.get_full_path %}
                     <span class="header__text">Редактирование</span>

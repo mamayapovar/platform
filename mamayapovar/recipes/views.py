@@ -15,6 +15,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render
 from django.core.cache import cache
+from django.utils import datastructures
 
 from .forms import *
 from .models import Like, Recipe, Bookmark, UserProfile, StepImages, Subscribe, Category
@@ -76,16 +77,41 @@ def index(request):
 
 
 def postindex(request):
-    try:
-        if not models.User.objects.get(email=request.POST.get('email', '')):
-            models.User.objects.create_user(request.POST.get('username', ''), request.POST.get('email', ''),
-                                            request.POST.get('password', '')).save()
+    form = RegistraionForm(request.POST)
+    if form.is_valid():
+        if request.POST['username'] and request.POST['email'] and request.POST['password']:
+            if 4 <= len(form.cleaned_data['username']) <= 30:
+                if len(form.cleaned_data['password']) >= 4:
+                    if not User.objects.filter(email=form.cleaned_data['email']):
+                        User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'],
+                                                        form.cleaned_data['password']).save()
+                        return JsonResponse(data={'status': 201}, status=200)
+                    else:
+                        return JsonResponse(data={
+                            'form_id': 'email-register',
+                            'status': 400,
+                            'error': 'Пользователь с такой почтой уже зарегистрирован. Войдите в аккаунт или введите другую почту.'
+                        }, status=200)
+                else:
+                    return JsonResponse(data={
+                            'form_id': 'password-register',
+                            'status': 400,
+                            'error': 'Пожалуйста, придумайте пароль, состоящий, как минимум из 4 символов.'
+                        }, status=200)
+            else:
+                return JsonResponse(data={
+                        'form_id': 'username-register',
+                        'status': 400,
+                        'error': 'Имя должно содержать не более 30 символов и не менее 4.'
+                    }, status=200)
         else:
-            return HttpResponseRedirect('/')
-    except Exception:
-        models.User.objects.create_user(request.POST.get('username', ''), request.POST.get('email', ''),
-                                        request.POST.get('password', '')).save()
-    return HttpResponseRedirect('/')
+            return JsonResponse(data={
+                'form_id': 'password-register',
+                'status': 400,
+                'error': 'Заполните данные, пожалуйста!'
+            }, status=200)
+
+        
 
 
 def postlogin(request):
@@ -100,11 +126,20 @@ def postlogin(request):
                 if user:
                     login(request, user)
                     return JsonResponse(data={'status': 201}, status=200)
+                elif not User.objects.filter(email=form.cleaned_data['email']):
+                    return JsonResponse(
+                        data={
+                            'form_id': 'email-auth',
+                            'status': 400,
+                            'error': 'Пользователя с такой почтой не существует'
+                        },
+                        status=200
+                    )
                 return JsonResponse(
                     data={
                         'form_id': 'password-auth',
                         'status': 400,
-                        'error': 'Неправильная почта или пароль'
+                        'error': 'Неправильный пароль.'
                     },
                     status=200
                 )
@@ -146,141 +181,258 @@ def new_recipe(request):
         if request.user.is_authenticated:
             return render(request, 'recipes/new-recipe.html', {'title': 'Создание рецепта — Мама, я повар!'})
         return HttpResponseRedirect('/')
-    else:
-        folder_id = ''.join([str(random.randint(0, 9)) for x in range(7)])
-        categories = {
-            "Выпечка": 1,
-            "Супы": 2,
-            "Салаты": 3,
-            "Горячие блюда": 4
-        }
-        title = request.POST.get('title').capitalize()
-        description = request.POST.get('description').capitalize()
-        cat_id = categories[request.POST.get('cat')]
-        persons = request.POST.get('persons')
-        cooking_time = f'{request.POST.get("cooking_time_hours")}:{request.POST.get("cooking_time_minutes")}'
-        ings = []
-        ingredient = ''
-        for elem in request.POST:
-            if 'ingredient-name-' in elem:
-                ingredient += request.POST.get(
-                    f'ingredient-name-{elem.split("-")[-1]}').capitalize() + ':'
-            if 'ingredient-amount-' in elem:
-                ingredient += request.POST.get(
-                    f'ingredient-amount-{elem.split("-")[-1]}') + '-'
-            if 'ingredient-measure-' in elem:
-                ingredient += request.POST.get(
-                    f'ingredient-measure-{elem.split("-")[-1]}')
-                ings.append(ingredient)
-                ingredient = ''
-        ingredients = ';'.join(ings)
+    elif request.method == 'POST':
+        form = RecipeForm(request.POST)
+        if form.is_valid():
+            print(request.FILES)
+            # check title 
+            if request.POST['title']:
+                if len(form.cleaned_data['title']) > 70:
+                    return JsonResponse(data={
+                        'form_id': 'title',
+                        'status': 400,
+                        'error': 'Название рецепта должно содержать не более 70 символов'
+                    }, status=200)
+            else:
+                return JsonResponse(data={
+                    'form_id': 'title',
+                    'status': 400,
+                    'error': 'Пожалуйста, введите название рецепта'
+                }, status=200)
 
-        # photo
-        folder = 'recipes'
-        second_folder = folder_id
+            # check description
+            if request.POST['description']:
+                if len(form.cleaned_data['description']) > 150:
+                    return JsonResponse(data={
+                        'form_id': 'desc',
+                        'status': 400,
+                        'error': 'Описание рецепта должно содержать не более 150 символов'
+                    }, status=200)
+            
+            # check category
+            if not request.POST['cat']:
+                return JsonResponse(data={
+                    'form_id': 'cat',
+                    'status': 400,
+                    'error': 'Пожалуйста, выберите категорию блюда'
+                }, status=200)
+
+            # check ingredients
+            for elem in request.POST:
+                if 'ingredient-name-' in elem:
+                    if request.POST[elem]:
+                        if len(request.POST[elem]) > 40:
+                            return JsonResponse(data={
+                                'form_id': 'ingredient',
+                                'ingredient_id': elem.split('-')[-1],
+                                'status': 400,
+                                'error': 'Название блюда должно содержать не более 40 символов'
+                            }, status=200)
+                    else:
+                        return JsonResponse(data={
+                            'form_id': 'ingredient',
+                            'ingredient_id': elem.split('-')[-1],
+                            'status': 400,
+                            'error': 'Пожалуйста, введите название ингредиента'
+                        }, status=200)
+                if 'ingredient-measure-' in elem:
+                    if not request.POST[elem]:
+                        return JsonResponse(data={
+                            'form_id': 'ingredient',
+                            'ingredient_id': elem.split('-')[-1],
+                            'status': 400,
+                            'error': 'Пожалуйста, выберите единицу измерения ингредиента'
+                        }, status=200)
+
+            
+            '''# check photo
+            try:
+                if not request.FILES['photo']:
+                    pass
+                else:
+                    if request.FILES['photo'].size > 1024 * 1024 * 50:
+                        return JsonResponse(data={
+                            'form_id': 'photo',
+                            'status': 400,
+                            'error': 'Пожалуйста, загрузите фото блюда'
+                        }, status=200)
+            except datastructures.MultiValueDictKeyError:
+                return JsonResponse(data={
+                        'form_id': 'photo',
+                        'status': 400,
+                        'error': 'Пожалуйста, загрузите фото блюда'
+                    }, status=200)'''
 
 
-        try:
-            uploaded_filename = '_'.join(transliterate.translit(request.FILES['photo'].name, reversed=True).split())
-        except transliterate.exceptions.LanguageDetectionError:
-            uploaded_filename = '_'.join(request.FILES['photo'].name.split())
+            # check steps
+            for elem in request.POST:
+                if 'step-description-' in elem:
+                    if request.POST[elem]:
+                        if len(request.POST[elem]) > 5000:
+                            return JsonResponse(data={
+                                'form_id': 'step',
+                                'step_id': elem.split('-')[-1],
+                                'status': 400,
+                                'error': 'Описание шага должно содержать не более 5000 символов'
+                            }, status=200)
+                    else:
+                        return JsonResponse(data={
+                            'form_id': 'step',
+                            'step_id': elem.split('-')[-1],
+                            'status': 400,
+                            'error': 'Пожалуйста, опишите шаг приготовления'
+                        }, status=200)
+            
 
-        try:
-            os.mkdir(os.path.join(settings.MEDIA_ROOT, folder))
-        except:
-            pass
+            '''# check step photos
+            for elem in request.FILES:
+                if 'step-photo' in elem:
+                    if request.FILES[elem].size > 1024 * 1024 * 30:
+                        return JsonResponse(data={
+                            'form_id': 'step',
+                            'step_id': elem.split('-')[-1],
+                            'status': 400,
+                            'error': 'Размер фото не должен превышать 30 мб'
+                        }, status=200)'''
 
-        os.mkdir(os.path.join(settings.MEDIA_ROOT, folder, second_folder))
 
-        full_filename = os.path.join(
-            settings.MEDIA_ROOT, folder, second_folder, uploaded_filename)
-        fout = open(full_filename, 'wb+')
 
-        file_content = ContentFile(request.FILES['photo'].read())
 
-        for chunk in file_content.chunks():
-            fout.write(chunk)
-        fout.close()
+            folder_id = ''.join([str(random.randint(0, 9)) for x in range(7)])
+            categories = {
+                "Выпечка": 1,
+                "Супы": 2,
+                "Салаты": 3,
+                "Горячие блюда": 4
+            }
+            title = request.POST.get('title').capitalize()
+            description = request.POST.get('description').capitalize()
+            cat_id = categories[request.POST.get('cat')]
+            persons = request.POST.get('persons')
+            cooking_time = f'{request.POST.get("cooking_time_hours")}:{request.POST.get("cooking_time_minutes")}'
+            ings = []
+            ingredient = ''
+            for elem in request.POST:
+                if 'ingredient-name-' in elem:
+                    ingredient += request.POST.get(
+                        f'ingredient-name-{elem.split("-")[-1]}').strip().capitalize() + ':'
+                if 'ingredient-amount-' in elem:
+                    ingredient += request.POST.get(
+                        f'ingredient-amount-{elem.split("-")[-1]}') + '-'
+                if 'ingredient-measure-' in elem:
+                    ingredient += request.POST.get(
+                        f'ingredient-measure-{elem.split("-")[-1]}')
+                    ings.append(ingredient)
+                    ingredient = ''
+            ingredients = ';'.join(ings)
 
-        # photos of steps and text
-
-        itog1 = []
-        for elem in request.POST:
-            if 'step-description-' in elem:
-                itog1.append([x.capitalize() for x in request.POST[elem].replace('\r', '').split('\n') if x != ''])
-
-        j = 0
-        step_descs = []
-        for elem in itog1:
-            j += 1
-            step_descs.append('{}:{}'.format(j, "\n".join(elem)))
-
-        sss = ';'.join(step_descs)
-        filename_for_save = os.path.join(folder, second_folder, uploaded_filename)
-
-        recipe = Recipe(
-            title=title,
-            description=description,
-            cooking_time=cooking_time,
-            persons=persons,
-            cat_id=cat_id,
-            author_id=request.user.id,
-            ingredients=ingredients,
-            photo=filename_for_save,
-            steps=sss,
-            folder_id=folder_id,
-        )
-        recipe.save()
-
-        like = Like(like_post=recipe, like_user=request.user)
-        like.save()
-
-        descs = []
-        for elem in request.POST:
-            if 'step-description-' in elem:
-                descs.append(elem)
-
-        files = []
-        for elem in request.FILES:
-            if 'step-photo-' in elem:
-                files.append(elem)
-
-        itog = []
-        for elem in files:
-            for el in descs:
-                if elem.split('-')[-1] == el.split('-')[-1]:
-                    itog.append([descs.index(el), elem])
-
-        for elem in itog:
-
+            # photo
             folder = 'recipes'
             second_folder = folder_id
-            if elem:
-                uploaded_filename = str(elem[0] + 1) + '.' + request.FILES[elem[1]].name.split('.')[-1]
-            else:
-                continue
+
 
             try:
-                os.mkdir(os.path.join(os.path.join(settings.MEDIA_ROOT, folder, second_folder), 'steps'))
+                uploaded_filename = '_'.join(transliterate.translit(request.FILES.get('photo').name, reversed=True).split())
+            except transliterate.exceptions.LanguageDetectionError:
+                uploaded_filename = '_'.join(request.FILES.get('photo').name.split())
+
+            try:
+                os.mkdir(os.path.join(settings.MEDIA_ROOT, folder))
             except:
                 pass
 
-            ful_fil = os.path.join(
-                settings.MEDIA_ROOT, folder, second_folder, 'steps', uploaded_filename)
+            os.mkdir(os.path.join(settings.MEDIA_ROOT, folder, second_folder))
 
-            try:
-                fout2 = open(ful_fil, 'wb+')
+            full_filename = os.path.join(
+                settings.MEDIA_ROOT, folder, second_folder, uploaded_filename)
+            fout = open(full_filename, 'wb+')
 
-                file_content2 = ContentFile(request.FILES[elem[1]].read())
+            file_content = ContentFile(request.FILES.get('photo').read())
 
-                for chunk in file_content2.chunks():
-                    fout2.write(chunk)
-                fout2.close()
+            for chunk in file_content.chunks():
+                fout.write(chunk)
+            fout.close()
 
-                imgs = StepImages(image=os.path.join(folder, second_folder, 'steps', uploaded_filename), recipe=recipe)
-                imgs.save()
-            except Exception:
-                pass
+            # photos of steps and text
+
+            itog1 = []
+            for elem in request.POST:
+                if 'step-description-' in elem:
+                    itog1.append([x.capitalize() for x in request.POST[elem].replace('\r', '').split('\n') if x != ''])
+
+            j = 0
+            step_descs = []
+            for elem in itog1:
+                j += 1
+                step_descs.append('{}:{}'.format(j, "\n".join(elem)))
+
+            sss = ';'.join(step_descs)
+            filename_for_save = os.path.join(folder, second_folder, uploaded_filename)
+
+            recipe = Recipe(
+                title=title,
+                description=description,
+                cooking_time=cooking_time,
+                persons=persons,
+                cat_id=cat_id,
+                author_id=request.user.id,
+                ingredients=ingredients,
+                photo=filename_for_save,
+                steps=sss,
+                folder_id=folder_id,
+            )
+            recipe.save()
+
+            like = Like(like_post=recipe, like_user=request.user)
+            like.save()
+
+            descs = []
+            for elem in request.POST:
+                if 'step-description-' in elem:
+                    descs.append(elem)
+
+            files = []
+            for elem in request.FILES:
+                if 'step-photo-' in elem:
+                    files.append(elem)
+
+            itog = []
+            for elem in files:
+                for el in descs:
+                    if elem.split('-')[-1] == el.split('-')[-1]:
+                        itog.append([descs.index(el), elem])
+
+            for elem in itog:
+
+                folder = 'recipes'
+                second_folder = folder_id
+                if elem:
+                    uploaded_filename = str(elem[0] + 1) + '.' + request.FILES[elem[1]].name.split('.')[-1]
+                else:
+                    continue
+
+                try:
+                    os.mkdir(os.path.join(os.path.join(settings.MEDIA_ROOT, folder, second_folder), 'steps'))
+                except:
+                    pass
+
+                ful_fil = os.path.join(
+                    settings.MEDIA_ROOT, folder, second_folder, 'steps', uploaded_filename)
+
+                try:
+                    fout2 = open(ful_fil, 'wb+')
+
+                    file_content2 = ContentFile(request.FILES[elem[1]].read())
+
+                    for chunk in file_content2.chunks():
+                        fout2.write(chunk)
+                    fout2.close()
+
+                    imgs = StepImages(image=os.path.join(folder, second_folder, 'steps', uploaded_filename), recipe=recipe)
+                    imgs.save()
+                except Exception:
+                    pass
+            return HttpResponseRedirect('/')
         return HttpResponseRedirect('/')
 
 

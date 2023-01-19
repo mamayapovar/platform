@@ -15,10 +15,9 @@
             <h2 class="section-h2  popup__title">Регистрация</h2>
             <form id="register-form" action="{% url 'registration' %}" class="popup__form" method="post">
                 {% csrf_token %}
-                <div class="form-field">
+                <div class="form-field  form-field--username__register">
                     <input type="text" name="username" id="username-register" class="input  popup__input"
-                           placeholder="Имя и фамилия" pattern="[A-Za-zА-Яа-яЁё\s]{0,100}" minlength="0" maxlength="100"
-                           required>
+                           placeholder="Имя и фамилия" pattern="[A-Za-zА-Яа-яЁё\s]{0,100}" minlength="0" maxlength="100">
                     <label class="form-field__error  hidden" for="username-register">
                         <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                             <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
@@ -26,9 +25,9 @@
                         <span class="form-field__text">Здесь будет текст ошибки</span>
                     </label>
                 </div>
-                <div class="form-field">
+                <div class="form-field  form-field--email__register">
                     <input type="email" name="email" id="email-register" class="input  popup__input"
-                           placeholder="Электронная почта" required>
+                           placeholder="Электронная почта">
                     <label class="form-field__error  hidden" for="email-register">
                         <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                             <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
@@ -36,9 +35,9 @@
                         <span class="form-field__text">Здесь будет текст ошибки</span>
                     </label>
                 </div>
-                <div class="form-field">
+                <div class="form-field  form-field--password__register">
                     <input type="password" name="password" id="password-register" class="input  popup__input"
-                           placeholder="Пароль" minlength="4" required>
+                           placeholder="Пароль">
                     <label class="form-field__error  hidden" for="password-register">
                         <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                             <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>

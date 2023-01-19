@@ -267,6 +267,81 @@ $('#auth-form').submit(function (e) {
     });
 });
 
+$('#register-form').submit(function (e) {
+    e.preventDefault()
+    $('.form-field--username__register .form-field__error').addClass('hidden')
+    $('.form-field--password__register .form-field__error').addClass('hidden')
+    $('.form-field--email__register .form-field__error').addClass('hidden')
+
+    $.ajax({
+        type: 'POST',
+        url: this.action,
+        data: $(this).serialize(),
+        dataType: 'json',
+
+        success: function (response) {
+            if (response.status === 201) {
+                window.location.reload()
+            } else if (response.status === 400 && response.form_id === 'password-register') {
+                $('.form-field--password__register .form-field__error').removeClass('hidden')
+                $('.form-field--password__register .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'email-register') {
+                $('.form-field--email__register .form-field__error').removeClass('hidden')
+                $('.form-field--email__register .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'username-register') {
+                $('.form-field--username__register .form-field__error').removeClass('hidden')
+                $('.form-field--username__register .form-field__text').text(response.error)
+            }
+        }
+    })
+});
+
+
+$('.new-recipe__form').submit(function(e) {
+    e.preventDefault()
+    $('.new-recipe-section__field--title .form-field__error').addClass('hidden')
+    $('.new-recipe-section__field--desc .form-field__error').addClass('hidden')
+    $('.new-recipe-section__field--cat .form-field__error').addClass('hidden')
+    $('.new-recipe-section__field--persons .form-field__error').addClass('hidden')
+    $('.new-recipe-section__field--time .form-field__error').addClass('hidden')
+    $('.new-recipe-section__field--photo .form-field__error').addClass('hidden')
+    $('.ingredient-item .form-field__error').addClass('hidden')
+    $('.step-item .form-field__error').addClass('hidden')
+
+    $.ajax({
+        type: 'POST',
+        url: this.action,
+        data: $(this).serialize(),
+        dataType: 'json',
+
+        success: function (response) {
+            console.log(1);
+            if (response.status === 201) {
+                window.location.href = '/';
+            } else if (response.status === 400 && response.form_id === 'title') {
+                $('.new-recipe-section__field--title .form-field__error').removeClass('hidden')
+                $('.new-recipe-section__field--title .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'desc') {
+                $('.new-recipe-section__field--desc .form-field__error').removeClass('hidden')
+                $('.new-recipe-section__field--desc .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'cat') {
+                $('.new-recipe-section__field--cat .form-field__error').removeClass('hidden')
+                $('.new-recipe-section__field--cat .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'photo') {
+                $('.new-recipe-section--photo .imageuploader .form-field__error').removeClass('hidden')
+                $('.new-recipe-section--photo .imageuploader .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'ingredient') {
+                $(`#ingredient-${response.ingredient_id} .form-field__error`).removeClass('hidden')
+                $(`#ingredient-${response.ingredient_id} .form-field__text`).text(response.error)
+            } else if (response.status === 400 && response.form_id === 'step') {
+                $(`#step-${response.step_id} .form-field__error`).removeClass('hidden')
+                $(`#step-${response.step_id} .form-field__text`).text(response.error)
+            }
+        }
+    })
+});
+
+
 $(function() {
     $('[data-button-bookmark]').click(to_bookmarks);
 });

@@ -281,6 +281,7 @@
                                             delBtn.classList.remove('hidden')
                                         })
                                         reader.readAsDataURL(file)
+                                        console.log(file);
                                     }
                                 })
                             }

@@ -124,13 +124,13 @@ class ChangePasswordForm(forms.Form):
 
 
 class RecipeForm(forms.Form):
-    title = forms.CharField()
-    description = forms.CharField()
-    cat = forms.CharField()
-    persons = forms.IntegerField()
-    cooking_time_hours = forms.CharField()
-    cooking_time_minutes = forms.CharField()
-    photo = forms.ImageField()
+    title = forms.CharField(required=False)
+    description = forms.CharField(required=False)
+    cat = forms.CharField(required=False)
+    persons = forms.IntegerField(required=False)
+    cooking_time_hours = forms.CharField(required=False)
+    cooking_time_minutes = forms.CharField(required=False)
+    photo = forms.ImageField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -142,3 +142,33 @@ class RecipeForm(forms.Form):
         cooking_time_minutes = cleaned_data.get('cooking_time_minutes')
         photo = cleaned_data.get('photo')
 
+
+
+class RegistraionForm(forms.Form):
+    username = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'input  popup__input',
+            'name': 'username',
+            'id': 'username-register',
+            'placeholder': 'Имя и фамилия'
+        }))
+    
+    email = forms.CharField(
+        required=False,
+        widget=forms.EmailInput(attrs={
+            'class': "input  popup__input",
+            'name': "email",
+            'id': "email-register",
+            'placeholder': "Электронная почта"
+        })
+    )
+    password = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={
+            'class': "input  popup__input",
+            'name': "password",
+            'id': "password-register",
+            'placeholder': "Пароль"
+        })
+    )

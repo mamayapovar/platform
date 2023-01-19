@@ -20,15 +20,18 @@ def get_bookmark_status(id_, user_id):
 @register.simple_tag
 def is_avatar(id_):
     try:
-        return True if UserProfile.objects.get(user=id_) else False
+        return True if UserProfile.objects.get(user=id_).avatar else False
     except:
         return False
 
 
 @register.simple_tag
 def get_avatar_url(id_):
-    return UserProfile.objects.get(user_id=id_).avatar.url if UserProfile.objects.filter(user_id=id_) else None
-
+    try:
+        return UserProfile.objects.get(user=id_).avatar.url if UserProfile.objects.get(user=id_).avatar else None
+    except:
+        return None
+        
 
 @register.simple_tag
 def get_likes_count(id_):
