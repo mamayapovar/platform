@@ -355,8 +355,9 @@ $('.new-recipe__form').submit(function(e) {
     $.ajax({
         type: 'POST',
         url: this.action,
-        data: $(this).serialize(),
-        dataType: 'json',
+        data: new FormData(this),
+        contentType: false,
+		processData: false,
 
         success: function (response) {
             console.log(1);
@@ -374,8 +375,12 @@ $('.new-recipe__form').submit(function(e) {
                 $('.new-recipe-section__field--cat .select').addClass('invalid')
                 $('.new-recipe-section__field--cat .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--cat .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'cooking-time') {
+                $('.new-recipe-section__field--time input').addClass('invalid')
+                $('.new-recipe-section__field--time .form-field__error').removeClass('hidden')
+                $('.new-recipe-section__field--time .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'photo') {
-                $('.new-recipe-section__field--photo input').addClass('invalid')
+                $('.new-recipe-section__field--photo .imageuploader__input').addClass('invalid')
                 $('.new-recipe-section--photo .imageuploader .form-field__error').removeClass('hidden')
                 $('.new-recipe-section--photo .imageuploader .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'ingredient') {
@@ -415,6 +420,12 @@ $(function() {
 
 $(function() {
     $('[data-button-subscribe]').click(subscribe);
+});
+
+$(function() {
+    $('[data-wait-press]').click(() => {
+        window.location.href = '/';
+    });
 });
 
 $(function() {

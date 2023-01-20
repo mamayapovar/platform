@@ -1,6 +1,7 @@
 import json
 import os
 import random
+from django.urls import reverse_lazy
 import transliterate
 from shutil import rmtree
 
@@ -36,7 +37,6 @@ def get_formatted_recipe(recipes):
         pers = int(recipe.persons)
         recipe.persons = f"{pers} {morph.parse('порция')[0].make_agree_with_number(pers).word}"
 
-        print(recipe.cooking_time)
         # cooking_time  
         if len(recipe.cooking_time.split(':')) == 2 and recipe.cooking_time.split(':')[0] != '':
             if recipe.cooking_time.split(':')[1] == '0':
@@ -234,9 +234,9 @@ def new_recipe(request):
             return render(request, 'recipes/new-recipe.html', {'title': 'Создание рецепта — Мама, я повар!'})
         return HttpResponseRedirect('/')
     elif request.method == 'POST':
-        form = RecipeForm(request.POST)
+        form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            print(request.FILES)
+            print(request.FILES, request.POST)
             # check title 
             if request.POST['title']:
                 if len(form.cleaned_data['title']) > 70:
@@ -267,6 +267,31 @@ def new_recipe(request):
                     'form_id': 'cat',
                     'status': 400,
                     'error': 'Пожалуйста, выберите категорию блюда'
+                }, status=200)
+
+
+            # check time cooking 
+            if request.POST.get("cooking_time_minutes"):
+                if int(request.POST.get("cooking_time_minutes")) == 0:
+                    return JsonResponse(data={
+                        'form_id': 'cooking-time',
+                        'field': 'minutes',
+                        'error': 'Пожалуйста, укажите время приготовления',
+                        'status': 400,
+                    }, status=200)
+                elif (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
+                    return JsonResponse(data={
+                        'form_id': 'cooking-time',
+                        'field': 'minutes',
+                        'error': 'Пожалуйста, укажите время приготовления',
+                        'status': 400,
+                    }, status=200)
+            else:
+                return JsonResponse(data={
+                    'form_id': 'cooking-time',
+                    'field': 'minutes',
+                    'error': 'Пожалуйста, укажите время приготовления',
+                    'status': 400,
                 }, status=200)
 
             # check ingredients
@@ -300,23 +325,20 @@ def new_recipe(request):
                         }, status=200)
 
             
-            '''# check photo
-            try:
-                if not request.FILES['photo']:
-                    pass
-                else:
-                    if request.FILES['photo'].size > 1024 * 1024 * 50:
-                        return JsonResponse(data={
-                            'form_id': 'photo',
-                            'status': 400,
-                            'error': 'Пожалуйста, загрузите фото блюда'
-                        }, status=200)
-            except datastructures.MultiValueDictKeyError:
+            # check photo
+            if not request.FILES.get('photo'):
                 return JsonResponse(data={
                         'form_id': 'photo',
                         'status': 400,
                         'error': 'Пожалуйста, загрузите фото блюда'
-                    }, status=200)'''
+                    }, status=200)
+            else:
+                if request.FILES.get('photo').size > 1024 * 1024 * 50:
+                    return JsonResponse(data={
+                        'form_id': 'photo',
+                        'status': 400,
+                        'error': 'Размер фото не должен превышать 50 мб'
+                    }, status=200)
 
 
             # check steps
@@ -490,7 +512,7 @@ def new_recipe(request):
                     imgs.save()
                 except Exception:
                     pass
-            return HttpResponseRedirect('/')
+            return JsonResponse(data={'status': 201}, status=200)
         return HttpResponseRedirect('/')
 
 
@@ -843,12 +865,10 @@ def edit_recipe(request, id):
             for elem in recipe.steps:
                 elem.append(None)
 
-        return render(request, 'recipes/edit_recipe.html', {'recipe': recipe})
+        return render(request, 'recipes/edit_recipe.html', {'recipe': recipe, 'title': 'Редактирование - Мама, я повар!'})
     elif request.method == 'POST':
-        print(request.FILES)
-        
         form = RecipeForm(request.POST)
-        if not form.is_valid():
+        if form.is_valid():
             recipe = Recipe.objects.get(id=id)
             os.remove(recipe.photo.path)
             categories = {
@@ -886,7 +906,8 @@ def edit_recipe(request, id):
             itog1 = []
             for elem in request.POST:
                 if 'step-description-' in elem:
-                    itog1.append([x.capitalize() for x in request.POST[elem].replace('\r', '').split('\n') if x != ''])
+                    itog1.append([x for x in request.POST[elem].replace('\r', '').split('\n') if x != ''])
+                    
 
             j = 0
             step_descs = []
@@ -986,8 +1007,6 @@ def edit_recipe(request, id):
                     imgs.save()
                 except Exception:
                     pass
-                
-            
             return HttpResponseRedirect('/')
     return HttpResponseRedirect('/')
 
