@@ -13,8 +13,6 @@ class LoginForm(forms.Form):
     )
     password = forms.CharField(
         required=False,
-        min_length=4,
-        max_length=32,
         widget=forms.PasswordInput(attrs={
             'class': "input  popup__input",
             'name': "password",

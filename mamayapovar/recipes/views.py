@@ -191,7 +191,7 @@ def postlogin(request):
                     data={
                         'form_id': 'password',
                         'status': 400,
-                        'error': 'Неправильный пароль.'
+                        'error': 'Неправильный пароль'
                     },
                     status=200
                 )
