@@ -244,6 +244,8 @@ function delete_recipe(e) {
 
 $('#auth-form').submit(function (e) {
     e.preventDefault()
+    $('.form-field--password input').removeClass('invalid')
+    $('.form-field--email input').removeClass('invalid')
     $('.form-field--password .form-field__error').addClass('hidden')
     $('.form-field--email .form-field__error').addClass('hidden')
 
@@ -256,10 +258,17 @@ $('#auth-form').submit(function (e) {
         success: function(response){
             if (response.status === 201) {
                 window.location.reload()
-            } else if (response.status === 400 && response.form_id === 'email-auth') {
+            } else if (response.status === 400 && response.form_id === 'email') {
+                $('.form-field--email input').addClass('invalid')
                 $('.form-field--email .form-field__error').removeClass('hidden')
                 $('.form-field--email .form-field__text').text(response.error)
-            } else if (response.status === 400 && response.form_id === 'password-auth') {
+            } else if (response.status === 400 && response.form_id === 'password') {
+                $('.form-field--password input').addClass('invalid')
+                $('.form-field--password .form-field__error').removeClass('hidden')
+                $('.form-field--password .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'all') {
+                $('.form-field--email input').addClass('invalid')
+                $('.form-field--password input').addClass('invalid')
                 $('.form-field--password .form-field__error').removeClass('hidden')
                 $('.form-field--password .form-field__text').text(response.error)
             }
@@ -269,9 +278,12 @@ $('#auth-form').submit(function (e) {
 
 $('#register-form').submit(function (e) {
     e.preventDefault()
-    $('.form-field--username__register .form-field__error').addClass('hidden')
-    $('.form-field--password__register .form-field__error').addClass('hidden')
-    $('.form-field--email__register .form-field__error').addClass('hidden')
+    $('.form-field--username-register input').removeClass('invalid')
+    $('.form-field--password-register input').removeClass('invalid')
+    $('.form-field--email-register input').removeClass('invalid')
+    $('.form-field--username-register .form-field__error').addClass('hidden')
+    $('.form-field--password-register .form-field__error').addClass('hidden')
+    $('.form-field--email-register .form-field__error').addClass('hidden')
 
     $.ajax({
         type: 'POST',
@@ -282,27 +294,59 @@ $('#register-form').submit(function (e) {
         success: function (response) {
             if (response.status === 201) {
                 window.location.reload()
-            } else if (response.status === 400 && response.form_id === 'password-register') {
-                $('.form-field--password__register .form-field__error').removeClass('hidden')
-                $('.form-field--password__register .form-field__text').text(response.error)
-            } else if (response.status === 400 && response.form_id === 'email-register') {
-                $('.form-field--email__register .form-field__error').removeClass('hidden')
-                $('.form-field--email__register .form-field__text').text(response.error)
-            } else if (response.status === 400 && response.form_id === 'username-register') {
-                $('.form-field--username__register .form-field__error').removeClass('hidden')
-                $('.form-field--username__register .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'password') {
+                $('.form-field--password-register input').addClass('invalid')
+                $('.form-field--password-register .form-field__error').removeClass('hidden')
+                $('.form-field--password-register .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'email') {
+                $('.form-field--email-register input').addClass('invalid')
+                $('.form-field--email-register .form-field__error').removeClass('hidden')
+                $('.form-field--email-register .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'username') {
+                $('.form-field--username-register input').addClass('invalid')
+                $('.form-field--username-register .form-field__error').removeClass('hidden')
+                $('.form-field--username-register .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'all') {
+                $('.form-field--username-register input').addClass('invalid')
+                $('.form-field--password-register input').addClass('invalid')
+                $('.form-field--email-register input').addClass('invalid')
+                $('.form-field--password-register .form-field__error').removeClass('hidden')
+                $('.form-field--password-register .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'only_email') {
+                $('.form-field--username-register input').addClass('invalid')
+                $('.form-field--password-register input').addClass('invalid')
+                $('.form-field--password-register .form-field__error').removeClass('hidden')
+                $('.form-field--password-register .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'only_password') {
+                $('.form-field--username-register input').addClass('invalid')
+                $('.form-field--email-register input').addClass('invalid')
+                $('.form-field--password-register .form-field__error').removeClass('hidden')
+                $('.form-field--password-register .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'only_username') {
+                $('.form-field--password-register input').addClass('invalid')
+                $('.form-field--email-register input').addClass('invalid')
+                $('.form-field--password-register .form-field__error').removeClass('hidden')
+                $('.form-field--password-register .form-field__text').text(response.error)
             }
         }
     })
 });
 
-
 $('.new-recipe__form').submit(function(e) {
     e.preventDefault()
+    
+    $('.new-recipe-section__field--title input').removeClass('invalid')
+    $('.new-recipe-section__field--desc input').removeClass('invalid')
+    $('.new-recipe-section__field--cat .select').removeClass('invalid')
+    $('.new-recipe-section__field--time input').removeClass('invalid')
+    $('.new-recipe-section__field--photo input').removeClass('invalid')
+    $('.ingredient-item input').removeClass('invalid')
+    $('.ingredient-item .select').removeClass('invalid')
+    $('.step-item input').removeClass('invalid')
+
     $('.new-recipe-section__field--title .form-field__error').addClass('hidden')
     $('.new-recipe-section__field--desc .form-field__error').addClass('hidden')
     $('.new-recipe-section__field--cat .form-field__error').addClass('hidden')
-    $('.new-recipe-section__field--persons .form-field__error').addClass('hidden')
     $('.new-recipe-section__field--time .form-field__error').addClass('hidden')
     $('.new-recipe-section__field--photo .form-field__error').addClass('hidden')
     $('.ingredient-item .form-field__error').addClass('hidden')
@@ -319,21 +363,36 @@ $('.new-recipe__form').submit(function(e) {
             if (response.status === 201) {
                 window.location.href = '/';
             } else if (response.status === 400 && response.form_id === 'title') {
+                $('.new-recipe-section__field--title input').addClass('invalid')
                 $('.new-recipe-section__field--title .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--title .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'desc') {
+                $('.new-recipe-section__field--desc input').addClass('invalid')
                 $('.new-recipe-section__field--desc .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--desc .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'cat') {
+                $('.new-recipe-section__field--cat .select').addClass('invalid')
                 $('.new-recipe-section__field--cat .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--cat .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'photo') {
+                $('.new-recipe-section__field--photo input').addClass('invalid')
                 $('.new-recipe-section--photo .imageuploader .form-field__error').removeClass('hidden')
                 $('.new-recipe-section--photo .imageuploader .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'ingredient') {
+                if (response.ingredient_field === 'name') {
+                    $(`#ingredient-${response.ingredient_id} .ingredient-item__input--name`).addClass('invalid')
+                } else if (response.ingredient_field === 'measure') {
+                    $(`#ingredient-${response.ingredient_id} .ingredient-item__select`).addClass('invalid')
+                }
                 $(`#ingredient-${response.ingredient_id} .form-field__error`).removeClass('hidden')
                 $(`#ingredient-${response.ingredient_id} .form-field__text`).text(response.error)
             } else if (response.status === 400 && response.form_id === 'step') {
+                if (response.step_field === 'desc') {
+                    $(`#step-${response.step_id} .step-item__input`).addClass('invalid')
+                } else if (response.step_field === 'photo') {
+                    $(`#step-${response.step_id} .imageuploader__input`).addClass('invalid')
+                }
+                $(`#step-${response.step_id} .step-item__input`).addClass('invalid')
                 $(`#step-${response.step_id} .form-field__error`).removeClass('hidden')
                 $(`#step-${response.step_id} .form-field__text`).text(response.error)
             }

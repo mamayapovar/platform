@@ -144,7 +144,7 @@ class RecipeForm(forms.Form):
 
 
 
-class RegistraionForm(forms.Form):
+class RegistrationForm(forms.Form):
     username = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={

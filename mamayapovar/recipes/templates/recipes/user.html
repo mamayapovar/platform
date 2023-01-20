@@ -9,7 +9,7 @@
 					{% if not profile_data.avatar %}
 						<div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
 							<label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');" class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
-								<input type="file" name="photo" accept=".jpg, .jpeg, .png" required id="user_photo">
+								<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
 								<div class="info-avatar__placeholder">
 									<svg class="icon" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#image"/>
@@ -20,7 +20,7 @@
 					{% else %}
 						<div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
 							<label style="background-image: url('{{ profile_data.avatar.url }}');" class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
-								<input type="file" name="photo" accept=".jpg, .jpeg, .png" required id="user_photo">
+								<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
 								<div class="info-avatar__placeholder">
 									<svg class="icon" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#image"/>

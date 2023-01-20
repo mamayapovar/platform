@@ -77,7 +77,7 @@ def index(request):
 
 
 def postindex(request):
-    form = RegistraionForm(request.POST)
+    form = RegistrationForm(request.POST)
     if form.is_valid():
         if request.POST['username'] and request.POST['email'] and request.POST['password']:
             if 4 <= len(form.cleaned_data['username']) <= 30:
@@ -88,30 +88,82 @@ def postindex(request):
                         return JsonResponse(data={'status': 201}, status=200)
                     else:
                         return JsonResponse(data={
-                            'form_id': 'email-register',
+                            'form_id': 'email',
                             'status': 400,
-                            'error': 'Пользователь с такой почтой уже зарегистрирован. Войдите в аккаунт или введите другую почту.'
+                            'error': 'Пользователь с такой почтой уже зарегистрирован'
                         }, status=200)
                 else:
                     return JsonResponse(data={
-                            'form_id': 'password-register',
+                            'form_id': 'password',
                             'status': 400,
                             'error': 'Пожалуйста, придумайте пароль, состоящий, как минимум из 4 символов.'
                         }, status=200)
             else:
                 return JsonResponse(data={
-                        'form_id': 'username-register',
+                        'form_id': 'username',
                         'status': 400,
                         'error': 'Имя должно содержать не более 30 символов и не менее 4.'
                     }, status=200)
+        elif request.POST['username'] and request.POST['email']:
+                return JsonResponse(
+                    data={
+                        'form_id': 'password',
+                        'status': 400,
+                        'error': 'Пожалуйста, введите пароль'
+                    },
+                    status=200
+                )
+        elif request.POST['username'] and request.POST['password']:
+                return JsonResponse(
+                    data={
+                        'form_id': 'email',
+                        'status': 400,
+                        'error': 'Пожалуйста, введите почту'
+                    },
+                    status=200
+                )
+        elif request.POST['email'] and request.POST['password']:
+                return JsonResponse(
+                    data={
+                        'form_id': 'username',
+                        'status': 400,
+                        'error': 'Пожалуйста, введите имя'
+                    },
+                    status=200
+                )
+        elif request.POST['email']:
+                return JsonResponse(
+                    data={
+                        'form_id': 'only_email',
+                        'status': 400,
+                        'error': 'Пожалуйста, введите имя и почту'
+                    },
+                    status=200
+                )
+        elif request.POST['username']:
+                return JsonResponse(
+                    data={
+                        'form_id': 'only_username',
+                        'status': 400,
+                        'error': 'Пожалуйста, введите почту и пароль'
+                    },
+                    status=200
+                )
+        elif request.POST['password']:
+                return JsonResponse(
+                    data={
+                        'form_id': 'only_password',
+                        'status': 400,
+                        'error': 'Пожалуйста, введите имя и почту'
+                    },
+                    status=200
+                )
         else:
             return JsonResponse(data={
-                'form_id': 'password-register',
+                'form_id': 'all',
                 'status': 400,
-                'error': 'Заполните данные, пожалуйста!'
+                'error': 'Пожалуйста, введите данные'
             }, status=200)
-
-        
 
 
 def postlogin(request):
@@ -146,7 +198,7 @@ def postlogin(request):
             elif password:
                 return JsonResponse(
                     data={
-                        'form_id': 'email-auth',
+                        'form_id': 'email',
                         'status': 400,
                         'error': 'Пожалуйста, введите почту'
                     },
@@ -155,7 +207,7 @@ def postlogin(request):
             elif email:
                 return JsonResponse(
                     data={
-                        'form_id': 'password-auth',
+                        'form_id': 'password',
                         'status': 400,
                         'error': 'Пожалуйста, введите пароль'
                     },
@@ -163,9 +215,9 @@ def postlogin(request):
                 )
             return JsonResponse(
                 data={
-                    'form_id': 'password-auth',
+                    'form_id': 'all',
                     'status': 400,
-                    'error': 'Пожалуйста, введите почту и пароль'
+                    'error': 'Пожалуйста, введите данные'
                 },
                 status=200
             )
@@ -225,6 +277,7 @@ def new_recipe(request):
                             return JsonResponse(data={
                                 'form_id': 'ingredient',
                                 'ingredient_id': elem.split('-')[-1],
+                                'ingredient_field': 'name',
                                 'status': 400,
                                 'error': 'Название блюда должно содержать не более 40 символов'
                             }, status=200)
@@ -232,6 +285,7 @@ def new_recipe(request):
                         return JsonResponse(data={
                             'form_id': 'ingredient',
                             'ingredient_id': elem.split('-')[-1],
+                            'ingredient_field': 'name',
                             'status': 400,
                             'error': 'Пожалуйста, введите название ингредиента'
                         }, status=200)
@@ -240,6 +294,7 @@ def new_recipe(request):
                         return JsonResponse(data={
                             'form_id': 'ingredient',
                             'ingredient_id': elem.split('-')[-1],
+                            'ingredient_field': 'measure',
                             'status': 400,
                             'error': 'Пожалуйста, выберите единицу измерения ингредиента'
                         }, status=200)
@@ -272,6 +327,7 @@ def new_recipe(request):
                             return JsonResponse(data={
                                 'form_id': 'step',
                                 'step_id': elem.split('-')[-1],
+                                'step_field': 'desc',
                                 'status': 400,
                                 'error': 'Описание шага должно содержать не более 5000 символов'
                             }, status=200)
@@ -279,6 +335,7 @@ def new_recipe(request):
                         return JsonResponse(data={
                             'form_id': 'step',
                             'step_id': elem.split('-')[-1],
+                            'step_field': 'desc',
                             'status': 400,
                             'error': 'Пожалуйста, опишите шаг приготовления'
                         }, status=200)
@@ -291,6 +348,7 @@ def new_recipe(request):
                         return JsonResponse(data={
                             'form_id': 'step',
                             'step_id': elem.split('-')[-1],
+                            'step_field': 'photo',
                             'status': 400,
                             'error': 'Размер фото не должен превышать 30 мб'
                         }, status=200)'''
@@ -659,7 +717,7 @@ def settings_profile(request):
                 return render(request, 'recipes/settings/profile.html', {
                     'title': 'Настройки профиля - Мама, я повар!',
                     'username': User.objects.get(id=request.user.id).username,
-                    'error': "Введите имя!"
+                    'error': "Пожалуйста, введите имя"
                 })
     return render(request, 'recipes/settings/profile.html', {
         'title': 'Настройки профиля - Мама, я повар!',
@@ -675,7 +733,7 @@ def settings_account(request):
                 if form.cleaned_data['email'] in [x.email for x in User.objects.all()]:
                     return render(request, 'recipes/settings/account.html', {
                         'title': "Настройки аккаунта - Мама, я повар!",
-                        'error': 'Пользователь с такой почтой уже существует!'
+                        'error': 'Пользователь с такой почтой уже зарегистрирован'
                     })
                 elif request.POST.get("email") and request.POST.get('email') != request.user.email:
                     user = User.objects.get(id=request.user.id)
@@ -685,7 +743,7 @@ def settings_account(request):
                 elif not form.cleaned_data['email']:
                     return render(request, 'recipes/settings/account.html', {
                         'title': "Настройки аккаунта - Мама, я повар!",
-                        'error': 'Введите почту!'
+                        'error': 'Пожалуйста, введите почту'
                     })
         elif 'password_old' in request.POST:  # Установка нового пароля
             form = ChangePasswordForm(request.POST)
@@ -702,20 +760,20 @@ def settings_account(request):
                         elif form.cleaned_data['password_new'] != form.cleaned_data['password_new_repeat']:
                             return render(request, 'recipes/settings/account.html', {
                                 'title': "Настройки аккаунта - Мама, я повар!",
-                                'error_same': "Пароли не совпадают!",
+                                'error_same': "Пароли не совпадают",
                                 'old': form.cleaned_data['password_old']
                             })
                     else:
                         return render(request, 'recipes/settings/account.html', {
                             'title': "Настройки аккаунта - Мама, я повар!",
-                            'error_wrong': "Введен неверный пароль!",
+                            'error_wrong': "Введен неверный пароль",
                             'new': form.cleaned_data['password_new'],
                             'new_repeat': form.cleaned_data['password_new_repeat']
                         })
                 else:
                     return render(request, 'recipes/settings/account.html', {
                         'title': "Настройки аккаунта - Мама, я повар!",
-                        'error_wrong': "Введите данные!"
+                        'error_wrong': "Пожалуйста, введите данные"
                     })
         elif len(request.POST) == 1:  # Удаление аккаунта
             # likes
