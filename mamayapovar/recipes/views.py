@@ -181,7 +181,7 @@ def postlogin(request):
                 elif not User.objects.filter(email=form.cleaned_data['email']):
                     return JsonResponse(
                         data={
-                            'form_id': 'email-auth',
+                            'form_id': 'email',
                             'status': 400,
                             'error': 'Пользователя с такой почтой не существует'
                         },
@@ -189,7 +189,7 @@ def postlogin(request):
                     )
                 return JsonResponse(
                     data={
-                        'form_id': 'password-auth',
+                        'form_id': 'password',
                         'status': 400,
                         'error': 'Неправильный пароль.'
                     },
