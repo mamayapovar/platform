@@ -29,7 +29,7 @@
             {% if 'new-recipe' in request.get_full_path %}
                 <button type="submit" class="btn" form="new-recipe-form">Опубликовать</button>
             {% elif 'edit_recipe' in request.get_full_path %}
-                <button type="submit" class="btn" form="edit-recipe-form">Обновить</button>
+                <button type="submit" class="btn" form="edit-recipe-form" data-wait-press>Обновить</button>
             {% endif %}
             <a href="/" class="btn  btn--second">Выйти</a>
         </div>

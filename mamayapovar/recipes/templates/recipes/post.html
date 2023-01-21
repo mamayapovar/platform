@@ -25,6 +25,9 @@
                                     <li class="content-more-menu__item">
                                         <a href="{% url 'delete_recipe' recipe.id %}"><button class="btn-reset  content-more-menu__button">Удалить</button></a>
                                     </li>
+                                    <li class="content-more-menu__item">
+                                        <a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}">Редактировать</a>
+                                    </li>
                             </ul>
                         {% else %}
                             <button class="btn-reset  content-more__toggle  disabled" aria-label="Открыть меню действий" aria-expanded="false" data-more-menu-toggle>
@@ -209,7 +212,10 @@
                         {% endif %}
                     </a>
                     <a href="{% url 'user_profile' recipe.author_id.id %}" class="content-author__name">{{ recipe.author_id }}</a>
-                    <span class="content-author__desc">Готовлю самые вкусные и пышные оладушки</span>
+                    {% get_user_profile recipe.author_id as up %}
+                    {% if up %}
+                        <span class="content-author__desc">{{ up.description }}</span>
+                    {% endif %}
                 </div>
                 {% if request.user.id != recipe.author_id.id %}
                     {% if is_auth %}
