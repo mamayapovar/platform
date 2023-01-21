@@ -407,6 +407,80 @@ $('.new-recipe__form').submit(function(e) {
     })
 });
 
+$('.edit-recipe__form').submit(function(e) {
+    e.preventDefault()
+    
+    $('.new-recipe-section__field--title input').removeClass('invalid')
+    $('.new-recipe-section__field--desc input').removeClass('invalid')
+    $('.new-recipe-section__field--cat .select').removeClass('invalid')
+    $('.new-recipe-section__field--time input').removeClass('invalid')
+    $('.new-recipe-section--photo .imageuploader__input').removeClass('invalid')
+    $('.ingredient-item input').removeClass('invalid')
+    $('.ingredient-item .select').removeClass('invalid')
+    $('.step-item .step-item__input').removeClass('invalid')
+    $('.step-item .imageuploader__input').removeClass('invalid')
+
+    $('.new-recipe-section__field--title .form-field__error').addClass('hidden')
+    $('.new-recipe-section__field--desc .form-field__error').addClass('hidden')
+    $('.new-recipe-section__field--cat .form-field__error').addClass('hidden')
+    $('.new-recipe-section__field--time .form-field__error').addClass('hidden')
+    $('.new-recipe-section--photo .form-field__error').addClass('hidden')
+    $('.ingredient-item .form-field__error').addClass('hidden')
+    $('.step-item .form-field__error').addClass('hidden')
+
+    $.ajax({
+        type: 'POST',
+        url: this.action,
+        data: new FormData(this),
+        contentType: false,
+		processData: false,
+
+        success: function (response) {
+            console.log(1);
+            if (response.status === 201) {
+                window.location.href = '/';
+            } else if (response.status === 400 && response.form_id === 'title') {
+                $('.new-recipe-section__field--title input').addClass('invalid')
+                $('.new-recipe-section__field--title .form-field__error').removeClass('hidden')
+                $('.new-recipe-section__field--title .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'desc') {
+                $('.new-recipe-section__field--desc input').addClass('invalid')
+                $('.new-recipe-section__field--desc .form-field__error').removeClass('hidden')
+                $('.new-recipe-section__field--desc .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'cat') {
+                $('.new-recipe-section__field--cat .select').addClass('invalid')
+                $('.new-recipe-section__field--cat .form-field__error').removeClass('hidden')
+                $('.new-recipe-section__field--cat .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'cooking-time') {
+                $('#new-recipe-section__field--time input').addClass('invalid')
+                $('.new-recipe-section__field--time .form-field__error').removeClass('hidden')
+                $('.new-recipe-section__field--time .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'photo') {
+                $('.new-recipe-section--photo .imageuploader__input').addClass('invalid')
+                $('.new-recipe-section--photo .imageuploader .form-field__error').removeClass('hidden')
+                $('.new-recipe-section--photo .imageuploader .form-field__text').text(response.error)
+            } else if (response.status === 400 && response.form_id === 'ingredient') {
+                if (response.ingredient_field === 'name') {
+                    $(`#ingredient-${response.ingredient_id} .ingredient-item__input--name`).addClass('invalid')
+                } else if (response.ingredient_field === 'measure') {
+                    $(`#ingredient-${response.ingredient_id} .ingredient-item__select`).addClass('invalid')
+                }
+                $(`#ingredient-${response.ingredient_id} .form-field__error`).removeClass('hidden')
+                $(`#ingredient-${response.ingredient_id} .form-field__text`).text(response.error)
+            } else if (response.status === 400 && response.form_id === 'step') {
+                if (response.step_field === 'desc') {
+                    $(`#step-${response.step_id} .step-item__input`).addClass('invalid')
+                    $(`#step-${response.step_id} .form-field__error`).attr('for', `step-description-${response.step_id}`)
+                } else if (response.step_field === 'photo') {
+                    $(`#step-${response.step_id} .imageuploader__input`).addClass('invalid')
+                    $(`#step-${response.step_id} .form-field__error`).attr('for', `step-photo-${response.step_id}`)
+                }
+                $(`#step-${response.step_id} .form-field__error`).removeClass('hidden')
+                $(`#step-${response.step_id} .form-field__text`).text(response.error)
+            }
+        }
+    })
+});
 
 $(function() {
     $('[data-button-bookmark]').click(to_bookmarks);

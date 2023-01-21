@@ -10,29 +10,29 @@
             <legend class="section-h2  form-section__title">Основное</legend>
             <div class="form-field  new-recipe-section__field  new-recipe-section__field--title">
                 <label class="form-field__label" for="title">Название рецепта</label>
-                <input type="text" name="title" id="title" class="input" value="{{ recipe.title }}" placeholder="Шарлотка с яблоками" autofocus autocomplete="off" maxlength="100" required>
+                <input type="text" name="title" id="title" class="input" value="{{ recipe.title }}" placeholder="Шарлотка с яблоками" autofocus autocomplete="off">
                 <label class="form-field__error  hidden" for="title">
                     <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                         <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
                     </svg>
-                    <span class="form-field__text">Здесь будет текст ошибки</span>
+                    <span class="form-field__text"></span>
                 </label>
             </div>
             <div class="form-field  new-recipe-section__field  new-recipe-section__field--desc">
                 <label class="form-field__label" for="description">Описание рецепта</label>
-                <textarea name="description" id="description" class="input  input--textarea" placeholder="Старый, испытанный временем, но всегда желанный рецепт классической ароматной шарлотки. Уютный запах корицы и чашечка горячего чая с мелиссой..." autocomplete="off" maxlength="200">{{ recipe.description }}</textarea>
+                <textarea name="description" id="description" class="input  input--textarea" placeholder="Старый, испытанный временем, но всегда желанный рецепт классической ароматной шарлотки. Уютный запах корицы и чашечка горячего чая с мелиссой..." autocomplete="off">{{ recipe.description }}</textarea>
                 <label class="form-field__error  hidden" for="description">
                     <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                         <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
                     </svg>
-                    <span class="form-field__text">Здесь будет текст ошибки</span>
+                    <span class="form-field__text"></span>
                 </label>
             </div>
             <div class="form-field  new-recipe-section__field  new-recipe-section__field--cat">
                 <label class="form-field__label">Категория блюда</label>
                 <div class="select">
                     {% if recipe.cat.name == 'Выпечка' %}
-                        <select name="cat" required>
+                        <select name="cat">
                             <option value="">——</option>
                             <option selected>Выпечка</option>
                             <option>Супы</option>
@@ -40,7 +40,7 @@
                             <option>Горячие блюда</option>
                         </select>
                     {% elif recipe.cat.name == 'Супы' %}
-                        <select name="cat" required>
+                        <select name="cat">
                             <option value="">——</option>
                             <option>Выпечка</option>
                             <option selected>Супы</option>
@@ -48,7 +48,7 @@
                             <option>Горячие блюда</option>
                         </select>
                     {% elif recipe.cat.name == 'Салаты' %}
-                        <select name="cat" required>
+                        <select name="cat">
                             <option value="">——</option>
                             <option>Выпечка</option>
                             <option>Супы</option>
@@ -56,7 +56,7 @@
                             <option>Горячие блюда</option>
                         </select>
                     {% elif recipe.cat.name == 'Горячие блюда' %}
-                        <select name="cat" required>
+                        <select name="cat">
                             <option value="">——</option>
                             <option>Выпечка</option>
                             <option>Супы</option>
@@ -72,7 +72,7 @@
                     <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                         <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
                     </svg>
-                    <span class="form-field__text">Здесь будет текст ошибки</span>
+                    <span class="form-field__text"></span>
                 </label>
             </div>
             <div class="new-recipe-section__group">
@@ -84,7 +84,7 @@
                                 <use href="{% static 'recipes/img/sprite.svg' %}#minus" />
                             </svg>
                         </button>
-                        <input type="number" name="persons" id="persons" value="{{ recipe.persons }}" class="input  counter__input" autocomplete="off" required>
+                        <input type="number" name="persons" id="persons" value="{{ recipe.persons }}" class="input  counter__input" autocomplete="off">
                         <button type="button" class="btn  counter__btn  counter__btn--plus" aria-label="Добавить порцию">
                             <svg class="icon" aria-hidden="true" focusable="false">
                                 <use href="{% static 'recipes/img/sprite.svg' %}#plus" />
@@ -95,24 +95,24 @@
                         <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                             <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
                         </svg>
-                        <span class="form-field__text">Здесь будет текст ошибки</span>
+                        <span class="form-field__text"></span>
                     </label>
                 </div>
                 <div class="form-field  new-recipe-section__field  new-recipe-section__field--time">
                     <label class="form-field__label" for="minutes">Время приготовления</label>
                     {% for hours, minutes in recipe.cooking_time %}
                         <div class="form-field  new-recipe-section__field  new-recipe-section__field--hours">
-                            <input type="number" name="cooking_time_hours" value="{{ hours }}" id="hours" placeholder="0" class="input new-recipe-section__field__input" autocomplete="off">
+                            <input type="number" name="cooking_time_hours" value="{{ hours }" id="hours" placeholder="0" class="input new-recipe-section__field__input" autocomplete="off">
                         </div>
                         <div class="form-field  new-recipe-section__field  new-recipe-section__field--minutes">
-                            <input type="number" name="cooking_time_minutes" id="minutes" value="{{ minutes }}" placeholder="0" class="input  new-recipe-section__field__input" autocomplete="off" required>
+                            <input type="number" name="cooking_time_minutes" id="minutes" value="{{ minutes }}" placeholder="0" class="input new-recipe-section__field__input" autocomplete="off">
                         </div>
                     {% endfor %}
                     <label class="form-field__error  hidden" for="minutes">
                         <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                             <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
                         </svg>
-                        <span class="form-field__text">Здесь будет текст ошибки</span>
+                        <span class="form-field__text"></span>
                     </label>
                 </div>
             </div>
@@ -124,12 +124,11 @@
                     <div class="ingredient-item" id="ingredient-{{ amigo }}">
                         <input type="text" name="ingredient-name-{{ amigo }}"
                             class="input  ingredient-item__input  ingredient-item__input--name"
-                            placeholder="Название ингредиента" autocomplete="off" value="{{ title }}" required>
+                            placeholder="Название ингредиента" autocomplete="off" value="{{ title }}">
                         <input type="number" name="ingredient-amount-{{ amigo }}"
-                            class="input  ingredient-item__input  ingredient-item__input--amount" placeholder="0" value="1"
-                            min="0.1" max="999" step="0.1" autocomplete="off" value="{{ amount }}" required>
+                            class="input  ingredient-item__input  ingredient-item__input--amount" placeholder="0" step="0.1" autocomplete="off" value="{{ amount }}">
                         <div class="select  ingredient-item__select">
-                            <select name="ingredient-measure-{{ amigo }}" aria-label="Единица измерения" required>
+                            <select name="ingredient-measure-{{ amigo }}" aria-label="Единица измерения">
                                 <option value="">Ед. измерения</option>
                                 {% if measure == 'шт' %}
                                     <option selected>шт</option>
@@ -256,7 +255,7 @@
                             <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                                 <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
                             </svg>
-                            <span class="form-field__text">Здесь будет текст ошибки</span>
+                            <span class="form-field__text"></span>
                         </label>
                     </div>
                 {% endfor %}
@@ -272,7 +271,7 @@
             <legend class="section-h2  form-section__title">Фото блюда</legend>
             <div class="imageuploader" data-image-url="{{ recipe.photo.url }}" data-image-name="{{ recipe.photo.name }}">
                 <label class="input  input--photo  imageuploader__input">
-                    <input type="file" name="photo" accept=".jpg, .jpeg, .png" required> 
+                    <input type="file" name="photo" id="photo" accept=".jpg, .jpeg, .png"> 
                     <div class="imageuploader__placeholder">
                         <svg class="icon" aria-hidden="true" focusable="false">
                             <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
@@ -285,11 +284,11 @@
                         <use href="{% static 'recipes/img/sprite.svg' %}#delete" />
                     </svg>
                 </button>
-                <label class="form-field__error  hidden">
+                <label class="form-field__error  hidden" for="photo">
                     <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                         <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
                     </svg>
-                    <span class="form-field__text">Здесь будет текст ошибки</span>
+                    <span class="form-field__text"></span>
                 </label>
             </div>
         </fieldset>
@@ -321,12 +320,12 @@
                                     </svg>
                                 </button>
                             </div>
-                            <textarea name="step-description-{{ numero }}" id="step-description-{{ numero }}" class="input  input--textarea  step-item__input" placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..." autocomplete="off" maxlength="5000" required>{{ text }}</textarea>
+                            <textarea name="step-description-{{ numero }}" id="step-description-{{ numero }}" class="input  input--textarea  step-item__input" placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..." autocomplete="off">{{ text }}</textarea>
                             <label class="form-field__error  hidden" for="step-description-{{ numero }}">
                                 <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                                     <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
                                 </svg>
-                                <span class="form-field__text">Здесь будет текст ошибки</span>
+                                <span class="form-field__text"></span>
                             </label>
                         </div>
                     </div>
