@@ -275,21 +275,18 @@ def new_recipe(request):
                 if int(request.POST.get("cooking_time_minutes")) == 0:
                     return JsonResponse(data={
                         'form_id': 'cooking-time',
-                        'field': 'minutes',
                         'error': 'Пожалуйста, укажите время приготовления',
                         'status': 400,
                     }, status=200)
                 elif (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
                     return JsonResponse(data={
                         'form_id': 'cooking-time',
-                        'field': 'minutes',
                         'error': 'Пожалуйста, укажите время приготовления',
                         'status': 400,
                     }, status=200)
             else:
                 return JsonResponse(data={
                     'form_id': 'cooking-time',
-                    'field': 'minutes',
                     'error': 'Пожалуйста, укажите время приготовления',
                     'status': 400,
                 }, status=200)
@@ -333,11 +330,11 @@ def new_recipe(request):
                         'error': 'Пожалуйста, загрузите фото блюда'
                     }, status=200)
             else:
-                if request.FILES.get('photo').size > 1024 * 1024 * 50:
+                if request.FILES.get('photo').size > 1024 * 1024 * 30:
                     return JsonResponse(data={
                         'form_id': 'photo',
                         'status': 400,
-                        'error': 'Размер фото не должен превышать 50 мб'
+                        'error': 'Размер фото не должен превышать 30 мб'
                     }, status=200)
 
 
@@ -361,19 +358,18 @@ def new_recipe(request):
                             'status': 400,
                             'error': 'Пожалуйста, опишите шаг приготовления'
                         }, status=200)
-            
 
-            '''# check step photos
+            # check step photos
             for elem in request.FILES:
                 if 'step-photo' in elem:
-                    if request.FILES[elem].size > 1024 * 1024 * 30:
+                    if request.FILES.get(elem).size > 1024 * 1024 * 15:
                         return JsonResponse(data={
                             'form_id': 'step',
                             'step_id': elem.split('-')[-1],
                             'step_field': 'photo',
                             'status': 400,
-                            'error': 'Размер фото не должен превышать 30 мб'
-                        }, status=200)'''
+                            'error': 'Размер фото не должен превышать 15 мб'
+                        }, status=200)
 
 
 

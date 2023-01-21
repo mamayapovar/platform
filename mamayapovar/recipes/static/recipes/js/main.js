@@ -688,7 +688,7 @@
                                 <div class="step-item__body">
                                     <div class="imageuploader  imageuploader--small  step-item__imageuploader">
                                         <label class="input  input--photo  imageuploader__input">
-                                            <input type="file" name="step-photo-${fieldIndex}" accept=".jpg, .jpeg, .png">
+                                            <input type="file" name="step-photo-${fieldIndex}" id="step-photo-${fieldIndex}" accept=".jpg, .jpeg, .png">
                                             <div class="imageuploader__placeholder">
                                                 <svg class="icon" aria-hidden="true" focusable="false">
                                                     <use href="${svgImage}"/>
