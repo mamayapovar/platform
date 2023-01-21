@@ -9,7 +9,7 @@
 <div class="feed">
     {% for recipe in recipes %}
         <article class="feed-item">
-            <div class="content-header  feed-item__header">
+            <header class="content-header  feed-item__header">
                 <div class="content-info">
                     <a href="{% url 'category' recipe.cat.id %}" class="content-info__category">
                         <img src="{% get_static_prefix %}recipes/img/category/{{ recipe.cat.id }}.svg" width="24" height="24" alt="" loading="lazy">
@@ -79,7 +79,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </header>
             <a href="recipe/{{ recipe.id }}" class="feed-item__img">
                 {% if recipe.photo %}
                     <img src="{{ recipe.photo.url }}" width="676" height="350"
@@ -89,7 +89,7 @@
                         alt="{{ recipe.title }}" loading="lazy">
                 {% endif %}
             </a>
-            <div class="content-footer  feed-item__footer">
+            <footer class="content-footer  feed-item__footer">
                 <div class="content-footer__left">
                     {% if is_auth %}
                         {% get_likes_status recipe.id request.user.id as like_status %}
@@ -177,7 +177,7 @@
                         </button>
                     {% endif %}
                 {% endif %}
-            </div>
+            </footer>
         </article>
     {% endfor %}
 </div>

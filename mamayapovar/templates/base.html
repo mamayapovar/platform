@@ -339,10 +339,10 @@ $('.new-recipe__form').submit(function(e) {
     $('.new-recipe-section__field--desc input').removeClass('invalid')
     $('.new-recipe-section__field--cat .select').removeClass('invalid')
     $('.new-recipe-section__field--time input').removeClass('invalid')
-    $('.new-recipe-section__field--photo input').removeClass('invalid')
+    $('.new-recipe-section__field--photo .imageuploader__input').removeClass('invalid')
     $('.ingredient-item input').removeClass('invalid')
     $('.ingredient-item .select').removeClass('invalid')
-    $('.step-item input').removeClass('invalid')
+    $('.step-item .imageuploader__input').removeClass('invalid')
 
     $('.new-recipe-section__field--title .form-field__error').addClass('hidden')
     $('.new-recipe-section__field--desc .form-field__error').addClass('hidden')
@@ -375,7 +375,7 @@ $('.new-recipe__form').submit(function(e) {
                 $('.new-recipe-section__field--cat .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--cat .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'photo') {
-                $('.new-recipe-section__field--photo input').addClass('invalid')
+                $('.new-recipe-section__field--photo .imageuploader__input').addClass('invalid')
                 $('.new-recipe-section--photo .imageuploader .form-field__error').removeClass('hidden')
                 $('.new-recipe-section--photo .imageuploader .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'ingredient') {

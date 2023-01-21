@@ -152,7 +152,7 @@ figure {
   position: relative;
   display: grid;
   grid-template-columns: 300px 1fr;
-  padding-top: 56px;
+  padding-top: 146px;
   padding-bottom: 48px;
   gap: 30px;
 }
@@ -671,6 +671,12 @@ a {
   background-size: cover;
   background-repeat: no-repeat;
 }
+.imageuploader__input:focus-within {
+  border-color: var(--color-fields-border-focused);
+}
+.imageuploader__input:focus-within:hover {
+  border-color: var(--color-fields-border-focused);
+}
 .imageuploader__placeholder {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -830,7 +836,7 @@ a {
 }
 
 .header {
-  position: sticky;
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 15;
