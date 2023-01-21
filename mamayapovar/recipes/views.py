@@ -236,7 +236,6 @@ def new_recipe(request):
     elif request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            print(request.FILES, request.POST)
             # check title 
             if request.POST['title']:
                 if len(form.cleaned_data['title']) > 70:
@@ -268,7 +267,6 @@ def new_recipe(request):
                     'status': 400,
                     'error': 'Пожалуйста, выберите категорию блюда'
                 }, status=200)
-
 
             # check time cooking 
             if request.POST.get("cooking_time_minutes"):
@@ -830,8 +828,6 @@ def settings_account(request):
 
 def edit_recipe(request, id):
     if request.method == 'GET':
-        
-        
         recipe = get_formatted_recipe(Recipe.objects.filter(id=id))[0]
 
         recipe.ingredients = [[x.split(':')[0], x.split(':')[1].split('-')[0], x.split(':')[1].split('-')[1], ''.join([str(random.randint(0, 10)) for i in range(10)])] for x in
@@ -863,8 +859,142 @@ def edit_recipe(request, id):
 
         return render(request, 'recipes/edit_recipe.html', {'recipe': recipe, 'title': 'Редактирование - Мама, я повар!'})
     elif request.method == 'POST':
-        form = RecipeForm(request.POST)
+        form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
+            # check title 
+            if request.POST['title']:
+                if len(form.cleaned_data['title']) > 70:
+                    return JsonResponse(data={
+                        'form_id': 'title',
+                        'status': 400,
+                        'error': 'Название рецепта должно содержать не более 70 символов'
+                    }, status=200)
+            else:
+                return JsonResponse(data={
+                    'form_id': 'title',
+                    'status': 400,
+                    'error': 'Пожалуйста, введите название рецепта'
+                }, status=200)
+
+            # check description
+            if request.POST['description']:
+                if len(form.cleaned_data['description']) > 150:
+                    return JsonResponse(data={
+                        'form_id': 'desc',
+                        'status': 400,
+                        'error': 'Описание рецепта должно содержать не более 150 символов'
+                    }, status=200)
+            
+            # check category
+            if not request.POST['cat']:
+                return JsonResponse(data={
+                    'form_id': 'cat',
+                    'status': 400,
+                    'error': 'Пожалуйста, выберите категорию блюда'
+                }, status=200)
+
+            # check time cooking 
+            if request.POST.get("cooking_time_minutes"):
+                if int(request.POST.get("cooking_time_minutes")) == 0:
+                    return JsonResponse(data={
+                        'form_id': 'cooking-time',
+                        'error': 'Пожалуйста, укажите время приготовления',
+                        'status': 400,
+                    }, status=200)
+                elif (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
+                    return JsonResponse(data={
+                        'form_id': 'cooking-time',
+                        'error': 'Пожалуйста, укажите время приготовления',
+                        'status': 400,
+                    }, status=200)
+            else:
+                return JsonResponse(data={
+                    'form_id': 'cooking-time',
+                    'error': 'Пожалуйста, укажите время приготовления',
+                    'status': 400,
+                }, status=200)
+
+            # check ingredients
+            for elem in request.POST:
+                if 'ingredient-name-' in elem:
+                    if request.POST[elem]:
+                        if len(request.POST[elem]) > 40:
+                            return JsonResponse(data={
+                                'form_id': 'ingredient',
+                                'ingredient_id': elem.split('-')[-1],
+                                'ingredient_field': 'name',
+                                'status': 400,
+                                'error': 'Название блюда должно содержать не более 40 символов'
+                            }, status=200)
+                    else:
+                        return JsonResponse(data={
+                            'form_id': 'ingredient',
+                            'ingredient_id': elem.split('-')[-1],
+                            'ingredient_field': 'name',
+                            'status': 400,
+                            'error': 'Пожалуйста, введите название ингредиента'
+                        }, status=200)
+                if 'ingredient-measure-' in elem:
+                    if not request.POST[elem]:
+                        return JsonResponse(data={
+                            'form_id': 'ingredient',
+                            'ingredient_id': elem.split('-')[-1],
+                            'ingredient_field': 'measure',
+                            'status': 400,
+                            'error': 'Пожалуйста, выберите единицу измерения ингредиента'
+                        }, status=200)
+
+            
+            # check photo
+            if not request.FILES.get('photo'):
+                return JsonResponse(data={
+                        'form_id': 'photo',
+                        'status': 400,
+                        'error': 'Пожалуйста, загрузите фото блюда'
+                    }, status=200)
+            else:
+                if request.FILES.get('photo').size > 1024 * 1024 * 30:
+                    return JsonResponse(data={
+                        'form_id': 'photo',
+                        'status': 400,
+                        'error': 'Размер фото не должен превышать 30 мб'
+                    }, status=200)
+
+
+            # check steps
+            for elem in request.POST:
+                if 'step-description-' in elem:
+                    if request.POST[elem]:
+                        if len(request.POST[elem]) > 5000:
+                            return JsonResponse(data={
+                                'form_id': 'step',
+                                'step_id': elem.split('-')[-1],
+                                'step_field': 'desc',
+                                'status': 400,
+                                'error': 'Описание шага должно содержать не более 5000 символов'
+                            }, status=200)
+                    else:
+                        return JsonResponse(data={
+                            'form_id': 'step',
+                            'step_id': elem.split('-')[-1],
+                            'step_field': 'desc',
+                            'status': 400,
+                            'error': 'Пожалуйста, опишите шаг приготовления'
+                        }, status=200)
+
+            # check step photos
+            for elem in request.FILES:
+                if 'step-photo' in elem:
+                    if request.FILES.get(elem).size > 1024 * 1024 * 15:
+                        return JsonResponse(data={
+                            'form_id': 'step',
+                            'step_id': elem.split('-')[-1],
+                            'step_field': 'photo',
+                            'status': 400,
+                            'error': 'Размер фото не должен превышать 15 мб'
+                        }, status=200)
+            
+            
             recipe = Recipe.objects.get(id=id)
             os.remove(recipe.photo.path)
             categories = {
@@ -1003,9 +1133,8 @@ def edit_recipe(request, id):
                     imgs.save()
                 except Exception:
                     pass
-            return HttpResponseRedirect('/')
-    return HttpResponseRedirect('/')
-
+            return JsonResponse(data={'status': 201}, status=200)
+        return HttpResponseRedirect('/')
 
 def error_404(request, exception):
     return HttpResponseRedirect('/')

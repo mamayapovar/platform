@@ -332,7 +332,7 @@ $('#register-form').submit(function (e) {
     })
 });
 
-$('.new-recipe__form').submit(function(e) {
+$('#new-recipe-form').submit(function(e) {
     e.preventDefault()
     
     $('.new-recipe-section__field--title input').removeClass('invalid')
@@ -361,7 +361,6 @@ $('.new-recipe__form').submit(function(e) {
 		processData: false,
 
         success: function (response) {
-            console.log(1);
             if (response.status === 201) {
                 window.location.href = '/';
             } else if (response.status === 400 && response.form_id === 'title') {
@@ -407,7 +406,7 @@ $('.new-recipe__form').submit(function(e) {
     })
 });
 
-$('.edit-recipe__form').submit(function(e) {
+$('#edit-recipe-form').submit(function(e) {
     e.preventDefault()
     
     $('.new-recipe-section__field--title input').removeClass('invalid')
@@ -436,7 +435,6 @@ $('.edit-recipe__form').submit(function(e) {
 		processData: false,
 
         success: function (response) {
-            console.log(1);
             if (response.status === 201) {
                 window.location.href = '/';
             } else if (response.status === 400 && response.form_id === 'title') {
