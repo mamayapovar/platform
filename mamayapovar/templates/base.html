@@ -353,6 +353,14 @@ $('#new-recipe-form').submit(function(e) {
     $('.ingredient-item .form-field__error').addClass('hidden')
     $('.step-item .form-field__error').addClass('hidden')
 
+    const title = document.querySelector('#title')
+    const desc = document.querySelector('#desc')
+    const cat = document.querySelector('#cat')
+    const minute = document.querySelector('#minutes')
+    const ingredients = document.querySelector('#new-recipe-ingredient')
+    const photo = document.querySelector('#photo')
+    const steps = document.querySelector('#new-recipe-step')
+
     $.ajax({
         type: 'POST',
         url: this.action,
@@ -364,36 +372,63 @@ $('#new-recipe-form').submit(function(e) {
             if (response.status === 201) {
                 window.location.href = '/';
             } else if (response.status === 400 && response.form_id === 'title') {
+                $('html, body').animate({
+                    scrollTop: $(title).offset().top - 200
+                }, 300);
+                title.focus()
                 $('.new-recipe-section__field--title input').addClass('invalid')
                 $('.new-recipe-section__field--title .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--title .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'desc') {
-                $('.new-recipe-section__field--desc input').addClass('invalid')
+                $('html, body').animate({
+                    scrollTop: $(desc).offset().top - 200
+                }, 300);
+                desc.focus()
+                $('.new-recipe-section__field--desc textarea').addClass('invalid')
                 $('.new-recipe-section__field--desc .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--desc .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'cat') {
+                $('html, body').animate({
+                    scrollTop: $(cat).offset().top - 200
+                }, 300);
+                cat.focus()
                 $('.new-recipe-section__field--cat .select').addClass('invalid')
                 $('.new-recipe-section__field--cat .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--cat .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'cooking-time') {
-                $('#new-recipe-section__field--time input').addClass('invalid')
+                $('html, body').animate({
+                    scrollTop: $(minutes).offset().top - 200
+                }, 300);
+                minutes.focus()
+                $('.new-recipe-section__field--time input').addClass('invalid')
                 $('.new-recipe-section__field--time .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--time .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'photo') {
+                $('html, body').animate({
+                    scrollTop: $(photo).offset().top - 400
+                }, 300);
                 $('.new-recipe-section--photo .imageuploader__input').addClass('invalid')
                 $('.new-recipe-section--photo .imageuploader .form-field__error').removeClass('hidden')
                 $('.new-recipe-section--photo .imageuploader .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'ingredient') {
+                $('html, body').animate({
+                    scrollTop: $(ingredients).offset().top - 150
+                }, 300);
                 if (response.ingredient_field === 'name') {
                     $(`#ingredient-${response.ingredient_id} .ingredient-item__input--name`).addClass('invalid')
+                    $(`#ingredient-${response.ingredient_id} .invalid`).focus()
                 } else if (response.ingredient_field === 'measure') {
                     $(`#ingredient-${response.ingredient_id} .ingredient-item__select`).addClass('invalid')
                 }
                 $(`#ingredient-${response.ingredient_id} .form-field__error`).removeClass('hidden')
                 $(`#ingredient-${response.ingredient_id} .form-field__text`).text(response.error)
             } else if (response.status === 400 && response.form_id === 'step') {
+                $('html, body').animate({
+                    scrollTop: $(steps).offset().top - 150
+                }, 300);
                 if (response.step_field === 'desc') {
                     $(`#step-${response.step_id} .step-item__input`).addClass('invalid')
+                    $(`#step-${response.step_id} .invalid`).focus()
                     $(`#step-${response.step_id} .form-field__error`).attr('for', `step-description-${response.step_id}`)
                 } else if (response.step_field === 'photo') {
                     $(`#step-${response.step_id} .imageuploader__input`).addClass('invalid')
@@ -427,6 +462,14 @@ $('#edit-recipe-form').submit(function(e) {
     $('.ingredient-item .form-field__error').addClass('hidden')
     $('.step-item .form-field__error').addClass('hidden')
 
+    const title = document.querySelector('#title')
+    const desc = document.querySelector('#desc')
+    const cat = document.querySelector('#cat')
+    const minute = document.querySelector('#minutes')
+    const ingredients = document.querySelector('#new-recipe-ingredient')
+    const photo = document.querySelector('#photo')
+    const steps = document.querySelector('#new-recipe-step')
+
     $.ajax({
         type: 'POST',
         url: this.action,
@@ -438,36 +481,63 @@ $('#edit-recipe-form').submit(function(e) {
             if (response.status === 201) {
                 window.location.href = '/';
             } else if (response.status === 400 && response.form_id === 'title') {
+                $('html, body').animate({
+                    scrollTop: $(title).offset().top - 200
+                }, 300);
+                title.focus()
                 $('.new-recipe-section__field--title input').addClass('invalid')
                 $('.new-recipe-section__field--title .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--title .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'desc') {
-                $('.new-recipe-section__field--desc input').addClass('invalid')
+                $('html, body').animate({
+                    scrollTop: $(desc).offset().top - 200
+                }, 300);
+                desc.focus()
+                $('.new-recipe-section__field--desc textarea').addClass('invalid')
                 $('.new-recipe-section__field--desc .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--desc .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'cat') {
+                $('html, body').animate({
+                    scrollTop: $(cat).offset().top - 200
+                }, 300);
+                cat.focus()
                 $('.new-recipe-section__field--cat .select').addClass('invalid')
                 $('.new-recipe-section__field--cat .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--cat .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'cooking-time') {
-                $('#new-recipe-section__field--time input').addClass('invalid')
+                $('html, body').animate({
+                    scrollTop: $(minutes).offset().top - 200
+                }, 300);
+                minutes.focus()
+                $('.new-recipe-section__field--time input').addClass('invalid')
                 $('.new-recipe-section__field--time .form-field__error').removeClass('hidden')
                 $('.new-recipe-section__field--time .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'photo') {
+                $('html, body').animate({
+                    scrollTop: $(photo).offset().top - 400
+                }, 300);
                 $('.new-recipe-section--photo .imageuploader__input').addClass('invalid')
                 $('.new-recipe-section--photo .imageuploader .form-field__error').removeClass('hidden')
                 $('.new-recipe-section--photo .imageuploader .form-field__text').text(response.error)
             } else if (response.status === 400 && response.form_id === 'ingredient') {
+                $('html, body').animate({
+                    scrollTop: $(ingredients).offset().top - 150
+                }, 300);
                 if (response.ingredient_field === 'name') {
                     $(`#ingredient-${response.ingredient_id} .ingredient-item__input--name`).addClass('invalid')
+                    $(`#ingredient-${response.ingredient_id} .invalid`).focus()
                 } else if (response.ingredient_field === 'measure') {
                     $(`#ingredient-${response.ingredient_id} .ingredient-item__select`).addClass('invalid')
                 }
                 $(`#ingredient-${response.ingredient_id} .form-field__error`).removeClass('hidden')
                 $(`#ingredient-${response.ingredient_id} .form-field__text`).text(response.error)
             } else if (response.status === 400 && response.form_id === 'step') {
+                $('html, body').animate({
+                    scrollTop: $(steps).offset().top - 150
+                }, 300);
                 if (response.step_field === 'desc') {
                     $(`#step-${response.step_id} .step-item__input`).addClass('invalid')
+                    $(`#step-${response.step_id} .invalid`).focus()
                     $(`#step-${response.step_id} .form-field__error`).attr('for', `step-description-${response.step_id}`)
                 } else if (response.step_field === 'photo') {
                     $(`#step-${response.step_id} .imageuploader__input`).addClass('invalid')
