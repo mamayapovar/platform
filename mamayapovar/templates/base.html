@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{% static 'recipes/css/main.css' %}">
     <script defer src="{% static 'recipes/js/main.js' %}"></script>
     {% if 'edit_recipe' in request.get_full_path %}
-        <script src="{% static 'recipes/js/edit.js' %}"></script>
+        <script defer src="{% static 'recipes/js/edit.js' %}"></script>
     {% endif %}
 </head>
 <body class="page__body">
@@ -77,7 +77,6 @@
     <script>
         let uploadedImage = `{{ recipe.photo.url }}`;
     </script>
-    <script src="{% static 'recipes/js/edit.js' %}"></script>
 {% endif %}
 
 <script>
