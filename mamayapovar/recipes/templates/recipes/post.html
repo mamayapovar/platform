@@ -222,7 +222,7 @@
                         {% get_sub_status request.user.id recipe.author_id as sub %}
                         {% if sub %}
                             <button class="btn  btn--second  btn--small  btn--left btn--subscribe  content-author__btn active"
-                                aria-label="Отменить подписку" data-button-subscribe data-url_root="{% url 'subscribe' user.id %}">
+                                aria-label="Отменить подписку" data-button-subscribe data-url_root="{% url 'subscribe' recipe.author_id.id %}">
                                 <span data-text-subscribe>Вы подписаны</span>
                                 <svg class="icon" aria-hidden="true" focusable="false">
                                     <use href="{% static 'recipes/img/sprite.svg' %}#user-plus" />
@@ -230,7 +230,7 @@
                             </button>
                         {% else %}
                             <button class="btn  btn--second  btn--small  btn--left btn--subscribe content-author__btn"
-                                aria-label="Оформить подписку" data-button-subscribe data-url_root="{% url 'subscribe' user.id %}">
+                                aria-label="Оформить подписку" data-button-subscribe data-url_root="{% url 'subscribe' recipe.author_id.id %}">
                                 <span data-text-subscribe>Подписаться</span>
                                 <svg class="icon" aria-hidden="true" focusable="false">
                                     <use href="{% static 'recipes/img/sprite.svg' %}#user-plus" />
