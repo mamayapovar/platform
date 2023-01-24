@@ -718,13 +718,21 @@ def settings_profile(request):
         username = request.POST.get('username')
         if form.is_valid():
             if username:
-                profile = UserProfile.objects.get(user_id=request.user.id)
-                profile.description = form.cleaned_data['description']
-                profile.save()
-                if form.cleaned_data['username'] != request.user.username:
-                    user = User.objects.get(id=request.user.id)
-                    user.username = form.cleaned_data['username']
-                    user.save()
+                if UserProfile.objects.filter(user_id=request.user.id):
+                    profile = UserProfile.objects.get(user_id=request.user.id)
+                    profile.description = form.cleaned_data['description']
+                    profile.save()
+                    if form.cleaned_data['username'] != request.user.username:
+                        user = User.objects.get(id=request.user.id)
+                        user.username = form.cleaned_data['username']
+                        user.save()
+                else:
+                    profile = UserProfile(user_id=request.user.id, description=form.cleaned_data['description'], avatar=None, posts=len(Recipe.objects.filter(author_id=request.user.id)))
+                    profile.save()
+                    if form.cleaned_data['username'] != request.user.username:
+                        user = User.objects.get(id=request.user.id)
+                        user.username = form.cleaned_data['username']
+                        user.save()
                 return render(request, 'recipes/settings/profile.html', {
                     'title': 'Настройки профиля - Мама, я повар!',
                     'username': User.objects.get(id=request.user.id).username
@@ -792,30 +800,32 @@ def settings_account(request):
                         'error_wrong': "Пожалуйста, введите данные"
                     })
         elif len(request.POST) == 1:  # Удаление аккаунта
-            # likes
-            for elem in Like.objects.filter(like_user_id=request.user.id):
-                elem.delete()
-
-            # subs
+            # subs from
             for elem in Subscribe.objects.filter(subscribe_from_id=request.user.id):
                 elem.delete()
 
+            # subs to
             for elem in Subscribe.objects.filter(subscribe_to_id=request.user.id):
                 elem.delete()
 
             # user profile
             for elem in UserProfile.objects.filter(user_id=request.user.id):
                 elem.delete()
-
-            # bookmarks
-            for elem in Bookmark.objects.filter(book_user_id=request.user.id):
-                elem.delete()
-
+            
             # recipes
             recipes = Recipe.objects.filter(author_id=request.user.id)
             for elem in recipes:
+                # step images
                 for el in StepImages.objects.filter(recipe_id=elem.id):
                     el.delete()
+                    
+                # bookmarks
+                for elem1 in Bookmark.objects.filter(book_user_id=request.user.id):
+                    elem1.delete()
+                    
+                # likes
+                for e in Like.objects.filter(like_user_id=request.user.id):
+                    e.delete()
                 elem.delete()
 
             user = User.objects.get(id=request.user.id)
