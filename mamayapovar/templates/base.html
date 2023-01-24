@@ -16,10 +16,10 @@
           crossorigin>
     <link rel="stylesheet" href="{% static 'recipes/css/vendor.css' %}">
     <link rel="stylesheet" href="{% static 'recipes/css/main.css' %}">
-    <script defer src="{% static 'recipes/js/main.js' %}"></script>
     {% if 'edit_recipe' in request.get_full_path %}
         <script defer src="{% static 'recipes/js/edit.js' %}"></script>
     {% endif %}
+    <script defer src="{% static 'recipes/js/main.js' %}"></script>
 </head>
 <body class="page__body">
 {% if request.get_full_path == '/new-recipe/' or 'edit_recipe' in request.get_full_path %}
@@ -89,6 +89,7 @@
     const svgImage = `{% static 'recipes/img/sprite.svg' %}#image`;
     const svgDelete = `{% static 'recipes/img/sprite.svg' %}#delete`;
     const svgCircleCross = `{% static 'recipes/img/sprite.svg' %}#circle-cross`;
+    const svgArrowDownLeft = `{% static 'recipes/img/sprite.svg' %}#arrow-down-left`;
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script>

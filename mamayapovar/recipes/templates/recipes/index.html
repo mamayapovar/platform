@@ -17,45 +17,52 @@
                     </a>
                     <a href="{% url 'user_profile' recipe.author_id.id %}" class="content-info__author">{{ recipe.author_id }}</a>
                     <time class="content-info__date" datetime="{{ recipe.get_formatted_time_full }}">{{ recipe.get_formatted_time }}</time>
-                    <div class="content-more">
-                        {% if request.user.id == recipe.author_id.id %}
-                            <button class="btn-reset  content-more__toggle" aria-label="Открыть меню действий" aria-expanded="false" data-more-menu-toggle>
+                    {% if request.user.id == recipe.author_id.id %}
+                        <div class="content-more" data-menu-more>
+                            <button class="btn-reset  content-more__toggle" aria-label="Открыть меню действий" aria-expanded="false" data-menu-more-toggle>
                                 <svg class="icon" aria-hidden="true" focusable="false">
                                     <use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal"/>
                                 </svg>
                             </button>
-                            <ul class="list-reset  content-more-menu" data-more-menu>
-                                <li class="content-more-menu__item">
-                                    <button class="btn-reset  content-more-menu__button" data-post-button-delete data-url_root="{% url 'delete_recipe' recipe.id %}">Удалить</button>
+                            <ul class="list-reset  content-more-menu" data-menu-more-list>
+                                <li class="content-more-menu__item" data-menu-more-item>
+                                        <button class="btn-reset  content-more-menu__button" data-post-button-delete data-url_root="{% url 'delete_recipe' recipe.id %}" tabindex="-1">Удалить</button>
                                 </li>
-                                <li class="content-more-menu__item">
-                                    <a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}">Редактировать</a>
+                                <li class="content-more-menu__item" data-menu-more-item>
+                                    <a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}" tabindex="-1">Редактировать</a>
                                 </li>
                             </ul>
-                        {% elif request.user.is_authenticated and request.user.id != recipe.author_id.id %}
-                            <button class="btn-reset  content-more__toggle  disabled" aria-label="Открыть меню действий" aria-expanded="false" data-more-menu-toggle>
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                            <use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal"/>
-                                    </svg>
+                        </div>
+                    {% elif request.user.is_authenticated and request.user.id != recipe.author_id.id %}
+                        <div class="content-more" data-menu-more>
+                            <button class="btn-reset  content-more__toggle  disabled" tabindex="-1" aria-label="Открыть меню действий" aria-expanded="false" data-menu-more-toggle>
+                                <svg class="icon" aria-hidden="true" focusable="false">
+                                    <use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal"/>
+                                </svg>
                             </button>
-                        {% endif %}
-                    </div>
+                            <ul class="list-reset  content-more-menu" data-menu-more-list>
+                                <li class="content-more-menu__item" data-menu-more-item>
+                                        <button class="btn-reset  content-more-menu__button" tabindex="-1">Пожаловаться</button>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
                 <a href="{% url 'recipe' recipe.id %}" class="content-header__content">
                     <h2 class="section-h1  content-header__title">{{ recipe.title }}</h2>
                     <p class="content-header__desc">{{ recipe.description }}</p>
                 </a>
                 <div class="content-short">
-                    <div class="content-short-dropdown">
+                    <div class="content-short-dropdown" data-short-ingredients>
                         <button class="btn-reset  content-short-dropdown__toggle" aria-label="Открыть меню профиля" aria-expanded="false" data-short-ingredients-toggle>
                             {{ recipe.get_beautiful_ingredients }}
                             <svg class="icon  icon--16" aria-hidden="true" focusable="false">
                                 <use href="{% static 'recipes/img/sprite.svg' %}#chevron-down"/>
                             </svg>
                         </button>
-                        <div class="content-short-dropdown__menu  short-ingredients"  data-short-ingredients>
+                        <div class="content-short-dropdown__menu  short-ingredients"  data-short-ingredients-list>
                             {% for text, nums in recipe.ingredients %}
-                                <dl class="short-ingredients__item">
+                                <dl class="short-ingredients__item" data-short-ingredients-item>
                                     <dt class="short-ingredients__name">
                                         <span>{{ text }}</span>
                                     </dt>
