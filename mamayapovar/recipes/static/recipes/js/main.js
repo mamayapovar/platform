@@ -432,7 +432,7 @@ __webpack_require__.r(__webpack_exports__);
           menuMoreToggle.setAttribute('aria-expanded', 'true');
           menuMoreToggle.setAttribute('aria-label', 'Закрыть меню действий');
           updateOption(optionHoveredIndex);
-  
+
           // добавляем прослушки действий
           document.addEventListener('click', watchClickOutside);
           document.addEventListener('keydown', supportKeyboardNavigation);
@@ -440,7 +440,7 @@ __webpack_require__.r(__webpack_exports__);
           menuMoreToggle.setAttribute('aria-expanded', 'false');
           menuMoreToggle.setAttribute('aria-label', 'Открыть меню действий');
           updateOption(-1);
-  
+
           // удаляем прослушки действий
           document.removeEventListener('click', watchClickOutside);
           document.removeEventListener('keydown', supportKeyboardNavigation);
@@ -452,7 +452,7 @@ __webpack_require__.r(__webpack_exports__);
         menuMoreToggle.setAttribute('aria-expanded', 'false');
         menuMoreToggle.setAttribute('aria-label', 'Открыть меню действий');
         updateOption(-1);
-  
+
         // удаляем прослушки действий
         document.removeEventListener('click', watchClickOutside);
         document.removeEventListener('keydown', supportKeyboardNavigation);
@@ -498,7 +498,6 @@ __webpack_require__.r(__webpack_exports__);
           if (menuMoreList.children[optionHoveredIndex]) {
             e.preventDefault();
             const option = menuMoreList.children[optionHoveredIndex];
-            
             if (option.querySelector('a')) {
               const link = option.querySelector('a');
               const href = link.getAttribute('href');
@@ -1048,7 +1047,6 @@ __webpack_require__.r(__webpack_exports__);
       if (e.key === "Enter" && searchMenu.classList.contains('active')) {
         if (searchList.children[optionHoveredIndex]) {
           const option = searchList.children[optionHoveredIndex];
-          
           if (option.hasAttribute('data-search-link')) {
             e.preventDefault();
             const link = option.querySelector('a');
@@ -1563,7 +1561,7 @@ class GraphModal {
         }
       }.bind(this));
 
-      document.addEventListener('click', function (e) {
+      document.addEventListener('mousedown', function (e) {
         if (e.target.classList.contains('graph-modal') && e.target.classList.contains("is-open")) {
           this.close();
         }
