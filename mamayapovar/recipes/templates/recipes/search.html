@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block concon %}
+<main class="search">
+	<div class="info  search__info">
+		<div class="info__inner">
+			<h1 class="section-h1  info__name">Сам поисковой запрос</h1>
+			<p class="info__desc">Найдено 4 результата</p>
+		</div>
+	</div>
+	<div class="feed  search__feed">
+		<!-- Если результатов нет -->
+		<div class="feed-placeholder  search__feed-placeholder">
+			<p class="feed-placeholder__desc">Мы все внимательно посмотрели, но ничего не нашли :(</p>
+			<p class="feed-placeholder__desc">Попробуйте изменить запрос или посмотрите другие блюда на <a href="/" class="section-link">главной</a></p>
+		</div>
+
+		<!-- Если результаты есть, тот тут выводятся посты (как на главной) -->
+	</div>
+</main>
+{% endblock %}

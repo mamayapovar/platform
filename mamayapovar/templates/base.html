@@ -8,6 +8,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="theme-color" content="#111111">
     <title>{{ title }}</title>
+    <meta name="description" content="Платформа для публикации и обмена рецептами">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="Мама, я повар!">
+    <meta property="og:title" content="{{ title }}">
     <link rel="preload" href="{% static 'recipes/fonts/NunitoSans-Regular.woff2' %}" as="font" type="font/woff2"
           crossorigin>
     <link rel="preload" href="{% static 'recipes/fonts/NunitoSans-SemiBold.woff2' %}" as="font" type="font/woff2"
@@ -16,10 +21,10 @@
           crossorigin>
     <link rel="stylesheet" href="{% static 'recipes/css/vendor.css' %}">
     <link rel="stylesheet" href="{% static 'recipes/css/main.css' %}">
-    <script defer src="{% static 'recipes/js/main.js' %}"></script>
     {% if 'edit_recipe' in request.get_full_path %}
-        <script src="{% static 'recipes/js/edit.js' %}"></script>
+        <script defer src="{% static 'recipes/js/edit.js' %}"></script>
     {% endif %}
+    <script defer src="{% static 'recipes/js/main.js' %}"></script>
 </head>
 <body class="page__body">
 {% if request.get_full_path == '/new-recipe/' or 'edit_recipe' in request.get_full_path %}
@@ -77,7 +82,6 @@
     <script>
         let uploadedImage = `{{ recipe.photo.url }}`;
     </script>
-    <script src="{% static 'recipes/js/edit.js' %}"></script>
 {% endif %}
 
 <script>
@@ -90,8 +94,9 @@
     const svgImage = `{% static 'recipes/img/sprite.svg' %}#image`;
     const svgDelete = `{% static 'recipes/img/sprite.svg' %}#delete`;
     const svgCircleCross = `{% static 'recipes/img/sprite.svg' %}#circle-cross`;
+    const svgArrowDownLeft = `{% static 'recipes/img/sprite.svg' %}#arrow-down-left`;
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script>
 function getCookie(name) {
     var cookieValue = null;
