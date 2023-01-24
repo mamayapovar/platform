@@ -759,9 +759,9 @@ const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
       ingredientItem.setAttribute('id', `ingredient-${fieldIndex}`);
       ingredientItem.innerHTML += `
 				<input type="text" name="ingredient-name-${fieldIndex}" class="input  ingredient-item__input  ingredient-item__input--name" placeholder="Название ингредиента" autocomplete="off">
-				<input type="number" name="ingredient-amount-${fieldIndex}" class="input  ingredient-item__input  ingredient-item__input--amount" value="1" step="0.1" autocomplete="off">
+				<input type="number" name="ingredient-amount-${fieldIndex}" class="input  ingredient-item__input  ingredient-item__input--amount" value="1" step="0.1" autocomplete="off" aria-label="Количество ингредиента">
 				<div class="select  ingredient-item__select">
-					<select name="ingredient-measure-${fieldIndex}" aria-label="Единица измерения">
+					<select name="ingredient-measure-${fieldIndex}" aria-label="Выбрать единицу измерения">
 						<option value="">Ед. измерения</option>
 						<option>шт</option>
 						<option>г</option>
@@ -787,7 +787,7 @@ const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
 					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 						<use href="${svgCircleCross}"/>
 					</svg>
-					<span class="form-field__text">Здесь будет текст ошибки</span>
+					<span class="form-field__text"></span>
 				</label>
 			`;
       ingredientList.append(ingredientItem);
@@ -855,7 +855,7 @@ const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
 				<div class="step-item__body">
 					<div class="imageuploader  imageuploader--small  step-item__imageuploader">
 						<label class="input  input--photo  imageuploader__input">
-							<input type="file" name="step-photo-${fieldIndex}" id="step-photo-${fieldIndex}" accept=".jpg, .jpeg, .png">
+							<input type="file" name="step-photo-${fieldIndex}" id="step-photo-${fieldIndex}" accept=".jpg, .jpeg, .png" aria-label="Фото шага">
 							<div class="imageuploader__placeholder">
 								<svg class="icon" aria-hidden="true" focusable="false">
 									<use href="${svgImage}"/>
@@ -863,7 +863,7 @@ const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
 								Загрузите фото шага
 							</div>
 						</label>
-						<button type="button" class="btn  btn--other  imageuploader__btn  hidden">
+						<button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото шага">
 							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 								<use href="${svgDelete}" />
 							</svg>
@@ -874,7 +874,7 @@ const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="${svgCircleCross}"/>
 						</svg>
-						<span class="form-field__text">Здесь будет текст ошибки</span>
+						<span class="form-field__text"></span>
 					</label>
 				</div>
 			`;
@@ -943,14 +943,12 @@ __webpack_require__.r(__webpack_exports__);
     let optionHoveredIndex = -1;
     function searchMenuOpen() {
       searchMenu.classList.add('active');
-      searchQuery.setAttribute('aria-expanded', 'true');
       searchQueryChange();
       window.addEventListener('click', watchClickOutside);
       window.addEventListener('keydown', supportKeyboardNavigation);
     }
     function searchMenuClose() {
       searchMenu.classList.remove('active');
-      searchQuery.setAttribute('aria-expanded', 'false');
       searchQuery.blur();
       updateSearchOption(-1);
       window.removeEventListener('click', watchClickOutside);
