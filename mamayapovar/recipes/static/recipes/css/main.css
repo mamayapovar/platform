@@ -644,6 +644,9 @@ a {
   display: -ms-flexbox;
   display: flex;
 }
+.search-query__input {
+  padding-right: 60px;
+}
 
 .search-query-menu {
   position: absolute;
