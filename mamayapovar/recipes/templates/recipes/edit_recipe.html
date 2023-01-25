@@ -102,7 +102,7 @@
                     <label class="form-field__label" for="minutes">Время приготовления</label>
                     {% for hours, minutes in recipe.cooking_time %}
                         <div class="form-field  new-recipe-section__field  new-recipe-section__field--hours">
-                            <input type="number" name="cooking_time_hours" value="{{ hours }" id="hours" placeholder="0" class="input new-recipe-section__field__input" autocomplete="off">
+                            <input type="number" name="cooking_time_hours" value="{{ hours }}" id="hours" placeholder="0" class="input new-recipe-section__field__input" autocomplete="off">
                         </div>
                         <div class="form-field  new-recipe-section__field  new-recipe-section__field--minutes">
                             <input type="number" name="cooking_time_minutes" id="minutes" value="{{ minutes }}" placeholder="0" class="input new-recipe-section__field__input" autocomplete="off">

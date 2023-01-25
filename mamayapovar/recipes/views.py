@@ -3,7 +3,7 @@ import os
 import random
 from django.urls import reverse_lazy
 import transliterate
-from shutil import rmtree
+from shutil import rmtree, copy2
 
 import pymorphy2
 from django.conf import settings
@@ -83,8 +83,11 @@ def postindex(request):
             if 4 <= len(form.cleaned_data['username']) <= 30:
                 if len(form.cleaned_data['password']) >= 4:
                     if not User.objects.filter(email=form.cleaned_data['email']):
-                        User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'],
-                                                        form.cleaned_data['password']).save()
+                        user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'],
+                                                        form.cleaned_data['password'])
+                        user.save()
+                        copy2(os.path.join(settings.STATIC_ROOT, 'recipes', 'img', 'placeholder-avatar.jpg'), os.path.join(settings.MEDIA_ROOT, 'avatars', str(user.id) + '.jpg'))
+                        UserProfile(posts=0, user=user, avatar=os.path.join('avatars', str(user.id) + '.jpg')).save()
                         return JsonResponse(data={'status': 201}, status=200)
                     else:
                         return JsonResponse(data={
@@ -268,26 +271,21 @@ def new_recipe(request):
                     'error': 'Пожалуйста, выберите категорию блюда'
                 }, status=200)
 
-            # check time cooking 
-            if request.POST.get("cooking_time_minutes"):
-                if int(request.POST.get("cooking_time_minutes")) == 0:
-                    return JsonResponse(data={
-                        'form_id': 'cooking-time',
-                        'error': 'Пожалуйста, укажите время приготовления',
-                        'status': 400,
-                    }, status=200)
-                elif (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
+            # check time cooking
+            if request.POST.get("cooking_time_minutes") != '0':
+                if (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
                     return JsonResponse(data={
                         'form_id': 'cooking-time',
                         'error': 'Пожалуйста, укажите время приготовления',
                         'status': 400,
                     }, status=200)
             else:
-                return JsonResponse(data={
-                    'form_id': 'cooking-time',
-                    'error': 'Пожалуйста, укажите время приготовления',
-                    'status': 400,
-                }, status=200)
+                if request.POST.get("cooking_time_hours") == '0' or request.POST.get("cooking_time_hours") == '':
+                    return JsonResponse(data={
+                        'form_id': 'cooking-time',
+                        'error': 'Пожалуйста, укажите время приготовления',
+                        'status': 400,
+                    }, status=200)
 
             # check ingredients
             for elem in request.POST:
@@ -625,12 +623,22 @@ def user_profile(request, id):
 def change_profile_picture(request):
     if UserProfile.objects.filter(user=request.user):
         user = UserProfile.objects.get(user=request.user)
-        os.remove(user.avatar.path)
-        user.avatar = request.FILES['file']
+        if user.avatar:
+            os.remove(user.avatar.path)
+        new_path = os.path.join(settings.MEDIA_ROOT, 'avatars', str(request.user.id) + '.jpg')
+        with open(new_path, 'wb+') as destination:
+            for chunk in request.FILES['file'].chunks():
+                destination.write(chunk)
+        user.avatar = os.path.join('avatars', str(request.user.id) + '.jpg')
         user.save()
     else:
         recipes = Recipe.objects.filter(author_id=request.user.id)
-        new_photo = UserProfile(user=request.user, avatar=request.FILES['file'], posts=len(recipes))
+        new_path = os.path.join(settings.MEDIA_ROOT, 'avatars', str(request.user.id) + '.jpg')
+        with open(new_path, 'wb+') as destination:
+            for chunk in request.FILES['file'].chunks():
+                destination.write(chunk)
+        avatar = os.path.join('avatars', str(request.user.id) + '.jpg')
+        new_photo = UserProfile(user=request.user, avatar=avatar, posts=len(recipes))
         new_photo.save()
     return HttpResponseRedirect(f'user/{str(request.user.id)}/')
 
@@ -810,6 +818,8 @@ def settings_account(request):
 
             # user profile
             for elem in UserProfile.objects.filter(user_id=request.user.id):
+                if elem.avatar:
+                    os.remove(elem.avatar.path)
                 elem.delete()
             
             # recipes
@@ -904,25 +914,20 @@ def edit_recipe(request, id):
                 }, status=200)
 
             # check time cooking 
-            if request.POST.get("cooking_time_minutes"):
-                if int(request.POST.get("cooking_time_minutes")) == 0:
-                    return JsonResponse(data={
-                        'form_id': 'cooking-time',
-                        'error': 'Пожалуйста, укажите время приготовления',
-                        'status': 400,
-                    }, status=200)
-                elif (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
+            if request.POST.get("cooking_time_minutes") != '0':
+                if (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
                     return JsonResponse(data={
                         'form_id': 'cooking-time',
                         'error': 'Пожалуйста, укажите время приготовления',
                         'status': 400,
                     }, status=200)
             else:
-                return JsonResponse(data={
-                    'form_id': 'cooking-time',
-                    'error': 'Пожалуйста, укажите время приготовления',
-                    'status': 400,
-                }, status=200)
+                if request.POST.get("cooking_time_hours") == '0' or request.POST.get("cooking_time_hours") == '':
+                    return JsonResponse(data={
+                        'form_id': 'cooking-time',
+                        'error': 'Пожалуйста, укажите время приготовления',
+                        'status': 400,
+                    }, status=200)
 
             # check ingredients
             for elem in request.POST:
@@ -1148,7 +1153,12 @@ def edit_recipe(request, id):
 
 
 def momental_search(request):
-    pass
+    data = {}
+    query = request.POST.get('query')
+    data['categories'] = list(Category.objects.filter(name__iregex=query).values())
+    data['users'] = list(User.objects.filter(username__iregex=query).values())
+    data['recipes'] = list(Recipe.objects.filter(title__iregex=query).values())
+    return JsonResponse(data=data, status=200)
 
 
 def search(request):

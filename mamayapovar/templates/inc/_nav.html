@@ -13,7 +13,10 @@
                 <form id="search-form" action="{% url 'search' %}" method="POST" class="search-query  header__search" role="search">
                     {% csrf_token %}
                     <div class="search-query__field">
-                        <input type="text" name="query" id="search-query" class="input  search-query__input  header__input" placeholder="Поиск" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Введите запрос" data-search-query>
+                        <input type="text" name="query" id="search-query"
+                            class="input  search-query__input  header__input" placeholder="Поиск"
+                            autocomplete="off" autocapitalize="off" autocorrect="off"
+                            spellcheck="false" aria-label="Введите запрос" data-url_root="{% url 'momental_search' %}" data-search-query>
                         <button type="button" class="btn-reset  search-query__btn" aria-label="Очистить поле поиска" tabindex="-1" data-search-clear>
                             <svg class="icon" aria-hidden="true" focusable="false">
                                 <use href="{% static 'recipes/img/sprite.svg' %}#cross"/>
@@ -22,44 +25,7 @@
                     </div>
                     <div class="search-query-menu" data-search-menu="recent">
                         <span class="search-query-menu__label">Недавние запросы</span>
-                        <ul class="list-reset  search-query-menu__list" data-search-list>
-                            <li class="search-query-menu__item" data-search-link>
-                                <a href="user.html" class="search-query-menu__link" tabindex="-1">
-                                    <img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="search-query-menu__avatar" width="24" height="24" alt="Фото профиля">
-                                    <span>Алексей Калинин</span>
-                                </a>
-                            </li>
-                            <li class="search-query-menu__item" data-search-link>
-                                <a href="category.html" class="search-query-menu__link" tabindex="-1">
-                                    <img src="{% static 'recipes/img/category/1.svg' %}" class="search-query-menu__avatar" width="24" height="24" alt="">
-                                    <span>Выпечка</span>
-                                </a>
-                            </li>
-                            <li class="search-query-menu__item" data-search-link>
-                                <a href="post.html" class="search-query-menu__link" tabindex="-1">
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                        <use href="{% static 'recipes/img/sprite.svg' %}#search"/>
-                                    </svg>
-                                    <span>Пышные оладьи на кефире</span>
-                                </a>
-                            </li>
-                            <li class="search-query-menu__item" data-search-link>
-                                <a href="search.html" class="search-query-menu__link" tabindex="-1">
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                        <use href="{% static 'recipes/img/sprite.svg' %}#search"/>
-                                    </svg>
-                                    <span>николай вкусняшки</span>
-                                </a>
-                            </li>
-                            <li class="search-query-menu__item" data-search-link>
-                                <a href="search.html" class="search-query-menu__link" tabindex="-1">
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                        <use href="{% static 'recipes/img/sprite.svg' %}#search"/>
-                                    </svg>
-                                    <span>кексики</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <ul class="list-reset  search-query-menu__list" data-search-list></ul>
                     </div>
                 </form>
             </div>

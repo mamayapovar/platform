@@ -5,6 +5,9 @@ from django.db import models
 import sys
 import locale
 from math import floor
+from os.path import splitext
+from uuid import uuid4
+from django.core.files.storage import FileSystemStorage
 
 if sys.platform == 'win32':
     locale.setlocale(locale.LC_ALL, 'rus_rus')
@@ -12,6 +15,12 @@ else:
     locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
 morph = pymorphy2.MorphAnalyzer()
+
+
+class UUIDFileStorage(FileSystemStorage):
+    def get_available_name(self, name, max_length=None):
+        _, ext = splitext(name)
+        return uuid4().hex + ext
 
 
 class Recipe(models.Model):
@@ -85,7 +94,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     description = models.TextField(blank=True)
     posts = models.IntegerField()
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='/avatars/placeholder-avatar.jpg')
 
     def __unicode__(self):
         return self.user

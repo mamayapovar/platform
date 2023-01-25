@@ -21,7 +21,8 @@ urlpatterns = [
     path('settings/profile/', settings_profile, name='settings_profile'),
     path('settings/account/', settings_account, name='settings_account'),
     path('edit_recipe/<int:id>/', edit_recipe, name='edit_recipe'),
-    path('search/', search, name='search')
+    path('search/', search, name='search'),
+    path('momental_search/', momental_search, name='momental_search')
 ]
 
 if settings.DEBUG:
