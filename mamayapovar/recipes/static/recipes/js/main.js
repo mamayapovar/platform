@@ -30,14 +30,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_components_textarea_resize_js__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _components_info_avatar_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/_info-avatar.js */ "./src/js/components/_info-avatar.js");
 /* harmony import */ var _components_info_avatar_js__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_components_info_avatar_js__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _components_search_query_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/_search-query.js */ "./src/js/components/_search-query.js");
-/* harmony import */ var _components_search_query_js__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_components_search_query_js__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _components_search_query_server_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/_search-query-server.js */ "./src/js/components/_search-query-server.js");
+/* harmony import */ var _components_search_query_server_js__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_components_search_query_server_js__WEBPACK_IMPORTED_MODULE_12__);
 /* harmony import */ var _components_edit_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/_edit.js */ "./src/js/components/_edit.js");
 /* harmony import */ var _components_edit_js__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_components_edit_js__WEBPACK_IMPORTED_MODULE_13__);
 // import './components/_bookmark.js';
 // import './components/_like.js';
 // import './components/_subscribe.js';
 // import './components/_filter.js';
+// import './components/_search-query.js';
 
 
 
@@ -926,10 +927,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/js/components/_search-query.js":
-/*!********************************************!*\
-  !*** ./src/js/components/_search-query.js ***!
-  \********************************************/
+/***/ "./src/js/components/_search-query-server.js":
+/*!***************************************************!*\
+  !*** ./src/js/components/_search-query-server.js ***!
+  \***************************************************/
 /***/ (() => {
 
 (function () {
@@ -938,66 +939,38 @@ __webpack_require__.r(__webpack_exports__);
     const searchMenu = document.querySelector('[data-search-menu]');
     const searchList = document.querySelector('[data-search-list]');
     const searchClear = document.querySelector('[data-search-clear]');
+    const searchLink = document.querySelectorAll('[data-search-link]');
     let optionsList = Array.from(searchList.children);
     let optionsCount = optionsList.length;
     let optionHoveredIndex = -1;
     function searchMenuOpen() {
-      searchMenu.classList.add('active');
-      searchQueryChange();
-      window.addEventListener('click', watchClickOutside);
-      window.addEventListener('keydown', supportKeyboardNavigation);
+      if (searchQuery.value != '') {
+        updateSearchOption(optionHoveredIndex);
+        if (!searchMenu.classList.contains('active')) {
+          searchMenu.classList.add('active');
+          searchClear.setAttribute('tabindex', '0');
+          searchClear.classList.add('active');
+          window.addEventListener('click', watchClickOutside);
+          window.addEventListener('keydown', supportKeyboardNavigation);
+        }
+      } else {
+        searchMenuClear();
+      }
     }
     function searchMenuClose() {
-      searchMenu.classList.remove('active');
       searchQuery.blur();
+      searchMenu.classList.remove('active');
       updateSearchOption(-1);
       window.removeEventListener('click', watchClickOutside);
       window.removeEventListener('keydown', supportKeyboardNavigation);
     }
-    function searchQueryClear() {
+    function searchMenuClear() {
+      searchMenuClose();
       searchQuery.value = '';
-      searchQueryChange();
-    }
-    function searchQueryChange() {
-      const searchAllBtn = document.querySelector('[data-search-all]');
-      const searchLabel = searchMenu.querySelector('.search-query-menu__label');
-      if (searchQuery.value != '') {
-        searchMenu.setAttribute('data-search-menu', 'queries');
-        searchLabel.classList.add('hidden');
-        searchClear.setAttribute('tabindex', '0');
-        searchClear.classList.add('active');
-        updateSearchOption(optionHoveredIndex);
-        if (!searchAllBtn) {
-          addSearchAllBtn();
-        }
-      } else {
-        searchQuery.focus();
-        searchMenu.setAttribute('data-search-menu', 'recent');
-        searchLabel.classList.remove('hidden');
-        searchClear.classList.remove('active');
-        searchClear.setAttribute('tabindex', '-1');
-        updateSearchOption(optionHoveredIndex);
-        if (searchAllBtn) {
-          searchAllBtn.remove();
-        }
-      }
-      if (!searchMenu.classList.contains('active')) {
-        searchMenuOpen();
-      }
-    }
-    function addSearchAllBtn() {
-      const searchAllBtn = document.createElement('li');
-      searchAllBtn.classList.add('search-query-menu__item');
-      searchAllBtn.setAttribute('data-search-all', '');
-      searchAllBtn.innerHTML = `
-				<button type="submit" form="search-form" class="btn-reset  search-query-menu__link" tabindex="-1">
-					<svg class="icon" aria-hidden="true" focusable="false">
-						<use href="${svgArrowDownLeft}"/>
-					</svg>
-					<span>Перейти к запросам</span>
-				</button>
-			`;
-      searchList.append(searchAllBtn);
+      searchQuery.focus();
+      searchClear.setAttribute('tabindex', '-1');
+      searchClear.classList.remove('active');
+      searchLink.forEach(e => e.remove());
     }
     function updateSearchOption(newIndex) {
       optionsList = Array.from(searchList.children);
@@ -1043,9 +1016,6 @@ __webpack_require__.r(__webpack_exports__);
 
       // переход по ссылке в списке результатов
       if (e.key === "Enter" && searchMenu.classList.contains('active')) {
-        if (searchQuery.value < 1) {
-          e.preventDefault();
-        }
         if (searchList.children[optionHoveredIndex]) {
           const option = searchList.children[optionHoveredIndex];
           if (option.hasAttribute('data-search-link')) {
@@ -1060,10 +1030,8 @@ __webpack_require__.r(__webpack_exports__);
 
       // очистка списка результатов
       if (e.key === "Escape" && searchMenu.classList.contains('active')) {
-        searchQueryClear();
+        searchMenuClear();
       }
-
-      // закрытие списка результатов
       if (e.key === "Tab" && searchMenu.classList.contains('active') && e.target.closest('[data-search-clear]')) {
         searchMenuClose();
       } else if (e.key === "Tab" && searchMenu.classList.contains('active') && !searchClear.classList.contains('active')) {
@@ -1072,7 +1040,23 @@ __webpack_require__.r(__webpack_exports__);
         searchMenuClose();
       }
     }
-    searchQuery.addEventListener('focus', searchMenuOpen);
+
+    // вывод запроса после отправки формы
+    document.addEventListener('DOMContentLoaded', () => {
+      if (document.querySelector('.search__info .info__name')) {
+        const query = document.querySelector('.search__info .info__name');
+        searchQuery.value = query.textContent;
+        searchClear.setAttribute('tabindex', '0');
+        searchClear.classList.add('active');
+      }
+    });
+
+    // открытие списка результатов
+    searchQuery.addEventListener('click', searchMenuOpen);
+    searchQuery.addEventListener('keyup', searchMenuOpen);
+    searchQuery.addEventListener('keydown', searchMenuOpen);
+
+    // закрытие списка результатов
     searchClear.addEventListener('focusin', searchMenuClose);
     window.addEventListener('click', e => {
       const target = e.target;
@@ -1082,11 +1066,26 @@ __webpack_require__.r(__webpack_exports__);
     });
 
     // очистка списка результатов
-    searchClear.addEventListener('click', searchQueryClear);
+    searchClear.addEventListener('click', searchMenuClear);
 
-    // смена списка результатов
-    searchQuery.addEventListener('keyup', searchQueryChange);
-    searchQuery.addEventListener('keydown', searchQueryChange);
+    // проверка на наличие запроса
+    window.addEventListener('keydown', e => {
+      if (e.key === "Enter" && searchQuery.value < 1) {
+        e.preventDefault();
+      }
+    });
+    const config = {
+      childList: true
+    };
+    const callback = function (mutationsList, observer) {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+          updateSearchOption(-1);
+        }
+      }
+    };
+    const observer = new MutationObserver(callback);
+    observer.observe(searchList, config);
   }
 })();
 

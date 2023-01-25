@@ -98,7 +98,6 @@
     const svgImage = `{% static 'recipes/img/sprite.svg' %}#image`;
     const svgDelete = `{% static 'recipes/img/sprite.svg' %}#delete`;
     const svgCircleCross = `{% static 'recipes/img/sprite.svg' %}#circle-cross`;
-    const svgArrowDownLeft = `{% static 'recipes/img/sprite.svg' %}#arrow-down-left`;
 </script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script>
@@ -263,61 +262,64 @@ function search(e) {
         'Салаты': 3,
         'Горячие блюда': 4
     }
-    
     $.ajax({
         url: url_root,
         type: 'POST',
         data: {'query': text},
 
         success: function (json) {
-            if (text) {
-                let count = 0;
-                const searchLink = document.querySelectorAll('[data-search-link]')
-                searchLink.forEach(e => e.remove())
-                for (let i = 0; i < 3; i++) {
-                    if (count <= 5) {
-                        for (let j = 0; j < json[elements[i]].length; j++) {
-                            if (count <= 4) {
-                                if (elements[i] === 'categories') {
-                                    count += 1
-                                    const item = document.createElement(`li`)
-                                    item.classList.add("search-query-menu__item")
-                                    item.setAttribute('data-search-link', '')
-                                    item.innerHTML = `
-                                    <a href="/category/${json[elements[i]][j].id}" class="search-query-menu__link" tabindex="-1">
-                                        <img src="/static/recipes/img/category/${json[elements[i]][j].id}.svg" class="search-query-menu__avatar" width="24" height="24" alt="">
-                                        <span>${json[elements[i]][j].name}</span>
-                                    </a>
-                                    `
-                                    list.prepend(item)
-                                } else if (elements[i] === 'users') {
-                                    count += 1
-                                    const item = document.createElement(`li`)
-                                    item.classList.add("search-query-menu__item")
-                                    item.setAttribute('data-search-link', '')
-                                    item.innerHTML = `
-                                    <a href="/user/${json[elements[i]][j].id}" class="search-query-menu__link" tabindex="-1">
-                                        <img src="/media/avatars/${json[elements[i]][j].id}.jpg" class="search-query-menu__avatar" width="24" height="24" alt="Фото профиля">
-                                        <span>${json[elements[i]][j].username}</span>
-                                    </a>
-                                    `
-                                    list.prepend(item)
-                                } else if (elements[i] === 'recipes') {
-                                    count += 1
-                                    const item = document.createElement(`li`)
-                                    item.classList.add("search-query-menu__item")
-                                    item.setAttribute('data-search-link', '')
-                                    item.innerHTML = `
-                                    <a href="/recipe/${json[elements[i]][j].id}/" class="search-query-menu__link" tabindex="-1">
-                                        <svg class="icon" aria-hidden="true" focusable="false">
-                                            <use href="{% static 'recipes/img/sprite.svg' %}#search"/>
-                                        </svg>
-                                        <span>${json[elements[i]][j].title}</span>
-                                    </a>
-                                    `
-                                    list.prepend(item)
-                                }
-                            }                            
+            if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                e.preventDefault();
+            } else {
+                if (text) {
+                    let count = 0;
+                    const searchLink = document.querySelectorAll('[data-search-link]')
+                    searchLink.forEach(e => e.remove())
+                    for (let i = 0; i < 3; i++) {
+                        if (count <= 5) {
+                            for (let j = 0; j < json[elements[i]].length; j++) {
+                                if (count <= 4) {
+                                    if (elements[i] === 'categories') {
+                                        count += 1
+                                        const item = document.createElement(`li`)
+                                        item.classList.add("search-query-menu__item")
+                                        item.setAttribute('data-search-link', '')
+                                        item.innerHTML = `
+                                        <a href="/category/${json[elements[i]][j].id}" class="search-query-menu__link" tabindex="-1">
+                                            <img src="/static/recipes/img/category/${json[elements[i]][j].id}.svg" class="search-query-menu__avatar" width="24" height="24" alt="">
+                                            <span>${json[elements[i]][j].name}</span>
+                                        </a>
+                                        `
+                                        list.prepend(item)
+                                    } else if (elements[i] === 'users') {
+                                        count += 1
+                                        const item = document.createElement(`li`)
+                                        item.classList.add("search-query-menu__item")
+                                        item.setAttribute('data-search-link', '')
+                                        item.innerHTML = `
+                                        <a href="/user/${json[elements[i]][j].id}" class="search-query-menu__link" tabindex="-1">
+                                            <img src="/media/avatars/${json[elements[i]][j].id}.jpg" class="search-query-menu__avatar" width="24" height="24" alt="Фото профиля">
+                                            <span>${json[elements[i]][j].username}</span>
+                                        </a>
+                                        `
+                                        list.prepend(item)
+                                    } else if (elements[i] === 'recipes') {
+                                        count += 1
+                                        const item = document.createElement(`li`)
+                                        item.classList.add("search-query-menu__item")
+                                        item.setAttribute('data-search-link', '')
+                                        item.innerHTML = `
+                                        <a href="/recipe/${json[elements[i]][j].id}/" class="search-query-menu__link" tabindex="-1">
+                                            <svg class="icon" aria-hidden="true" focusable="false">
+                                                <use href="{% static 'recipes/img/sprite.svg' %}#search"/>
+                                            </svg>
+                                            <span>${json[elements[i]][j].title}</span>
+                                        </a>
+                                        `
+                                        list.prepend(item)
+                                    }
+                                }                            
+                            }
                         }
                     }
                 }
@@ -325,13 +327,6 @@ function search(e) {
         }
     })
 }
-
-{% comment %} <li class="search-query-menu__item" data-search-link>
-    <a href="user.html" class="search-query-menu__link" tabindex="-1">
-        <img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="search-query-menu__avatar" width="24" height="24" alt="Фото профиля">
-        <span>Алексей Калинин</span>
-    </a>
-</li> {% endcomment %}
 
 $('#auth-form').submit(function (e) {
     e.preventDefault()
@@ -641,8 +636,6 @@ $('#edit-recipe-form').submit(function(e) {
     })
 });
 
-
-
 $(function() {
     $('[data-button-bookmark]').click(to_bookmarks);
 });
@@ -664,6 +657,7 @@ $(function() {
 });
 
 $(function() {
+    $('[data-search-query]').click(search);
     $('[data-search-query]').keyup(search);
 });
 
