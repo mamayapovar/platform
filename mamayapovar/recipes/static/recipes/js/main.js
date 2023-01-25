@@ -1043,6 +1043,9 @@ __webpack_require__.r(__webpack_exports__);
 
       // переход по ссылке в списке результатов
       if (e.key === "Enter" && searchMenu.classList.contains('active')) {
+        if (searchQuery.value < 1) {
+          e.preventDefault();
+        }
         if (searchList.children[optionHoveredIndex]) {
           const option = searchList.children[optionHoveredIndex];
           if (option.hasAttribute('data-search-link')) {
