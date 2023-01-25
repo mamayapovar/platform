@@ -10,7 +10,8 @@
                 <a href="/" class="header__logo" title="Вернуться на главную страницу">
                     <img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
                 </a>
-                <form id="search-form" action="https://echo.htmlacademy.ru/" method="GET" class="search-query  header__search" role="search">
+                <form id="search-form" action="{% url 'search' %}" method="POST" class="search-query  header__search" role="search">
+                    {% csrf_token %}
                     <div class="search-query__field">
                         <input type="text" name="query" id="search-query" class="input  search-query__input  header__input" placeholder="Поиск" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Введите запрос" data-search-query>
                         <button type="button" class="btn-reset  search-query__btn" aria-label="Очистить поле поиска" tabindex="-1" data-search-clear>

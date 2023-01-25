@@ -1146,5 +1146,25 @@ def edit_recipe(request, id):
             return JsonResponse(data={'status': 201}, status=200)
         return HttpResponseRedirect('/')
 
+
+def momental_search(request):
+    pass
+
+
+def search(request):
+    query = request.POST.get('query')
+    recipes = get_formatted_recipe(Recipe.objects.filter(title__icontains=query))
+    return render(request, 'recipes/search.html', {
+            'title': f'{query} - Мама, я повар!',
+            'recipes': recipes,
+            'rez': morph.parse('результат')[0].make_agree_with_number(len(recipes)).word,
+            'len': len(recipes),
+            'query': query,
+            'is_auth': request.user.is_authenticated,
+            'user': request.user,
+            'cats': Category.objects.all(),
+        })
+
+
 def error_404(request, exception):
     return HttpResponseRedirect('/')

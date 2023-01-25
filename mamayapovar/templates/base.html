@@ -63,13 +63,17 @@
             {% endblock %}
         {% endif %}
         {% if request.get_full_path == '/' %}
-        <main class="index">
-            {% block content %}{% endblock %}
-        </main>
+            <main class="index">
+                {% block content %}{% endblock %}
+            </main>
+        {% elif 'search' in request.get_full_path %}
+            <main class="search">
+                {% block content1 %}{% endblock %}
+            </main>
         {% elif request.get_full_path == '/new-recipe/' or 'edit_recipe' in request.get_full_path  %}
-        {% block concon %}{% endblock %}
+            {% block concon %}{% endblock %}
         {% else %}
-        {% block post %}{% endblock %}
+            {% block post %}{% endblock %}
         {% endif %}
     </div>
 </div>
