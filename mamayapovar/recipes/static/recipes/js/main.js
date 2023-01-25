@@ -902,7 +902,7 @@ __webpack_require__.r(__webpack_exports__);
       const scrollY = window.pageYOffset;
       fieldsets.forEach(current => {
         const fieldsetHeight = current.offsetHeight + 40;
-        const fieldsetTop = current.offsetTop - _vars__WEBPACK_IMPORTED_MODULE_0__["default"].headerHeight - 205;
+        const fieldsetTop = current.offsetTop - 90 - 205; // высота шапки + дополнительный отступ
         const fieldsetId = current.getAttribute('id');
         const fieldsetIdLast = fieldsets[fieldsets.length - 1].getAttribute('id');
         const fieldsetItems = document.querySelectorAll('.sidebar-tree__list li');
