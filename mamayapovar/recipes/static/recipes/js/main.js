@@ -38,19 +38,19 @@ __webpack_require__.r(__webpack_exports__);
 // import './components/_like.js';
 // import './components/_subscribe.js';
 // import './components/_filter.js';
+
+
+
+
+
+
+
+
+
+
+
+
 // import './components/_search-query.js';
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1070,7 +1070,7 @@ __webpack_require__.r(__webpack_exports__);
 
     // проверка на наличие запроса
     window.addEventListener('keydown', e => {
-      if (e.key === "Enter" && searchQuery.value < 1) {
+      if (e.key === "Enter" && searchQuery == document.activeElement && searchQuery.value < 1) {
         e.preventDefault();
       }
     });
