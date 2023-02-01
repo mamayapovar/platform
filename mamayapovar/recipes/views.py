@@ -1155,9 +1155,11 @@ def edit_recipe(request, id):
 def momental_search(request):
     data = {}
     query = request.POST.get('query')
-    data['categories'] = list(Category.objects.filter(name__iregex=query).values())
-    data['users'] = list(User.objects.filter(username__iregex=query).values())
-    data['recipes'] = list(Recipe.objects.filter(title__iregex=query).values())
+    if query:
+        data['categories'] = list(Category.objects.filter(name__iregex=query).values())
+        data['users'] = list(User.objects.filter(username__iregex=query).values())
+        data['recipes'] = list(Recipe.objects.filter(title__iregex=query).values())
+        return JsonResponse(data=data, status=200)
     return JsonResponse(data=data, status=200)
 
 
