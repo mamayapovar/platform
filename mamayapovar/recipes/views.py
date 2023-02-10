@@ -1087,7 +1087,7 @@ def edit_recipe(request, id):
                 fout.write(chunk)
             fout.close()
 
-            recipe.photo = os.path.join(settings.MEDIA_ROOT, folder, second_folder, uploaded_filename)
+            recipe.photo = os.path.join(folder, second_folder, uploaded_filename)
 
             recipe.save()
 
@@ -1156,9 +1156,9 @@ def momental_search(request):
     data = {}
     query = request.POST.get('query')
     if query:
-        data['categories'] = list(Category.objects.filter(name__iregex=query).values())
-        data['users'] = list(User.objects.filter(username__iregex=query).values())
-        data['recipes'] = list(Recipe.objects.filter(title__iregex=query).values())
+        data['categories'] = list(Category.objects.filter(name__icontains=query).values())
+        data['users'] = list(User.objects.filter(username__icontains=query).values())
+        data['recipes'] = list(Recipe.objects.filter(title__icontains=query).values())
         return JsonResponse(data=data, status=200)
     return JsonResponse(data=data, status=200)
 
