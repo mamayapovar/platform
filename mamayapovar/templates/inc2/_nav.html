@@ -38,12 +38,12 @@
                             <span class="header-profile-menu__label">Мой профиль</span>
                             {% is_avatar request.user.id as has %}
                             {% if has %}
-                                <a href="{% url 'user_profile' request.user.id %}" class="header-profile-menu__link"  aria-label="Перейти в профиль">
+                                <a href="{% url 'user_profile' request.user.id %}" class="header-profile-menu__link"  aria-label="Перейти в профиль" tabindex="-1">
                                     <img src="{% get_avatar_url request.user.id %}" width="48" height="48" alt="Фото профиля" class="header-profile-menu__avatar">
                                     <span>{{ request.user.username }}</span>
                                 </a>
                             {% else %}
-                                <a href="{% url 'user_profile' request.user.id %}" class="header-profile-menu__link"  aria-label="Перейти в профиль">
+                                <a href="{% url 'user_profile' request.user.id %}" class="header-profile-menu__link"  aria-label="Перейти в профиль" tabindex="-1">
                                     <img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" width="48" height="48" alt="Фото профиля" class="header-profile-menu__avatar">
                                     <span>{{ request.user.username }}</span>
                                 </a>
@@ -51,7 +51,7 @@
 
                         </li>
                         <li class="header-profile-menu__item">
-                            <a href="{% url 'settings_profile' %}" class="header-profile-menu__link" data-menu-profile-link>
+                            <a href="{% url 'settings_profile' %}" class="header-profile-menu__link" data-menu-profile-link tabindex="-1">
                                 <svg class="icon" aria-hidden="true" focusable="false">
                                     <use href="{% static 'recipes/img/sprite.svg' %}#settings"/>
                                 </svg>
@@ -59,7 +59,7 @@
                             </a>
                         </li>
                         <li class="header-profile-menu__item">
-                            <a href="{% url 'logout' %}" class="header-profile-menu__link" data-menu-profile-link>
+                            <a href="{% url 'logout' %}" class="header-profile-menu__link" data-menu-profile-link tabindex="-1">
                                 <svg class="icon" aria-hidden="true" focusable="false">
                                     <use href="{% static 'recipes/img/sprite.svg' %}#log-out"/>
                                 </svg>
