@@ -131,21 +131,21 @@
 							<div class="content-footer__left">
 								{% get_likes_status recipe.id request.user.id as like_status %}
 								{% if not like_status %}
-									<div class="btn-reset  content-footer__btn  content-footer__btn--like"
+									<button class="btn-reset  content-footer__btn  content-footer__btn--like"
 											aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
 										<svg class="icon" aria-hidden="true" focusable="false">
 											<use href="{% static 'recipes/img/sprite.svg' %}#heart"/>
 										</svg>
 										<span data-count="like">{% get_likes_count recipe.id %}</span>
-									</div>
+									</button>
 								{% else %}
-									<div class="btn-reset  content-footer__btn  content-footer__btn--like active"
+									<button class="btn-reset  content-footer__btn  content-footer__btn--like active"
 											aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
 										<svg class="icon" aria-hidden="true" focusable="false">
 											<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled"/>
 										</svg>
 										<span data-count="like">{% get_likes_count recipe.id %}</span>
-									</div>
+									</button>
 								{% endif %}
 								<a href="recipe/{{ recipe.id }}#comments" class="btn-reset  content-footer__btn  content-footer__btn--comment disabled" aria-label="Перейти к комментариям" tabindex="-1">
 									<svg class="icon" aria-hidden="true" focusable="false">
@@ -156,21 +156,21 @@
 							</div>
 							{% get_bookmark_status recipe.id request.user.id as check %}
 							{% if not check %}
-								<div class="btn-reset  content-footer__btn content-footer__btn--bookmark"
+								<button class="btn-reset  content-footer__btn content-footer__btn--bookmark"
 										data-id="{{ recipe.id }}" data-url_root="{% url 'bookmark_post' recipe.id %}"
 										aria-label="Добавить в закладки" data-button-bookmark>
 									<svg class="icon" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#bookmark"/>
 									</svg>
-								</div>
+								</button>
 							{% else %}
-								<div class="btn-reset  content-footer__btn content-footer__btn--bookmark active"
+								<button class="btn-reset  content-footer__btn content-footer__btn--bookmark active"
 										data-id="{{ recipe.id }}" data-url_root="{% url 'bookmark_post' recipe.id %}"
 										aria-label="Добавить в закладки" data-button-bookmark>
 									<svg class="icon" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#bookmark-filled"/>
 									</svg>
-								</div>
+								</button>
 							{% endif %}
 						</footer>
 					</article>
@@ -298,21 +298,21 @@
 						<div class="content-footer__left">
 							{% get_likes_status recipe.id request.user.id as like_status %}
 							{% if not like_status %}
-								<div class="btn-reset  content-footer__btn  content-footer__btn--like"
+								<button class="btn-reset  content-footer__btn  content-footer__btn--like"
 									 aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
 									<svg class="icon" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#heart"/>
 									</svg>
 									<span data-count="like">{% get_likes_count recipe.id %}</span>
-								</div>
+								</button>
 							{% else %}
-								<div class="btn-reset  content-footer__btn  content-footer__btn--like active"
+								<button class="btn-reset  content-footer__btn  content-footer__btn--like active"
 									 aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
 									<svg class="icon" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled"/>
 									</svg>
 									<span data-count="like">{% get_likes_count recipe.id %}</span>
-								</div>
+								</button>
 							{% endif %}
 							<a href="recipe/{{ recipe.id }}#comments" class="btn-reset  content-footer__btn  content-footer__btn--comment disabled" aria-label="Перейти к комментариям" tabindex="-1">
 								<svg class="icon" aria-hidden="true" focusable="false">
@@ -323,21 +323,21 @@
 						</div>
 						{% get_bookmark_status recipe.id request.user.id as check %}
 						{% if not check %}
-							<div class="btn-reset  content-footer__btn content-footer__btn--bookmark"
+							<button class="btn-reset  content-footer__btn content-footer__btn--bookmark"
 									data-id="{{ recipe.id }}" data-url_root="{% url 'bookmark_post' recipe.id %}"
 									aria-label="Добавить в закладки" data-button-bookmark>
 								<svg class="icon" aria-hidden="true" focusable="false">
 									<use href="{% static 'recipes/img/sprite.svg' %}#bookmark"/>
 								</svg>
-							</div>
+							</button>
 						{% else %}
-							<div class="btn-reset  content-footer__btn content-footer__btn--bookmark active"
+							<button class="btn-reset  content-footer__btn content-footer__btn--bookmark active"
 									data-id="{{ recipe.id }}" data-url_root="{% url 'bookmark_post' recipe.id %}"
 									aria-label="Добавить в закладки" data-button-bookmark>
 								<svg class="icon" aria-hidden="true" focusable="false">
 									<use href="{% static 'recipes/img/sprite.svg' %}#bookmark-filled"/>
 								</svg>
-							</div>
+							</button>
 						{% endif %}
 					</footer>
 				</article>

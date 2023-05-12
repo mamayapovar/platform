@@ -63,7 +63,7 @@
   --color-fields-text-disabled: rgba(209, 209, 209, 1);
   --font-h1: 28px;
   --font-h2: 26px;
-  --font-h3: 21px;
+  --font-h3: 20px;
   --font-primary: 18px;
   --font-s: 16px;
   --font-xs: 14px;
@@ -2072,25 +2072,6 @@ a {
 
 .entry-ingredients__title {
   margin-bottom: 24px;
-}
-
-.entry-ingredients-cost {
-  display: grid;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  margin-top: 24px;
-  border-radius: 8px;
-  padding: 48px 0;
-  text-align: center;
-  background-color: var(--color-bg-global);
-  gap: 4px;
-}
-.entry-ingredients-cost__label {
-  font-weight: 400;
-  font-size: var(--font-s);
-  line-height: var(--lh-primary);
-  color: var(--color-text-primary);
 }
 
 .short-ingredients {

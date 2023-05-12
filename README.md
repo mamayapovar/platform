@@ -25,6 +25,10 @@
     > _Обратите внимание:_ на других версиях Python проект может не запуститься.
 
 2. Скачайте и разархивируйте архив с [последним релизом](https://github.com/mamayapovar/platform/releases) платформы.
+    Или используйте команду в консоли:
+    ```
+    git clone https://github.com/mamayapovar/platform.git
+    ```
 
 3. Откройте консоль в распакованной папке.
 
@@ -44,7 +48,7 @@
     ```
 
     ```sh
-    pip install -r requirements.txt
+    python.exe -m pip install -r requirements.txt
     ```
 
     ```sh
