@@ -5,8 +5,9 @@
 <main class="bookmark">
 	<h1 class="visually-hidden">Закладки</h1>
 	{% if not bookmarks %}
-	<div class="feed-placeholder  bookmark__feed-placeholder">
+	<div class="feed-placeholder  feed-placeholder--btn">
 		<p class="feed-placeholder__desc">Вы ничего не добавляли в закладки</p>
+		<a href="/" class="btn  btn--second  btn--small  feed-placeholder__btn">Вернуться на главную</a>
 	</div>
 	{% else %}
 		<div class="feed bookmark__feed">

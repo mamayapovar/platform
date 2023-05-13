@@ -3,92 +3,93 @@
 {% block modal %}
 
 <div class="graph-modal  popup">
-    <div class="graph-modal__container  popup__container  popup__container--register" role="dialog" aria-modal="true"
-         data-graph-target="register">
-        <button class="btn-reset js-modal-close graph-modal__close  btn  btn--other"
-                aria-label="Закрыть модальное окно">
-            <svg class="icon" aria-hidden="true" focusable="false">
-                <use href="{% static 'recipes/img/sprite.svg' %}#cross"/>
-            </svg>
-        </button>
-        <div class="graph-modal__content  popup__content">
-            <h2 class="section-h2  popup__title">Регистрация</h2>
-            <form id="register-form" action="{% url 'registration' %}" class="popup__form" method="post">
-                {% csrf_token %}
-                <div class="form-field  form-field--username-register">
-                    <input type="text" name="username" id="username-register" class="input  popup__input" placeholder="Имя и фамилия">
-                    <label class="form-field__error  hidden" for="username-register">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-                <div class="form-field  form-field--email-register">
-                    <input type="email" name="email" id="email-register" class="input  popup__input" placeholder="Электронная почта">
-                    <label class="form-field__error  hidden" for="email-register">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-                <div class="form-field  form-field--password-register">
-                    <input type="password" name="password" id="password-register" class="input  popup__input" placeholder="Пароль">
-                    <label class="form-field__error  hidden" for="password-register">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-                <button type="submit" class="btn  popup__btn">Зарегистрироваться</button>
-            </form>
-            <div class="popup__bottom">
-                <span class="popup__text">Есть аккаунт?</span>
-                <button class="btn-reset  section-link  popup__link" data-graph-path="auth" data-graph-speed="0">Войти
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="graph-modal__container  popup__container" role="dialog" aria-modal="true" data-graph-target="auth">
-        <button class="btn-reset js-modal-close graph-modal__close  btn  btn--other"
-                aria-label="Закрыть модальное окно">
-            <svg class="icon" aria-hidden="true" focusable="false">
-                <use href="{% static 'recipes/img/sprite.svg' %}#cross"/>
-            </svg>
-        </button>
-        <div class="graph-modal__content  popup__content  popup__container--auth">
-            <h2 class="section-h2  popup__title">Вход в аккаунт</h2>
-            <form id="auth-form" action="{% url 'login' %}" class="popup__form" method="post">
-                {% csrf_token %}
-                <div class="form-field  form-field--email">
-                    <input type="email" name="email" id="email-auth" class="input  popup__input" placeholder="Электронная почта">
-                    <label class="form-field__error  hidden" for="email-auth">
+	<div class="graph-modal__container  popup__container  popup__container--register" role="dialog" aria-modal="true"
+		data-graph-target="register">
+		<button class="btn-reset js-modal-close graph-modal__close  btn  btn--other" aria-label="Закрыть модальное окно">
+			<svg class="icon" aria-hidden="true" focusable="false">
+				<use href="{% static 'recipes/img/sprite.svg' %}#cross" />
+			</svg>
+		</button>
+		<div class="graph-modal__content  popup__content">
+			<h2 class="section-h2  popup__title">Регистрация</h2>
+			<form id="register-form" action="{% url 'registration' %}" class="popup__form" method="post">
+				{% csrf_token %}
+				<div class="form-field  form-field--username-register">
+					<input type="text" name="username" id="username-register" class="input  popup__input"
+						placeholder="Имя и фамилия">
+					<label class="form-field__error  hidden" for="username-register">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
 						</svg>
 						<span class="form-field__text"></span>
 					</label>
-                </div>
-                <div class="form-field  form-field--password">
-                    <input type="password" name="password" id="password-auth" class="input  popup__input" placeholder="Пароль">
-                    <label class="form-field__error  hidden" for="password-auth">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-                <button type="submit" class="btn  popup__btn">Войти</button>
-            </form>
-            <div class="popup__bottom">
-                <a href="#" class="section-link  popup__link">Забыли пароль?</a>
-                <button class="btn-reset  section-link  popup__link" data-graph-path="register" data-graph-speed="0">
-                    Регистрация
-                </button>
-            </div>
-        </div>
-    </div>
+				</div>
+				<div class="form-field  form-field--email-register">
+					<input type="email" name="email" id="email-register" class="input  popup__input"
+						placeholder="Электронная почта">
+					<label class="form-field__error  hidden" for="email-register">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+				<div class="form-field  form-field--password-register">
+					<input type="password" name="password" id="password-register" class="input  popup__input"
+						placeholder="Пароль">
+					<label class="form-field__error  hidden" for="password-register">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+				<button type="submit" class="btn  popup__btn">Зарегистрироваться</button>
+			</form>
+			<div class="popup__bottom">
+				<span class="popup__text">Есть аккаунт?</span>
+				<button class="btn-reset  section-link  popup__link" data-graph-path="auth" data-graph-speed="0">Войти
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="graph-modal__container  popup__container" role="dialog" aria-modal="true" data-graph-target="auth">
+		<button class="btn-reset js-modal-close graph-modal__close  btn  btn--other" aria-label="Закрыть модальное окно">
+			<svg class="icon" aria-hidden="true" focusable="false">
+				<use href="{% static 'recipes/img/sprite.svg' %}#cross" />
+			</svg>
+		</button>
+		<div class="graph-modal__content  popup__content  popup__container--auth">
+			<h2 class="section-h2  popup__title">Вход в аккаунт</h2>
+			<form id="auth-form" action="{% url 'login' %}" class="popup__form" method="post">
+				{% csrf_token %}
+				<div class="form-field  form-field--email">
+					<input type="email" name="email" id="email-auth" class="input  popup__input" placeholder="Электронная почта">
+					<label class="form-field__error  hidden" for="email-auth">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+				<div class="form-field  form-field--password">
+					<input type="password" name="password" id="password-auth" class="input  popup__input" placeholder="Пароль">
+					<label class="form-field__error  hidden" for="password-auth">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+				<button type="submit" class="btn  popup__btn">Войти</button>
+			</form>
+			<div class="popup__bottom">
+				<a href="#" class="section-link  popup__link">Забыли пароль?</a>
+				<button class="btn-reset  section-link  popup__link" data-graph-path="register" data-graph-speed="0">
+					Регистрация
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}

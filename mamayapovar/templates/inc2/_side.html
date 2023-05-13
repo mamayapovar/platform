@@ -1,38 +1,38 @@
 {% block sideside %}
 <aside class="sidebar  sidebar--second">
-    <div class="sidebar__inner">
-        <div class="sidebar-tree">
-            <ul class="list-reset sidebar-tree__list">
-                <li class="sidebar-tree__item  sidebar-tree__item--tab  active">
-                    <a href="#new-recipe-main" class="sidebar-tree__link">
-                        <span>Основное</span>
-                    </a>
-                </li>
-                <li class="sidebar-tree__item  sidebar-tree__item--tab">
-                    <a href="#new-recipe-ingredient" class="sidebar-tree__link">
-                        <span>Ингредиенты</span>
-                    </a>
-                </li>
-                <li class="sidebar-tree__item  sidebar-tree__item--tab">
-                    <a href="#new-recipe-photo" class="sidebar-tree__link">
-                        <span>Фото блюда</span>
-                    </a>
-                </li>
-                <li class="sidebar-tree__item  sidebar-tree__item--tab">
-                    <a href="#new-recipe-step" class="sidebar-tree__link">
-                        <span>Инструкция</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="sidebar-footer">
-            {% if 'new-recipe' in request.get_full_path %}
-                <button type="submit" class="btn" form="new-recipe-form">Опубликовать</button>
-            {% elif 'edit_recipe' in request.get_full_path %}
-                <button type="submit" class="btn" form="edit-recipe-form">Обновить</button>
-            {% endif %}
-            <a href="/" class="btn  btn--second">Выйти</a>
-        </div>
-    </div>
+	<div class="sidebar__inner">
+		<div class="sidebar-tree">
+			<ul class="list-reset sidebar-tree__list">
+				<li class="sidebar-tree__item  sidebar-tree__item--tab  active">
+					<a href="#new-recipe-main" class="sidebar-tree__link">
+						<span>Основное</span>
+					</a>
+				</li>
+				<li class="sidebar-tree__item  sidebar-tree__item--tab">
+					<a href="#new-recipe-ingredient" class="sidebar-tree__link">
+						<span>Ингредиенты</span>
+					</a>
+				</li>
+				<li class="sidebar-tree__item  sidebar-tree__item--tab">
+					<a href="#new-recipe-photo" class="sidebar-tree__link">
+						<span>Фото блюда</span>
+					</a>
+				</li>
+				<li class="sidebar-tree__item  sidebar-tree__item--tab">
+					<a href="#new-recipe-step" class="sidebar-tree__link">
+						<span>Инструкция</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="sidebar-footer">
+			{% if 'new-recipe' in request.get_full_path %}
+			<button type="submit" class="btn" form="new-recipe-form">Опубликовать</button>
+			{% elif 'edit_recipe' in request.get_full_path %}
+			<button type="submit" class="btn" form="edit-recipe-form">Обновить</button>
+			{% endif %}
+			<a href="/" class="btn  btn--second">Выйти</a>
+		</div>
+	</div>
 </aside>
 {% endblock %}

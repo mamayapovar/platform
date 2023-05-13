@@ -4,164 +4,161 @@
 
 {% if request.user.is_authenticated %}
 <header class="header  fix-block">
-    <div class="container">
-        <div class="header__inner">
-            <div class="header__left">
-                <a href="/" class="header__logo" title="Вернуться на главную страницу">
-                    <img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
-                </a>
-                <form id="search-form" action="{% url 'search' %}" method="POST" class="search-query  header__search" role="search">
-                    {% csrf_token %}
-                    <div class="search-query__field">
-                        <input type="text" name="query" id="search-query"
-                            class="input  search-query__input  header__input" placeholder="Поиск"
-                            autocomplete="off" autocapitalize="off" autocorrect="off"
-                            spellcheck="false" aria-label="Введите запрос" data-url_root="{% url 'momental_search' %}" data-search-query>
-                        <button type="button" class="btn-reset  search-query__btn" aria-label="Очистить поле поиска" tabindex="-1" data-search-clear>
-                            <svg class="icon" aria-hidden="true" focusable="false">
-                                <use href="{% static 'recipes/img/sprite.svg' %}#cross"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="search-query-menu" data-search-menu>
-                        <ul class="list-reset  search-query-menu__list" data-search-list>
-                            <li class="search-query-menu__item" data-search-all>
-                                <button type="submit" form="search-form" class="btn-reset  search-query-menu__link" tabindex="-1">
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                        <use href="{% static 'recipes/img/sprite.svg' %}#arrow-down-left"/>
-                                    </svg>
-                                    <span>Перейти к запросам</span>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
-            </div>
-            <div class="header__right">
-                <a href="{% url 'new_recipe' %}" class="btn  btn--left" aria-label="Создать новый рецепт">
-                    Создать
-                    <svg class="icon " aria-hidden="true" focusable="false">
-                        <use href="{% static 'recipes/img/sprite.svg' %}#plus"/>
-                    </svg>
-                </a>
-                <div class="header-profile">
-                    {% is_avatar request.user.id as has %}
-                    {% if has %}
-                    <a href="{% url 'user_profile' request.user.id %}" class="header-profile__avatar"
-                       aria-label="Перейти в профиль">
-                        <img src="{% get_avatar_url request.user.id %}" width="56" height="56" alt="Фото профиля">
-                    </a>
-                    {% else %}
-                    <a href="{% url 'user_profile' request.user.id %}" class="header-profile__avatar"
-                       aria-label="Перейти в профиль">
-                        <img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" width="56" height="56"
-                             alt="Фото профиля">
-                    </a>
-                    {% endif %}
-                    <button class="btn-reset  header-profile__toggle" aria-label="Открыть меню профиля"
-                            aria-expanded="false"
-                            data-menu-profile-toggle>
-                        <svg class="icon" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#chevron-down"/>
-                        </svg>
-                    </button>
-                    <ul class="list-reset  header-profile-menu" data-menu-profile>
-                        <li class="header-profile-menu__item">
-                            <span class="header-profile-menu__label">Мой профиль</span>
-                            <a href="{% url 'user_profile' request.user.id %}" class="header-profile-menu__link"
-                               data-menu-profile-link tabindex="-1">
-                                {% if has %}
-                                <img src="{% get_avatar_url request.user.id %}" class="header-profile-menu__avatar"
-                                     width="48" height="48"
-                                     alt="Фото профиля">
-                                {% else %}
-                                <img src="{% static 'recipes/img/placeholder-avatar.jpg' %}"
-                                     class="header-profile-menu__avatar" width="48" height="48 "
-                                     alt="Фото профиля">
-                                {% endif %}
-                                <span>{{ request.user.username }}</span>
-                            </a>
-                        </li>
-                        <li class="header-profile-menu__item">
-                            <a href="{% url 'settings_profile' %}" class="header-profile-menu__link"
-                               data-menu-profile-link tabindex="-1">
-                                <svg class="icon" aria-hidden="true" focusable="false">
-                                    <use href="{% static 'recipes/img/sprite.svg' %}#settings"/>
-                                </svg>
-                                <span>Настройки</span>
-                            </a>
-                        </li>
-                        <li class="header-profile-menu__item">
-                            <a href="{% url 'logout' %}" class="header-profile-menu__link" data-menu-profile-link tabindex="-1">
-                                <svg class="icon" aria-hidden="true" focusable="false">
-                                    <use href="{% static 'recipes/img/sprite.svg' %}#log-out"/>
-                                </svg>
-                                <span>Выход</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="header__inner">
+			<div class="header__left">
+				<a href="/" class="header__logo" title="Вернуться на главную страницу">
+					<img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
+				</a>
+				<form id="search-form" action="{% url 'search' %}" method="POST" class="search-query  header__search"
+					role="search">
+					{% csrf_token %}
+					<div class="search-query__field">
+						<input type="text" name="query" id="search-query" class="input  search-query__input  header__input"
+							placeholder="Поиск" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+							aria-label="Введите запрос" data-url_root="{% url 'momental_search' %}" data-search-query>
+						<button type="button" class="btn-reset  search-query__btn" aria-label="Очистить поле поиска" tabindex="-1"
+							data-search-clear>
+							<svg class="icon" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#cross" />
+							</svg>
+						</button>
+					</div>
+					<div class="search-query-menu" data-search-menu>
+						<ul class="list-reset  search-query-menu__list" data-search-list>
+							<li class="search-query-menu__item" data-search-all>
+								<button type="submit" form="search-form" class="btn-reset  search-query-menu__link" tabindex="-1">
+									<svg class="icon" aria-hidden="true" focusable="false">
+										<use href="{% static 'recipes/img/sprite.svg' %}#arrow-down-left" />
+									</svg>
+									<span>Перейти к запросам</span>
+								</button>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			<div class="header__right">
+				<a href="{% url 'new_recipe' %}" class="btn  btn--left" aria-label="Создать новый рецепт">
+					Создать
+					<svg class="icon " aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#plus" />
+					</svg>
+				</a>
+				<div class="header-profile">
+					{% is_avatar request.user.id as has %}
+					{% if has %}
+					<a href="{% url 'user_profile' request.user.id %}" class="header-profile__avatar"
+						aria-label="Перейти в профиль">
+						<img src="{% get_avatar_url request.user.id %}" width="56" height="56" alt="Фото профиля">
+					</a>
+					{% else %}
+					<a href="{% url 'user_profile' request.user.id %}" class="header-profile__avatar"
+						aria-label="Перейти в профиль">
+						<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" width="56" height="56" alt="Фото профиля">
+					</a>
+					{% endif %}
+					<button class="btn-reset  header-profile__toggle" aria-label="Открыть меню профиля" aria-expanded="false"
+						data-menu-profile-toggle>
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
+						</svg>
+					</button>
+					<ul class="list-reset  header-profile-menu" data-menu-profile>
+						<li class="header-profile-menu__item">
+							<span class="header-profile-menu__label">Мой профиль</span>
+							<a href="{% url 'user_profile' request.user.id %}" class="header-profile-menu__link"
+								data-menu-profile-link tabindex="-1">
+								{% if has %}
+								<img src="{% get_avatar_url request.user.id %}" class="header-profile-menu__avatar" width="48"
+									height="48" alt="Фото профиля">
+								{% else %}
+								<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="header-profile-menu__avatar"
+									width="48" height="48 " alt="Фото профиля">
+								{% endif %}
+								<span>{{ request.user.username }}</span>
+							</a>
+						</li>
+						<li class="header-profile-menu__item">
+							<a href="{% url 'settings_profile' %}" class="header-profile-menu__link" data-menu-profile-link
+								tabindex="-1">
+								<svg class="icon" aria-hidden="true" focusable="false">
+									<use href="{% static 'recipes/img/sprite.svg' %}#settings" />
+								</svg>
+								<span>Настройки</span>
+							</a>
+						</li>
+						<li class="header-profile-menu__item">
+							<a href="{% url 'logout' %}" class="header-profile-menu__link" data-menu-profile-link tabindex="-1">
+								<svg class="icon" aria-hidden="true" focusable="false">
+									<use href="{% static 'recipes/img/sprite.svg' %}#log-out" />
+								</svg>
+								<span>Выход</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 </header>
 
 {% else %}
 <header class="header fix-block">
-    <div class="container">
-        <div class="header__inner">
-            <div class="header__left">
-                <a href="/" class="header__logo" title="Вернуться на главную страницу">
-                    <img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
-                </a>
-                <form id="search-form" action="{% url 'search' %}" method="POST" class="search-query  header__search" role="search">
-                    {% csrf_token %}
-                    <div class="search-query__field">
-                        <input type="text" name="query" id="search-query"
-                            class="input  search-query__input  header__input" placeholder="Поиск"
-                            autocomplete="off" autocapitalize="off" autocorrect="off"
-                            spellcheck="false" aria-label="Введите запрос" data-url_root="{% url 'momental_search' %}" data-search-query>
-                        <button type="button" class="btn-reset  search-query__btn" aria-label="Очистить поле поиска" tabindex="-1" data-search-clear>
-                            <svg class="icon" aria-hidden="true" focusable="false">
-                                <use href="{% static 'recipes/img/sprite.svg' %}#cross"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="search-query-menu" data-search-menu>
-                        <ul class="list-reset  search-query-menu__list" data-search-list>
-                            <li class="search-query-menu__item" data-search-all>
-                                <button type="submit" form="search-form" class="btn-reset  search-query-menu__link" tabindex="-1">
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                        <use href="{% static 'recipes/img/sprite.svg' %}#arrow-down-left"/>
-                                    </svg>
-                                    <span>Перейти к запросам</span>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
-            </div>
-            <div class="header__right">
-                <button class="btn  btn--left" data-graph-path="register" data-graph-speed="100"
-                        aria-label="Создать новый рецепт">
-                    Создать
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                        <use href="{% static 'recipes/img/sprite.svg' %}#plus"/>
-                    </svg>
-                </button>
-                <button class="btn  btn--third  btn--left" data-graph-path="register" data-graph-speed="100"
-                        aria-label="Войти или зарегистрироваться">
-                    Войти
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                        <use href="{% static 'recipes/img/sprite.svg' %}#user"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="header__inner">
+			<div class="header__left">
+				<a href="/" class="header__logo" title="Вернуться на главную страницу">
+					<img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
+				</a>
+				<form id="search-form" action="{% url 'search' %}" method="POST" class="search-query  header__search"
+					role="search">
+					{% csrf_token %}
+					<div class="search-query__field">
+						<input type="text" name="query" id="search-query" class="input  search-query__input  header__input"
+							placeholder="Поиск" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+							aria-label="Введите запрос" data-url_root="{% url 'momental_search' %}" data-search-query>
+						<button type="button" class="btn-reset  search-query__btn" aria-label="Очистить поле поиска" tabindex="-1"
+							data-search-clear>
+							<svg class="icon" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#cross" />
+							</svg>
+						</button>
+					</div>
+					<div class="search-query-menu" data-search-menu>
+						<ul class="list-reset  search-query-menu__list" data-search-list>
+							<li class="search-query-menu__item" data-search-all>
+								<button type="submit" form="search-form" class="btn-reset  search-query-menu__link" tabindex="-1">
+									<svg class="icon" aria-hidden="true" focusable="false">
+										<use href="{% static 'recipes/img/sprite.svg' %}#arrow-down-left" />
+									</svg>
+									<span>Перейти к запросам</span>
+								</button>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			<div class="header__right">
+				<button class="btn  btn--left" data-graph-path="register" data-graph-speed="100"
+					aria-label="Создать новый рецепт">
+					Создать
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#plus" />
+					</svg>
+				</button>
+				<button class="btn  btn--third  btn--left" data-graph-path="register" data-graph-speed="100"
+					aria-label="Войти или зарегистрироваться">
+					Войти
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#user" />
+					</svg>
+				</button>
+			</div>
+		</div>
+	</div>
 </header>
 
 {% endif %}
 
 {% endblock %}
-

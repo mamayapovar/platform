@@ -4,489 +4,514 @@
 {% block post %}
 <main class="user">
 	{% if request.user.id == user.id %}
-		<div class="info  info--avatar  user__info">
-				<div class="info__inner">
-					{% if not profile_data.avatar %}
-						<div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
-							<label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');" class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
-								<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
-								<div class="info-avatar__placeholder">
-									<svg class="icon" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#image"/>
-									</svg>
-								</div>
-							</label>
-						</div>
-					{% else %}
-						<div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
-							<label style="background-image: url('{{ profile_data.avatar.url }}');" class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
-								<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
-								<div class="info-avatar__placeholder">
-									<svg class="icon" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#image"/>
-									</svg>
-								</div>
-							</label>
-						</div>
-					{% endif %}
-					<h1 class="section-h1  info__name">{{ user.username }}</h1>
-					<p class="info__desc">{{ profile_data.description }}</p>
-					<a href="{% url 'settings_profile' %}" class="section-link  info__link">Изменить описание</a>
+	<div class="info  info--avatar  user__info">
+		<div class="info__inner">
+			{% if not profile_data.avatar %}
+			<div class="info-avatar  info-avatar--change" data-button-photo
+				data-url_root="{% url 'change_profile_picture' %}">
+				<label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');"
+					class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
+					<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
+					<div class="info-avatar__placeholder">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#image" />
+						</svg>
+					</div>
+				</label>
+			</div>
+			{% else %}
+			<div class="info-avatar  info-avatar--change" data-button-photo
+				data-url_root="{% url 'change_profile_picture' %}">
+				<label style="background-image: url('{{ profile_data.avatar.url }}');"
+					class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
+					<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
+					<div class="info-avatar__placeholder">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#image" />
+						</svg>
+					</div>
+				</label>
+			</div>
+			{% endif %}
+			<h1 class="section-h1  info__name">{{ user.username }}</h1>
+			<p class="info__desc">{{ profile_data.description }}</p>
+			<a href="{% url 'settings_profile' %}" class="section-link  info__link">Изменить описание</a>
+		</div>
+		<div class="info-stats">
+			<dl class="info-stats__item">
+				<dt class="info-stats__name">Подписчиков</dt>
+				<dd class="info-stats__amount">{% get_count_of_subscribers user.id %}</dd>
+			</dl>
+			<dl class="info-stats__item">
+				<dt class="info-stats__name">Постов</dt>
+				<dd class="info-stats__amount">{{ posts }}</dd>
+			</dl>
+			<dl class="info-stats__item">
+				<dt class="info-stats__name">Лайков</dt>
+				<dd class="info-stats__amount">{% get_likes_count_of_user user.id %}</dd>
+			</dl>
+		</div>
+		<a href="{% url 'settings_profile' %}" class="btn  btn--second  btn--icon  btn--small info__btn"
+			aria-label="Перейти в настройки">
+			<svg class="icon" aria-hidden="true" focusable="false">
+				<use href="{% static 'recipes/img/sprite.svg' %}#settings" />
+			</svg>
+		</a>
+	</div>
+	<div class="feed  user__feed">
+		<!-- Если рецептов нет и не авторизован -->
+		<!-- <div class="feed-placeholder">
+			<p class="feed-placeholder__desc">Здесь ещё нет рецептов</p>
+		</div> -->
+
+		<!-- Если рецептов нет и это аккаунт пользователя -->
+		<!-- <div class="feed-placeholder  feed-placeholder--btn">
+			<p class="feed-placeholder__desc">Опубликуйте первый рецепт, чтобы привлечь читаталей</p>
+			<a href="{% url 'new_recipe' %}" class="btn  btn--small  feed-placeholder__btn">Создать рецепт</a>
+		</div> -->
+
+		<!-- Если рецепты есть -->
+		{% for recipe in recipes %}
+		<article class="feed-item">
+			<header class="content-header  feed-item__header">
+				<div class="content-info">
+					<a href="{% url 'category' recipe.cat.id %}" class="content-info__category">
+						<img src="{% get_static_prefix %}recipes/img/category/{{ recipe.cat.id }}.svg" width="24" height="24" alt=""
+							loading="lazy">
+						<span>{{ recipe.cat }}</span>
+					</a>
+					<time class="content-info__date" datetime="{{ recipe.get_formatted_time_full }}">{{ recipe.get_formatted_time }}</time>
+					<div class="content-more" data-menu-more>
+						<button class="btn-reset  content-more__toggle" aria-label="Открыть меню действий" aria-expanded="false"
+							data-menu-more-toggle>
+							<svg class="icon" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal" />
+							</svg>
+						</button>
+						<ul class="list-reset  content-more-menu" data-menu-more-list>
+							<li class="content-more-menu__item" data-menu-more-item>
+								<button class="btn-reset  content-more-menu__button" data-post-button-delete
+									data-url_root="{% url 'delete_recipe' recipe.id %}" tabindex="-1">Удалить</button>
+							</li>
+							<li class="content-more-menu__item" data-menu-more-item>
+								<a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}"
+									tabindex="-1">Редактировать</a>
+							</li>
+						</ul>
+					</div>
 				</div>
-				<div class="info-stats">
-					<dl class="info-stats__item">
-						<dt class="info-stats__name">Подписчиков</dt>
-						<dd class="info-stats__amount">{% get_count_of_subscribers user.id %}</dd>
-					</dl>
-					<dl class="info-stats__item">
-						<dt class="info-stats__name">Постов</dt>
-						<dd class="info-stats__amount">{{ posts }}</dd>
-					</dl>
-					<dl class="info-stats__item">
-						<dt class="info-stats__name">Лайков</dt>
-						<dd class="info-stats__amount">{% get_likes_count_of_user user.id %}</dd>
-					</dl>
-				</div>
-				<a href="{% url 'settings_profile' %}" class="btn  btn--second  btn--icon  btn--small info__btn" aria-label="Перейти в настройки">
-					<svg class="icon" aria-hidden="true" focusable="false">
-						<use href="{% static 'recipes/img/sprite.svg' %}#settings"/>
-					</svg>
+				<a href="{% url 'recipe' recipe.id %}" class="content-header__content">
+					<h2 class="section-h1  content-header__title">{{ recipe.title }}</h2>
+					<p class="content-header__desc">{{ recipe.description }}</p>
 				</a>
-		</div>
-		<div class="feed  user__feed">
-				{% for recipe in recipes %}
-					<article class="feed-item">
-						<header class="content-header  feed-item__header">
-							<div class="content-info">
-								<a href="{% url 'category' recipe.cat.id %}" class="content-info__category">
-									<img src="{% get_static_prefix %}recipes/img/category/{{ recipe.cat.id }}.svg" width="24" height="24" alt="" loading="lazy">
-									<span>{{ recipe.cat }}</span>
-								</a>
-								<time class="content-info__date" datetime="{{ recipe.get_formatted_time_full }}">{{ recipe.get_formatted_time }}</time>
-								<div class="content-more" data-menu-more>
-									<button class="btn-reset  content-more__toggle" aria-label="Открыть меню действий" aria-expanded="false" data-menu-more-toggle>
-										<svg class="icon" aria-hidden="true" focusable="false">
-												<use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal"/>
-										</svg>
-									</button>
-									<ul class="list-reset  content-more-menu" data-menu-more-list>
-											<li class="content-more-menu__item" data-menu-more-item>
-															<button class="btn-reset  content-more-menu__button" data-post-button-delete data-url_root="{% url 'delete_recipe' recipe.id %}" tabindex="-1">Удалить</button>
-											</li>
-											<li class="content-more-menu__item" data-menu-more-item>
-													<a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}" tabindex="-1">Редактировать</a>
-											</li>
-									</ul>
-								</div>
-							</div>
-							<a href="{% url 'recipe' recipe.id %}" class="content-header__content">
-								<h2 class="section-h1  content-header__title">{{ recipe.title }}</h2>
-								<p class="content-header__desc">{{ recipe.description }}</p>
-							</a>
-							<div class="content-short">
-								<div class="content-short-dropdown" data-short-ingredients>
-									<button class="btn-reset  content-short-dropdown__toggle" aria-label="Открыть список ингредиентов" aria-expanded="false" data-short-ingredients-toggle>
-											{{ recipe.get_beautiful_ingredients }}
-											<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-													<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down"/>
-											</svg>
-									</button>
-									<div class="content-short-dropdown__menu  short-ingredients"  data-short-ingredients-list>
-											{% for text, nums in recipe.ingredients %}
-													<dl class="short-ingredients__item" data-short-ingredients-item>
-															<dt class="short-ingredients__name">
-																	<span>{{ text }}</span>
-															</dt>
-															<dd class="short-ingredients__details">{{ nums }}</dd>
-													</dl>
-											{% endfor %}
-									</div>
-								</div>
-								<ul class="list-reset content-short__list">
-									<li class="content-short__item">
-										<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-											<use href="{% static 'recipes/img/sprite.svg' %}#users"/>
-										</svg>
-										{{ recipe.persons }}
-									</li>
-									<li class="content-short__item">
-										<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-											<use href="{% static 'recipes/img/sprite.svg' %}#stopwatch"/>
-										</svg>
-										{{ recipe.cooking_time }}
-									</li>
-								</ul>
-							</div>
-						</header>
-						<a href="{% url 'recipe' recipe.id %}" class="feed-item__img">
-							{% if recipe.photo %}
-								<img src="{{ recipe.photo.url }}" width="676" height="350"
-										alt="{{ recipe.title }}" loading="lazy">
-							{% else %}
-								<img src="{% static 'recipes/img/placeholder-image.jpg' %}" width="676" height="350"
-										alt="{{ recipe.title }}" loading="lazy">
-							{% endif %}
-						</a>
-						<footer class="content-footer  feed-item__footer">
-							<div class="content-footer__left">
-								{% get_likes_status recipe.id request.user.id as like_status %}
-								{% if not like_status %}
-									<button class="btn-reset  content-footer__btn  content-footer__btn--like"
-											aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
-										<svg class="icon" aria-hidden="true" focusable="false">
-											<use href="{% static 'recipes/img/sprite.svg' %}#heart"/>
-										</svg>
-										<span data-count="like">{% get_likes_count recipe.id %}</span>
-									</button>
-								{% else %}
-									<button class="btn-reset  content-footer__btn  content-footer__btn--like active"
-											aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
-										<svg class="icon" aria-hidden="true" focusable="false">
-											<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled"/>
-										</svg>
-										<span data-count="like">{% get_likes_count recipe.id %}</span>
-									</button>
-								{% endif %}
-								<a href="recipe/{{ recipe.id }}#comments" class="btn-reset  content-footer__btn  content-footer__btn--comment disabled" aria-label="Перейти к комментариям" tabindex="-1">
-									<svg class="icon" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#circle"/>
-									</svg>
-									<span>11</span>
-								</a>
-							</div>
-							{% get_bookmark_status recipe.id request.user.id as check %}
-							{% if not check %}
-								<button class="btn-reset  content-footer__btn content-footer__btn--bookmark"
-										data-id="{{ recipe.id }}" data-url_root="{% url 'bookmark_post' recipe.id %}"
-										aria-label="Добавить в закладки" data-button-bookmark>
-									<svg class="icon" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#bookmark"/>
-									</svg>
-								</button>
-							{% else %}
-								<button class="btn-reset  content-footer__btn content-footer__btn--bookmark active"
-										data-id="{{ recipe.id }}" data-url_root="{% url 'bookmark_post' recipe.id %}"
-										aria-label="Добавить в закладки" data-button-bookmark>
-									<svg class="icon" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#bookmark-filled"/>
-									</svg>
-								</button>
-							{% endif %}
-						</footer>
-					</article>
-				{% endfor %}
-		</div>
+				<div class="content-short">
+					<div class="content-short-dropdown" data-short-ingredients>
+						<button class="btn-reset  content-short-dropdown__toggle" aria-label="Открыть список ингредиентов"
+							aria-expanded="false" data-short-ingredients-toggle>
+							{{ recipe.get_beautiful_ingredients }}
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
+							</svg>
+						</button>
+						<div class="content-short-dropdown__menu  short-ingredients" data-short-ingredients-list>
+							{% for text, nums in recipe.ingredients %}
+							<dl class="short-ingredients__item" data-short-ingredients-item>
+								<dt class="short-ingredients__name">
+									<span>{{ text }}</span>
+								</dt>
+								<dd class="short-ingredients__details">{{ nums }}</dd>
+							</dl>
+							{% endfor %}
+						</div>
+					</div>
+					<ul class="list-reset content-short__list">
+						<li class="content-short__item">
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#users" />
+							</svg>
+							{{ recipe.persons }}
+						</li>
+						<li class="content-short__item">
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#stopwatch" />
+							</svg>
+							{{ recipe.cooking_time }}
+						</li>
+					</ul>
+				</div>
+			</header>
+			<a href="{% url 'recipe' recipe.id %}" class="feed-item__img">
+				{% if recipe.photo %}
+				<img src="{{ recipe.photo.url }}" width="676" height="350" alt="{{ recipe.title }}" loading="lazy">
+				{% else %}
+				<img src="{% static 'recipes/img/placeholder-image.jpg' %}" width="676" height="350" alt="{{ recipe.title }}"
+					loading="lazy">
+				{% endif %}
+			</a>
+			<footer class="content-footer  feed-item__footer">
+				<div class="content-footer__left">
+					{% get_likes_status recipe.id request.user.id as like_status %}
+					{% if not like_status %}
+					<button class="btn-reset  content-footer__btn  content-footer__btn--like"
+						aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#heart" />
+						</svg>
+						<span data-count="like">{% get_likes_count recipe.id %}</span>
+					</button>
+					{% else %}
+					<button class="btn-reset  content-footer__btn  content-footer__btn--like active"
+						aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled" />
+						</svg>
+						<span data-count="like">{% get_likes_count recipe.id %}</span>
+					</button>
+					{% endif %}
+					<a href="recipe/{{ recipe.id }}#comments"
+						class="btn-reset  content-footer__btn  content-footer__btn--comment disabled"
+						aria-label="Перейти к комментариям" tabindex="-1">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle" />
+						</svg>
+						<span>11</span>
+					</a>
+				</div>
+				{% get_bookmark_status recipe.id request.user.id as check %}
+				{% if not check %}
+				<button class="btn-reset  content-footer__btn content-footer__btn--bookmark" data-id="{{ recipe.id }}"
+					data-url_root="{% url 'bookmark_post' recipe.id %}" aria-label="Добавить в закладки" data-button-bookmark>
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#bookmark" />
+					</svg>
+				</button>
+				{% else %}
+				<button class="btn-reset  content-footer__btn content-footer__btn--bookmark active" data-id="{{ recipe.id }}"
+					data-url_root="{% url 'bookmark_post' recipe.id %}" aria-label="Добавить в закладки" data-button-bookmark>
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#bookmark-filled" />
+					</svg>
+				</button>
+				{% endif %}
+			</footer>
+		</article>
+		{% endfor %}
+	</div>
 
 	{% elif is_auth and request.user.id != user.id %}
-		<div class="info  info--avatar  user__info">
-			<div class="info__inner">
-				{% if profile_data.avatar  %}
-					<img src="{{ profile_data.avatar.url }}" class="info-avatar" width="120" height="120"
-						alt="Фото профиля">
-				{% else %}
-					<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="info-avatar" width="120" height="120"
-						alt="Фото профиля">
-				{% endif %}
-				<h1 class="section-h1  info__name">{{ user.username }}</h1>
-				<p class="info__desc">{{ profile_data.description }}</p>
-			</div>
-			<div class="info-stats">
-				<dl class="info-stats__item">
-					<dt class="info-stats__name">Подписчиков</dt>
-					<dd class="info-stats__amount">{% get_count_of_subscribers user.id %}</dd>
-				</dl>
-				<dl class="info-stats__item">
-					<dt class="info-stats__name">Постов</dt>
-					<dd class="info-stats__amount">{{ posts }}</dd>
-				</dl>
-				<dl class="info-stats__item">
-					<dt class="info-stats__name">Лайков</dt>
-					<dd class="info-stats__amount">{% get_likes_count_of_user user.id %}</dd>
-				</dl>
-			</div>
-			{% get_sub_status request.user.id user.id as sub %}
-			{% if sub %}
-				<button class="btn  btn--second  btn--small  btn--left btn--subscribe  info__btn active"
-					aria-label="Отменить подписку" data-button-subscribe data-url_root="{% url 'subscribe' user.id %}">
-					<span data-text-subscribe>Вы подписаны</span>
-					<svg class="icon" aria-hidden="true" focusable="false">
-						<use href="{% static 'recipes/img/sprite.svg' %}#user-plus" />
-					</svg>
-				</button>
+	<div class="info  info--avatar  user__info">
+		<div class="info__inner">
+			{% if profile_data.avatar %}
+			<img src="{{ profile_data.avatar.url }}" class="info-avatar" width="120" height="120" alt="Фото профиля">
 			{% else %}
-				<button class="btn  btn--second  btn--small  btn--left btn--subscribe  info__btn"
-					aria-label="Оформить подписку" data-button-subscribe data-url_root="{% url 'subscribe' user.id %}">
-					<span data-text-subscribe>Подписаться</span>
+			<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="info-avatar" width="120" height="120"
+				alt="Фото профиля">
+			{% endif %}
+			<h1 class="section-h1  info__name">{{ user.username }}</h1>
+			<p class="info__desc">{{ profile_data.description }}</p>
+		</div>
+		<div class="info-stats">
+			<dl class="info-stats__item">
+				<dt class="info-stats__name">Подписчиков</dt>
+				<dd class="info-stats__amount">{% get_count_of_subscribers user.id %}</dd>
+			</dl>
+			<dl class="info-stats__item">
+				<dt class="info-stats__name">Постов</dt>
+				<dd class="info-stats__amount">{{ posts }}</dd>
+			</dl>
+			<dl class="info-stats__item">
+				<dt class="info-stats__name">Лайков</dt>
+				<dd class="info-stats__amount">{% get_likes_count_of_user user.id %}</dd>
+			</dl>
+		</div>
+		{% get_sub_status request.user.id user.id as sub %}
+		{% if sub %}
+		<button class="btn  btn--second  btn--small  btn--left btn--subscribe  info__btn active"
+			aria-label="Отменить подписку" data-button-subscribe data-url_root="{% url 'subscribe' user.id %}">
+			<span data-text-subscribe>Вы подписаны</span>
+			<svg class="icon" aria-hidden="true" focusable="false">
+				<use href="{% static 'recipes/img/sprite.svg' %}#user-plus" />
+			</svg>
+		</button>
+		{% else %}
+		<button class="btn  btn--second  btn--small  btn--left btn--subscribe  info__btn" aria-label="Оформить подписку"
+			data-button-subscribe data-url_root="{% url 'subscribe' user.id %}">
+			<span data-text-subscribe>Подписаться</span>
+			<svg class="icon" aria-hidden="true" focusable="false">
+				<use href="{% static 'recipes/img/sprite.svg' %}#user-plus" />
+			</svg>
+		</button>
+		{% endif %}
+	</div>
+	<div class="feed  user__feed">
+		{% for recipe in recipes %}
+		<article class="feed-item">
+			<header class="content-header  feed-item__header">
+				<div class="content-info">
+					<a href="{% url 'category' recipe.cat.id %}" class="content-info__category">
+						<img src="{% get_static_prefix %}recipes/img/category/{{ recipe.cat.id }}.svg" width="24" height="24" alt=""
+							loading="lazy">
+						<span>{{ recipe.cat }}</span>
+					</a>
+					<time class="content-info__date" datetime="{{ recipe.get_formatted_time_full }}">{{ recipe.get_formatted_time }}</time>
+					<div class="content-more">
+						<button class="btn-reset  content-more__toggle  disabled" tabindex="-1" aria-label="Открыть меню действий"
+							aria-expanded="false" data-menu-more-toggle>
+							<svg class="icon" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal" />
+							</svg>
+						</button>
+						<ul class="list-reset  content-more-menu" data-menu-more-list>
+							<li class="content-more-menu__item" data-menu-more-item>
+								<button class="btn-reset  content-more-menu__button" tabindex="-1">Пожаловаться</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<a href="{% url 'recipe' recipe.id %}" class="content-header__content">
+					<h2 class="section-h1  content-header__title">{{ recipe.title }}</h2>
+					<p class="content-header__desc">{{ recipe.description }}</p>
+				</a>
+				<div class="content-short">
+					<div class="content-short-dropdown" data-short-ingredients>
+						<button class="btn-reset  content-short-dropdown__toggle" aria-label="Открыть список ингредиентов"
+							aria-expanded="false" data-short-ingredients-toggle>
+							{{ recipe.get_beautiful_ingredients }}
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
+							</svg>
+						</button>
+						<div class="content-short-dropdown__menu  short-ingredients" data-short-ingredients-list>
+							{% for text, nums in recipe.ingredients %}
+							<dl class="short-ingredients__item" data-short-ingredients-item>
+								<dt class="short-ingredients__name">
+									<span>{{ text }}</span>
+								</dt>
+								<dd class="short-ingredients__details">{{ nums }}</dd>
+							</dl>
+							{% endfor %}
+						</div>
+					</div>
+					<ul class="list-reset content-short__list">
+						<li class="content-short__item">
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#users" />
+							</svg>
+							{{ recipe.persons }}
+						</li>
+						<li class="content-short__item">
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#stopwatch" />
+							</svg>
+							{{ recipe.cooking_time }}
+						</li>
+					</ul>
+				</div>
+			</header>
+			<a href="{% url 'recipe' recipe.id %}" class="feed-item__img">
+				{% if recipe.photo %}
+				<img src="{{ recipe.photo.url }}" width="676" height="350" alt="{{ recipe.title }}" loading="lazy">
+				{% else %}
+				<img src="{% static 'recipes/img/placeholder-image.jpg' %}" width="676" height="350" alt="{{ recipe.title }}"
+					loading="lazy">
+				{% endif %}
+			</a>
+			<footer class="content-footer  feed-item__footer">
+				<div class="content-footer__left">
+					{% get_likes_status recipe.id request.user.id as like_status %}
+					{% if not like_status %}
+					<button class="btn-reset  content-footer__btn  content-footer__btn--like"
+						aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#heart" />
+						</svg>
+						<span data-count="like">{% get_likes_count recipe.id %}</span>
+					</button>
+					{% else %}
+					<button class="btn-reset  content-footer__btn  content-footer__btn--like active"
+						aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled" />
+						</svg>
+						<span data-count="like">{% get_likes_count recipe.id %}</span>
+					</button>
+					{% endif %}
+					<a href="recipe/{{ recipe.id }}#comments"
+						class="btn-reset  content-footer__btn  content-footer__btn--comment disabled"
+						aria-label="Перейти к комментариям" tabindex="-1">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle" />
+						</svg>
+						<span>11</span>
+					</a>
+				</div>
+				{% get_bookmark_status recipe.id request.user.id as check %}
+				{% if not check %}
+				<button class="btn-reset  content-footer__btn content-footer__btn--bookmark" data-id="{{ recipe.id }}"
+					data-url_root="{% url 'bookmark_post' recipe.id %}" aria-label="Добавить в закладки" data-button-bookmark>
 					<svg class="icon" aria-hidden="true" focusable="false">
-						<use href="{% static 'recipes/img/sprite.svg' %}#user-plus" />
+						<use href="{% static 'recipes/img/sprite.svg' %}#bookmark" />
 					</svg>
 				</button>
-			{% endif %}
-		</div>
-		<div class="feed  user__feed">
-			{% for recipe in recipes %}
-				<article class="feed-item">
-					<header class="content-header  feed-item__header">
-						<div class="content-info">
-							<a href="{% url 'category' recipe.cat.id %}" class="content-info__category">
-								<img src="{% get_static_prefix %}recipes/img/category/{{ recipe.cat.id }}.svg" width="24" height="24" alt="" loading="lazy">
-								<span>{{ recipe.cat }}</span>
-							</a>
-							<time class="content-info__date" datetime="{{ recipe.get_formatted_time_full }}">{{ recipe.get_formatted_time }}</time>
-							<div class="content-more">
-								<button class="btn-reset  content-more__toggle  disabled" tabindex="-1" aria-label="Открыть меню действий" aria-expanded="false" data-menu-more-toggle>
-									<svg class="icon" aria-hidden="true" focusable="false">
-											<use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal"/>
-									</svg>
-								</button>
-								<ul class="list-reset  content-more-menu" data-menu-more-list>
-									<li class="content-more-menu__item" data-menu-more-item>
-													<button class="btn-reset  content-more-menu__button" tabindex="-1">Пожаловаться</button>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<a href="{% url 'recipe' recipe.id %}" class="content-header__content">
-							<h2 class="section-h1  content-header__title">{{ recipe.title }}</h2>
-							<p class="content-header__desc">{{ recipe.description }}</p>
-						</a>
-						<div class="content-short">
-							<div class="content-short-dropdown" data-short-ingredients>
-								<button class="btn-reset  content-short-dropdown__toggle" aria-label="Открыть список ингредиентов" aria-expanded="false" data-short-ingredients-toggle>
-										{{ recipe.get_beautiful_ingredients }}
-										<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-												<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down"/>
-										</svg>
-								</button>
-								<div class="content-short-dropdown__menu  short-ingredients"  data-short-ingredients-list>
-										{% for text, nums in recipe.ingredients %}
-												<dl class="short-ingredients__item" data-short-ingredients-item>
-														<dt class="short-ingredients__name">
-																<span>{{ text }}</span>
-														</dt>
-														<dd class="short-ingredients__details">{{ nums }}</dd>
-												</dl>
-										{% endfor %}
-								</div>
-							</div>
-							<ul class="list-reset content-short__list">
-								<li class="content-short__item">
-									<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#users"/>
-									</svg>
-									{{ recipe.persons }}
-								</li>
-								<li class="content-short__item">
-									<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#stopwatch"/>
-									</svg>
-									{{ recipe.cooking_time }}
-								</li>
-							</ul>
-						</div>
-					</header>
-					<a href="{% url 'recipe' recipe.id %}" class="feed-item__img">
-						{% if recipe.photo %}
-							<img src="{{ recipe.photo.url }}" width="676" height="350"
-								 alt="{{ recipe.title }}" loading="lazy">
-						{% else %}
-							<img src="{% static 'recipes/img/placeholder-image.jpg' %}" width="676" height="350"
-								 alt="{{ recipe.title }}" loading="lazy">
-						{% endif %}
-					</a>
-					<footer class="content-footer  feed-item__footer">
-						<div class="content-footer__left">
-							{% get_likes_status recipe.id request.user.id as like_status %}
-							{% if not like_status %}
-								<button class="btn-reset  content-footer__btn  content-footer__btn--like"
-									 aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
-									<svg class="icon" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#heart"/>
-									</svg>
-									<span data-count="like">{% get_likes_count recipe.id %}</span>
-								</button>
-							{% else %}
-								<button class="btn-reset  content-footer__btn  content-footer__btn--like active"
-									 aria-label="Поставить отметку 'Нравится'" data-button-like data-url_root="{% url 'like_post' recipe.id %}">
-									<svg class="icon" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled"/>
-									</svg>
-									<span data-count="like">{% get_likes_count recipe.id %}</span>
-								</button>
-							{% endif %}
-							<a href="recipe/{{ recipe.id }}#comments" class="btn-reset  content-footer__btn  content-footer__btn--comment disabled" aria-label="Перейти к комментариям" tabindex="-1">
-								<svg class="icon" aria-hidden="true" focusable="false">
-									<use href="{% static 'recipes/img/sprite.svg' %}#circle"/>
-								</svg>
-								<span>11</span>
-							</a>
-						</div>
-						{% get_bookmark_status recipe.id request.user.id as check %}
-						{% if not check %}
-							<button class="btn-reset  content-footer__btn content-footer__btn--bookmark"
-									data-id="{{ recipe.id }}" data-url_root="{% url 'bookmark_post' recipe.id %}"
-									aria-label="Добавить в закладки" data-button-bookmark>
-								<svg class="icon" aria-hidden="true" focusable="false">
-									<use href="{% static 'recipes/img/sprite.svg' %}#bookmark"/>
-								</svg>
-							</button>
-						{% else %}
-							<button class="btn-reset  content-footer__btn content-footer__btn--bookmark active"
-									data-id="{{ recipe.id }}" data-url_root="{% url 'bookmark_post' recipe.id %}"
-									aria-label="Добавить в закладки" data-button-bookmark>
-								<svg class="icon" aria-hidden="true" focusable="false">
-									<use href="{% static 'recipes/img/sprite.svg' %}#bookmark-filled"/>
-								</svg>
-							</button>
-						{% endif %}
-					</footer>
-				</article>
-			{% endfor %}
-		</div>
+				{% else %}
+				<button class="btn-reset  content-footer__btn content-footer__btn--bookmark active" data-id="{{ recipe.id }}"
+					data-url_root="{% url 'bookmark_post' recipe.id %}" aria-label="Добавить в закладки" data-button-bookmark>
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#bookmark-filled" />
+					</svg>
+				</button>
+				{% endif %}
+			</footer>
+		</article>
+		{% endfor %}
+	</div>
 
 	{% elif not is_auth %}
-		<div class="info  info--avatar  user__info">
-				<div class="info__inner">
-					{% if profile_data.avatar %}
-						<img src="{{ profile_data.avatar.url }}" class="info-avatar" width="120" height="120" alt="Фото профиля">
+	<div class="info  info--avatar  user__info">
+		<div class="info__inner">
+			{% if profile_data.avatar %}
+			<img src="{{ profile_data.avatar.url }}" class="info-avatar" width="120" height="120" alt="Фото профиля">
+			{% else %}
+			<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="info-avatar" width="120" height="120"
+				alt="Фото профиля">
+			{% endif %}
+			<h1 class="section-h1  info__name">{{ user.username }}</h1>
+			<p class="info__desc">{{ profile_data.description }}</p>
+		</div>
+		<div class="info-stats">
+			<dl class="info-stats__item">
+				<dt class="info-stats__name">Подписчиков</dt>
+				<dd class="info-stats__amount">{% get_count_of_subscribers user.id %}</dd>
+			</dl>
+			<dl class="info-stats__item">
+				<dt class="info-stats__name">Постов</dt>
+				<dd class="info-stats__amount">{{ posts }}</dd>
+			</dl>
+			<dl class="info-stats__item">
+				<dt class="info-stats__name">Лайков</dt>
+				<dd class="info-stats__amount">{% get_likes_count_of_user user.id %}</dd>
+			</dl>
+		</div>
+		<button class="btn  btn--second  btn--small  btn--left  info__btn" data-graph-path="register"
+			data-graph-speed="100">
+			Подписаться
+			<svg class="icon" aria-hidden="true" focusable="false">
+				<use href="{% static 'recipes/img/sprite.svg' %}#user-plus" />
+			</svg>
+		</button>
+
+	</div>
+	<div class="feed  user__feed">
+		{% for recipe in recipes %}
+		<article class="feed-item">
+			<header class="content-header  feed-item__header">
+				<div class="content-info">
+					<a href="{% url 'category' recipe.cat.id %}" class="content-info__category">
+						<img src="{% get_static_prefix %}recipes/img/category/{{ recipe.cat.id }}.svg" width="24" height="24" alt=""
+							loading="lazy">
+						<span>{{ recipe.cat }}</span>
+					</a>
+					<time class="content-info__date" datetime="{{ recipe.get_formatted_time_full }}">{{ recipe.get_formatted_time }}</time>
+				</div>
+				<a href="{% url 'recipe' recipe.id %}" class="content-header__content">
+					<h2 class="section-h1  content-header__title">{{ recipe.title }}</h2>
+					<p class="content-header__desc">{{ recipe.description }}</p>
+				</a>
+				<div class="content-short">
+					<div class="content-short-dropdown" data-short-ingredients>
+						<button class="btn-reset  content-short-dropdown__toggle" aria-label="Открыть список ингредиентов"
+							aria-expanded="false" data-short-ingredients-toggle>
+							{{ recipe.get_beautiful_ingredients }}
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
+							</svg>
+						</button>
+						<div class="content-short-dropdown__menu  short-ingredients" data-short-ingredients-list>
+							{% for text, nums in recipe.ingredients %}
+							<dl class="short-ingredients__item" data-short-ingredients-item>
+								<dt class="short-ingredients__name">
+									<span>{{ text }}</span>
+								</dt>
+								<dd class="short-ingredients__details">{{ nums }}</dd>
+							</dl>
+							{% endfor %}
+						</div>
+					</div>
+					<ul class="list-reset content-short__list">
+						<li class="content-short__item">
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#users" />
+							</svg>
+							{{ recipe.persons }}
+						</li>
+						<li class="content-short__item">
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#stopwatch" />
+							</svg>
+							{{ recipe.cooking_time }}
+						</li>
+					</ul>
+				</div>
+			</header>
+			<a href="{% url 'recipe' recipe.id %}" class="feed-item__img">
+				{% if recipe.photo %}
+				<img src="{{ recipe.photo.url }}" width="676" height="350" alt="{{ recipe.title }}" loading="lazy">
+				{% else %}
+				<img src="{% static 'recipes/img/placeholder-image.jpg' %}" width="676" height="350" alt="{{ recipe.title }}"
+					loading="lazy">
+				{% endif %}
+			</a>
+			<footer class="content-footer  feed-item__footer">
+				<div class="content-footer__left">
+					{% get_likes_status recipe.id request.user.id as like_status %}
+					{% if not like_status %}
+					<button class="btn-reset  content-footer__btn  content-footer__btn--like" data-graph-path="register"
+						data-graph-speed="100" aria-label="Поставить отметку 'Нравится'">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#heart" />
+						</svg>
+						<span data-count="like">{% get_likes_count recipe.id %}</span>
+					</button>
 					{% else %}
-						<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="info-avatar" width="120" height="120" alt="Фото профиля">
+					<button class="btn-reset  content-footer__btn  content-footer__btn--like active" data-graph-path="register"
+						data-graph-speed="100" aria-label="Поставить отметку 'Нравится'">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled" />
+						</svg>
+						<span data-count="like">{% get_likes_count recipe.id %}</span>
+					</button>
 					{% endif %}
-					<h1 class="section-h1  info__name">{{ user.username }}</h1>
-					<p class="info__desc">{{ profile_data.description }}</p>
+					<a href="recipe/{{ recipe.id }}#comments"
+						class="btn-reset  content-footer__btn  content-footer__btn--comment disabled"
+						aria-label="Перейти к комментариям" tabindex="-1">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle" />
+						</svg>
+						<span>11</span>
+					</a>
 				</div>
-				<div class="info-stats">
-					<dl class="info-stats__item">
-						<dt class="info-stats__name">Подписчиков</dt>
-						<dd class="info-stats__amount">{% get_count_of_subscribers user.id %}</dd>
-					</dl>
-					<dl class="info-stats__item">
-						<dt class="info-stats__name">Постов</dt>
-						<dd class="info-stats__amount">{{ posts }}</dd>
-					</dl>
-					<dl class="info-stats__item">
-						<dt class="info-stats__name">Лайков</dt>
-						<dd class="info-stats__amount">{% get_likes_count_of_user user.id %}</dd>
-					</dl>
-				</div>
-				<button class="btn  btn--second  btn--small  btn--left  info__btn" data-graph-path="register" data-graph-speed="100">
-					Подписаться
+
+				{% get_bookmark_status recipe.id request.user.id as check %}
+				{% if not check %}
+				<button class="btn-reset  content-footer__btn content-footer__btn--bookmark" data-id="{{ recipe.id }}"
+					data-graph-path="register" data-graph-speed="100" aria-label="Добавить в закладки">
 					<svg class="icon" aria-hidden="true" focusable="false">
-						<use href="{% static 'recipes/img/sprite.svg' %}#user-plus"/>
+						<use href="{% static 'recipes/img/sprite.svg' %}#bookmark" />
 					</svg>
 				</button>
+				{% else %}
+				<button class="btn-reset  content-footer__btn content-footer__btn--bookmark active" data-id="{{ recipe.id }}"
+					data-graph-path="register" data-graph-speed="100" aria-label="Добавить в закладки">
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#bookmark-filled" />
+					</svg>
+				</button>
+				{% endif %}
 
-		</div>
-		<div class="feed  user__feed">
-				{% for recipe in recipes %}
-					<article class="feed-item">
-						<header class="content-header  feed-item__header">
-							<div class="content-info">
-								<a href="{% url 'category' recipe.cat.id %}" class="content-info__category">
-									<img src="{% get_static_prefix %}recipes/img/category/{{ recipe.cat.id }}.svg" width="24" height="24" alt="" loading="lazy">
-									<span>{{ recipe.cat }}</span>
-								</a>
-								<time class="content-info__date" datetime="{{ recipe.get_formatted_time_full }}">{{ recipe.get_formatted_time }}</time>
-							</div>
-							<a href="{% url 'recipe' recipe.id %}" class="content-header__content">
-								<h2 class="section-h1  content-header__title">{{ recipe.title }}</h2>
-								<p class="content-header__desc">{{ recipe.description }}</p>
-							</a>
-							<div class="content-short">
-								<div class="content-short-dropdown" data-short-ingredients>
-									<button class="btn-reset  content-short-dropdown__toggle" aria-label="Открыть список ингредиентов" aria-expanded="false" data-short-ingredients-toggle>
-											{{ recipe.get_beautiful_ingredients }}
-											<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-													<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down"/>
-											</svg>
-									</button>
-									<div class="content-short-dropdown__menu  short-ingredients"  data-short-ingredients-list>
-											{% for text, nums in recipe.ingredients %}
-													<dl class="short-ingredients__item" data-short-ingredients-item>
-															<dt class="short-ingredients__name">
-																	<span>{{ text }}</span>
-															</dt>
-															<dd class="short-ingredients__details">{{ nums }}</dd>
-													</dl>
-											{% endfor %}
-									</div>
-								</div>
-								<ul class="list-reset content-short__list">
-									<li class="content-short__item">
-										<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-											<use href="{% static 'recipes/img/sprite.svg' %}#users"/>
-										</svg>
-										{{ recipe.persons }}
-									</li>
-									<li class="content-short__item">
-										<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-											<use href="{% static 'recipes/img/sprite.svg' %}#stopwatch"/>
-										</svg>
-										{{ recipe.cooking_time }}
-									</li>
-								</ul>
-							</div>
-						</header>
-						<a href="{% url 'recipe' recipe.id %}" class="feed-item__img">
-							{% if recipe.photo %}
-								<img src="{{ recipe.photo.url }}" width="676" height="350"
-									alt="{{ recipe.title }}" loading="lazy">
-							{% else %}
-								<img src="{% static 'recipes/img/placeholder-image.jpg' %}" width="676" height="350"
-									alt="{{ recipe.title }}" loading="lazy">
-							{% endif %}
-						</a>
-						<footer class="content-footer  feed-item__footer">
-							<div class="content-footer__left">
-								{% get_likes_status recipe.id request.user.id as like_status %}
-								{% if not like_status %}
-									<button class="btn-reset  content-footer__btn  content-footer__btn--like" data-graph-path="register" data-graph-speed="100"
-										aria-label="Поставить отметку 'Нравится'">
-										<svg class="icon" aria-hidden="true" focusable="false">
-											<use href="{% static 'recipes/img/sprite.svg' %}#heart"/>
-										</svg>
-										<span data-count="like">{% get_likes_count recipe.id %}</span>
-									</button>
-								{% else %}
-									<button class="btn-reset  content-footer__btn  content-footer__btn--like active" data-graph-path="register" data-graph-speed="100"
-										aria-label="Поставить отметку 'Нравится'">
-										<svg class="icon" aria-hidden="true" focusable="false">
-											<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled"/>
-										</svg>
-										<span data-count="like">{% get_likes_count recipe.id %}</span>
-									</button>
-								{% endif %}
-								<a href="recipe/{{ recipe.id }}#comments" class="btn-reset  content-footer__btn  content-footer__btn--comment disabled" aria-label="Перейти к комментариям" tabindex="-1">
-									<svg class="icon" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#circle"/>
-									</svg>
-									<span>11</span>
-								</a>
-							</div>
-
-{% get_bookmark_status recipe.id request.user.id as check %}
-{% if not check %}
-   <button class="btn-reset  content-footer__btn content-footer__btn--bookmark"
-         data-id="{{ recipe.id }}" data-graph-path="register" data-graph-speed="100"
-         aria-label="Добавить в закладки">
-      <svg class="icon" aria-hidden="true" focusable="false">
-         <use href="{% static 'recipes/img/sprite.svg' %}#bookmark"/>
-      </svg>
-   </button>
-{% else %}
-   <button class="btn-reset  content-footer__btn content-footer__btn--bookmark active"
-         data-id="{{ recipe.id }}" data-graph-path="register" data-graph-speed="100"
-         aria-label="Добавить в закладки">
-      <svg class="icon" aria-hidden="true" focusable="false">
-         <use href="{% static 'recipes/img/sprite.svg' %}#bookmark-filled"/>
-      </svg>
-   </button>
-{% endif %}
-
-						</footer>
-					</article>
-				{% endfor %}
-		</div>
+			</footer>
+		</article>
+		{% endfor %}
+	</div>
 	{% endif %}
 </main>
 {% endblock %}

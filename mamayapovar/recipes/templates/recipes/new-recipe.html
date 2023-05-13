@@ -3,275 +3,295 @@
 
 {% block concon %}
 <main class="new-recipe">
-    <h1 class="visually-hidden">Создание рецепта</h1>
-    <form id="new-recipe-form" action="{% url 'new_recipe' %}" method="POST" class="new-recipe__form" enctype="multipart/form-data">
-        {% csrf_token %}
-        <fieldset class="form-section  new-recipe-section  new-recipe-section--main" id="new-recipe-main">
-            <legend class="section-h2  form-section__title">Основное</legend>
-            <div class="form-field  new-recipe-section__field  new-recipe-section__field--title">
-                <label class="form-field__label" for="title">Название рецепта</label>
-                <input type="text" name="title" id="title" class="input" placeholder="Шарлотка с яблоками" autofocus autocomplete="off">
-                <label class="form-field__error  hidden" for="title">
-                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                        <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                    </svg>
-                    <span class="form-field__text"></span>
-                </label>
-            </div>
-            <div class="form-field  new-recipe-section__field  new-recipe-section__field--desc">
-                <label class="form-field__label" for="description">Описание рецепта</label>
-                <textarea name="description" id="description" class="input  input--textarea" placeholder="Старый, испытанный временем, но всегда желанный рецепт классической ароматной шарлотки. Уютный запах корицы и чашечка горячего чая с мелиссой..." autocomplete="off"></textarea>
-                <label class="form-field__error  hidden" for="description">
-                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                        <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                    </svg>
-                    <span class="form-field__text"></span>
-                </label>
-            </div>
-            <div class="form-field  new-recipe-section__field  new-recipe-section__field--cat">
-                <label class="form-field__label">Категория блюда</label>
-                <div class="select">
-                    <select name="cat" id="cat">
-                        <option value="">——</option>
-                        <option>Выпечка</option>
-                        <option>Супы</option>
-                        <option>Салаты</option>
-                        <option>Горячие блюда</option>
-                    </select>
-                    <svg class="icon" aria-hidden="true" focusable="false">
-                        <use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
-                    </svg>
-                </div>
-                <label class="form-field__error  hidden">
-                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                        <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                    </svg>
-                    <span class="form-field__text"></span>
-                </label>
-            </div>
-            <div class="new-recipe-section__group">
-                <div class="form-field  new-recipe-section__field  new-recipe-section__field--persons">
-                    <label class="form-field__label" for="persons">Кол-во порций</label>
-                    <div class="counter">
-                        <button type="button" class="btn  counter__btn  counter__btn--minus  disabled" tabindex="-1" aria-label="Убрать порцию">
-                            <svg class="icon" aria-hidden="true" focusable="false">
-                                <use href="{% static 'recipes/img/sprite.svg' %}#minus" />
-                            </svg>
-                        </button>
-                        <input type="number" name="persons" id="persons" value="1" class="input  counter__input" autocomplete="off">
-                        <button type="button" class="btn  counter__btn  counter__btn--plus" aria-label="Добавить порцию">
-                            <svg class="icon" aria-hidden="true" focusable="false">
-                                <use href="{% static 'recipes/img/sprite.svg' %}#plus" />
-                            </svg>
-                        </button>
-                    </div>
-                    <label class="form-field__error  hidden" for="persons">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-                <div class="form-field  new-recipe-section__field  new-recipe-section__field--time">
-                    <label class="form-field__label" for="minutes">Время приготовления</label>
-                    <div class="form-field  new-recipe-section__field  new-recipe-section__field--hours">
-                        <input type="number" name="cooking_time_hours" id="hours" placeholder="0" class="input new-recipe-section__field__input" autocomplete="off">
-                    </div>
-                    <div class="form-field  new-recipe-section__field  new-recipe-section__field--minutes">
-                        <input type="number" name="cooking_time_minutes" id="minutes" placeholder="0" class="input  new-recipe-section__field__input" autocomplete="off">
-                    </div>
-                    <label class="form-field__error  hidden" for="minutes">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-            </div>
-        </fieldset>
-        <fieldset class="form-section  new-recipe-section  new-recipe-section--ingredient  ingredient" id="new-recipe-ingredient">
-            <legend class="section-h2  form-section__title">Ингредиенты</legend>
-            <div class="ingredient__list">
-                <div class="ingredient-item" id="ingredient-901237836">
-                    <input type="text" name="ingredient-name-901237836"
-                        class="input  ingredient-item__input  ingredient-item__input--name"
-                        placeholder="Название ингредиента" autocomplete="off">
-                    <input type="number" name="ingredient-amount-901237836" class="input  ingredient-item__input  ingredient-item__input--amount" value="1" step="0.1" autocomplete="off" aria-label="Количество ингредиента">
-                    <div class="select  ingredient-item__select">
-                        <select name="ingredient-measure-901237836" aria-label="Выбрать единицу измерения">
-                            <option value="">Ед. измерения</option>
-                            <option>шт</option>
-                            <option>г</option>
-                            <option>кг</option>
-                            <option>мл</option>
-                            <option>л</option>
-                            <option>стакан</option>
-                            <option>чайная ложка</option>
-                            <option>столовая ложка</option>
-                            <option>щепотка</option>
-                            <option>зубчик</option>
-                        </select>
-                        <svg class="icon" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
-                        </svg>
-                    </div>
-                    <button type="button" class="btn-reset  ingredient-item__delete" aria-label="Удалить ингредиент">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#cross" />
-                        </svg>
-                    </button>
-                    <label class="form-field__error  hidden">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-                <div class="ingredient-item" id="ingredient-4771836458">
-                    <input type="text" name="ingredient-name-4771836458"
-                        class="input  ingredient-item__input  ingredient-item__input--name"
-                        placeholder="Название ингредиента" autocomplete="off">
-                    <input type="number" name="ingredient-amount-4771836458" class="input  ingredient-item__input  ingredient-item__input--amount" value="1" step="0.1" autocomplete="off" aria-label="Количество ингредиента">
-                    <div class="select  ingredient-item__select">
-                        <select name="ingredient-measure-4771836458" aria-label="Выбрать единицу измерения">
-                            <option value="">Ед. измерения</option>
-                            <option>шт</option>
-                            <option>г</option>
-                            <option>кг</option>
-                            <option>мл</option>
-                            <option>л</option>
-                            <option>стакан</option>
-                            <option>чайная ложка</option>
-                            <option>столовая ложка</option>
-                            <option>щепотка</option>
-                            <option>зубчик</option>
-                        </select>
-                        <svg class="icon" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
-                        </svg>
-                    </div>
-                    <button type="button" class="btn-reset  ingredient-item__delete" aria-label="Удалить ингредиент">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#cross" />
-                        </svg>
-                    </button>
-                    <label class="form-field__error  hidden">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-            </div>
-            <button type="button" class="btn  btn--third  btn--left  ingredient__btn">
-                Добавить ингредиент
-                <svg class="icon" aria-hidden="true" focusable="false">
-                    <use href="{% static 'recipes/img/sprite.svg' %}#circle-plus" />
-                </svg>
-            </button>
-        </fieldset>
-        <fieldset class="form-section  new-recipe-section  new-recipe-section--photo  photo" id="new-recipe-photo">
-            <legend class="section-h2  form-section__title">Фото блюда</legend>
-            <div class="imageuploader">
-                <label class="input  input--photo  imageuploader__input">
-                    <input type="file" name="photo" id="photo" accept=".jpg, .jpeg, .png" aria-label="Фото блюда">
-                    <div class="imageuploader__placeholder">
-                        <svg class="icon" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
-                        </svg>
-                        Загрузите фото блюда
-                    </div>
-                </label>
-                <button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото блюда">
-                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                        <use href="{% static 'recipes/img/sprite.svg' %}#delete" />
-                    </svg>
-                </button>
-                <label class="form-field__error  hidden" for="photo">
-                    <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                        <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                    </svg>
-                    <span class="form-field__text"></span>
-                </label>
-            </div>
-        </fieldset>
-        <fieldset class="form-section  new-recipe-section  new-recipe-section--step  step" id="new-recipe-step">
-            <legend class="section-h2  form-section__title">Инструкция приготовления</legend>
-            <div class="step__list">
-                <div class="step-item" id="step-5329123723">
-                    <label class="form-field__label  step-item__number" for="step-description-5329123723"></label>
-                    <button type="button" class="btn-reset  step-item__delete" aria-label="Удалить шаг">
-                        <svg class="icon" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#cross" />
-                        </svg>
-                    </button>
-                    <div class="step-item__body">
-                        <div class="imageuploader  imageuploader--small  step-item__imageuploader">
-                            <label class="input  input--photo  imageuploader__input">
-                                <input type="file" name="step-photo-5329123723" id="step-photo-5329123723" accept=".jpg, .jpeg, .png" aria-label="Фото шага">
-                                <div class="imageuploader__placeholder">
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                        <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
-                                    </svg>
-                                    Загрузите фото шага
-                                </div>
-                            </label>
-                            <button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото шага">
-                                <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                                    <use href="{% static 'recipes/img/sprite.svg' %}#delete" />
-                                </svg>
-                            </button>
-                        </div>
-                        <textarea name="step-description-5329123723" id="step-description-5329123723" class="input  input--textarea  step-item__input" placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..." autocomplete="off"></textarea>
-                        <label class="form-field__error  hidden" for="step-description-5329123723">
-                            <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                                <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                            </svg>
-                            <span class="form-field__text"></span>
-                        </label>
-                    </div>
-                </div>
-                <div class="step-item" id="step-82391238">
-                    <label class="form-field__label  step-item__number" for="step-description-82391238"></label>
-                    <button type="button" class="btn-reset  step-item__delete" aria-label="Удалить шаг">
-                        <svg class="icon" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#cross" />
-                        </svg>
-                    </button>
-                    <div class="step-item__body">
-                        <div class="imageuploader  imageuploader--small  step-item__imageuploader">
-                            <label class="input  input--photo  imageuploader__input">
-                                <input type="file" name="step-photo-82391238" id="step-photo-82391238" accept=".jpg, .jpeg, .png" aria-label="Фото шага">
-                                <div class="imageuploader__placeholder">
-                                    <svg class="icon" aria-hidden="true" focusable="false">
-                                        <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
-                                    </svg>
-                                    Загрузите фото шага
-                                </div>
-                            </label>
-                            <button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото шага">
-                                <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                                    <use href="{% static 'recipes/img/sprite.svg' %}#delete" />
-                                </svg>
-                            </button>
-                        </div>
-                        <textarea name="step-description-82391238" id="step-description-82391238" class="input  input--textarea  step-item__input" placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..." autocomplete="off"></textarea>
-                        <label class="form-field__error  hidden" for="step-description-82391238">
-                            <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                                <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                            </svg>
-                            <span class="form-field__text"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="btn  btn--third  btn--left  step__btn">
-                Добавить шаг
-                <svg class="icon" aria-hidden="true" focusable="false">
-                    <use href="{% static 'recipes/img/sprite.svg' %}#circle-plus" />
-                </svg>
-            </button>
-        </fieldset>
-    </form>
+	<h1 class="visually-hidden">Создание рецепта</h1>
+	<form id="new-recipe-form" action="{% url 'new_recipe' %}" method="POST" class="new-recipe__form"
+		enctype="multipart/form-data">
+		{% csrf_token %}
+		<fieldset class="form-section  new-recipe-section  new-recipe-section--main" id="new-recipe-main">
+			<legend class="section-h2  form-section__title">Основное</legend>
+			<div class="form-field  new-recipe-section__field  new-recipe-section__field--title">
+				<label class="form-field__label" for="title">Название рецепта</label>
+				<input type="text" name="title" id="title" class="input" placeholder="Шарлотка с яблоками" autofocus
+					autocomplete="off">
+				<label class="form-field__error  hidden" for="title">
+					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+					</svg>
+					<span class="form-field__text"></span>
+				</label>
+			</div>
+			<div class="form-field  new-recipe-section__field  new-recipe-section__field--desc">
+				<label class="form-field__label" for="description">Описание рецепта</label>
+				<textarea name="description" id="description" class="input  input--textarea"
+					placeholder="Старый, испытанный временем, но всегда желанный рецепт классической ароматной шарлотки. Уютный запах корицы и чашечка горячего чая с мелиссой..."
+					autocomplete="off"></textarea>
+				<label class="form-field__error  hidden" for="description">
+					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+					</svg>
+					<span class="form-field__text"></span>
+				</label>
+			</div>
+			<div class="form-field  new-recipe-section__field  new-recipe-section__field--cat">
+				<label class="form-field__label">Категория блюда</label>
+				<div class="select">
+					<select name="cat" id="cat">
+						<option value="">——</option>
+						<option>Выпечка</option>
+						<option>Супы</option>
+						<option>Салаты</option>
+						<option>Горячие блюда</option>
+					</select>
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
+					</svg>
+				</div>
+				<label class="form-field__error  hidden">
+					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+					</svg>
+					<span class="form-field__text"></span>
+				</label>
+			</div>
+			<div class="new-recipe-section__group">
+				<div class="form-field  new-recipe-section__field  new-recipe-section__field--persons">
+					<label class="form-field__label" for="persons">Кол-во порций</label>
+					<div class="counter">
+						<button type="button" class="btn  counter__btn  counter__btn--minus  disabled" tabindex="-1"
+							aria-label="Убрать порцию">
+							<svg class="icon" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#minus" />
+							</svg>
+						</button>
+						<input type="number" name="persons" id="persons" value="1" class="input  counter__input" autocomplete="off">
+						<button type="button" class="btn  counter__btn  counter__btn--plus" aria-label="Добавить порцию">
+							<svg class="icon" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#plus" />
+							</svg>
+						</button>
+					</div>
+					<label class="form-field__error  hidden" for="persons">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+				<div class="form-field  new-recipe-section__field  new-recipe-section__field--time">
+					<label class="form-field__label" for="minutes">Время приготовления</label>
+					<div class="form-field  new-recipe-section__field  new-recipe-section__field--hours">
+						<input type="number" name="cooking_time_hours" id="hours" placeholder="0"
+							class="input new-recipe-section__field__input" autocomplete="off">
+					</div>
+					<div class="form-field  new-recipe-section__field  new-recipe-section__field--minutes">
+						<input type="number" name="cooking_time_minutes" id="minutes" placeholder="0"
+							class="input  new-recipe-section__field__input" autocomplete="off">
+					</div>
+					<label class="form-field__error  hidden" for="minutes">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset class="form-section  new-recipe-section  new-recipe-section--ingredient  ingredient"
+			id="new-recipe-ingredient">
+			<legend class="section-h2  form-section__title">Ингредиенты</legend>
+			<div class="ingredient__list">
+				<div class="ingredient-item" id="ingredient-901237836">
+					<input type="text" name="ingredient-name-901237836"
+						class="input  ingredient-item__input  ingredient-item__input--name" placeholder="Название ингредиента"
+						autocomplete="off">
+					<input type="number" name="ingredient-amount-901237836"
+						class="input  ingredient-item__input  ingredient-item__input--amount" value="1" step="0.1"
+						autocomplete="off" aria-label="Количество ингредиента">
+					<div class="select  ingredient-item__select">
+						<select name="ingredient-measure-901237836" aria-label="Выбрать единицу измерения">
+							<option value="">Ед. измерения</option>
+							<option>шт</option>
+							<option>г</option>
+							<option>кг</option>
+							<option>мл</option>
+							<option>л</option>
+							<option>стакан</option>
+							<option>чайная ложка</option>
+							<option>столовая ложка</option>
+							<option>щепотка</option>
+							<option>зубчик</option>
+						</select>
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
+						</svg>
+					</div>
+					<button type="button" class="btn-reset  ingredient-item__delete" aria-label="Удалить ингредиент">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#cross" />
+						</svg>
+					</button>
+					<label class="form-field__error  hidden">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+				<div class="ingredient-item" id="ingredient-4771836458">
+					<input type="text" name="ingredient-name-4771836458"
+						class="input  ingredient-item__input  ingredient-item__input--name" placeholder="Название ингредиента"
+						autocomplete="off">
+					<input type="number" name="ingredient-amount-4771836458"
+						class="input  ingredient-item__input  ingredient-item__input--amount" value="1" step="0.1"
+						autocomplete="off" aria-label="Количество ингредиента">
+					<div class="select  ingredient-item__select">
+						<select name="ingredient-measure-4771836458" aria-label="Выбрать единицу измерения">
+							<option value="">Ед. измерения</option>
+							<option>шт</option>
+							<option>г</option>
+							<option>кг</option>
+							<option>мл</option>
+							<option>л</option>
+							<option>стакан</option>
+							<option>чайная ложка</option>
+							<option>столовая ложка</option>
+							<option>щепотка</option>
+							<option>зубчик</option>
+						</select>
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
+						</svg>
+					</div>
+					<button type="button" class="btn-reset  ingredient-item__delete" aria-label="Удалить ингредиент">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#cross" />
+						</svg>
+					</button>
+					<label class="form-field__error  hidden">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+			</div>
+			<button type="button" class="btn  btn--third  btn--left  ingredient__btn">
+				Добавить ингредиент
+				<svg class="icon" aria-hidden="true" focusable="false">
+					<use href="{% static 'recipes/img/sprite.svg' %}#circle-plus" />
+				</svg>
+			</button>
+		</fieldset>
+		<fieldset class="form-section  new-recipe-section  new-recipe-section--photo  photo" id="new-recipe-photo">
+			<legend class="section-h2  form-section__title">Фото блюда</legend>
+			<div class="imageuploader">
+				<label class="input  input--photo  imageuploader__input">
+					<input type="file" name="photo" id="photo" accept=".jpg, .jpeg, .png" aria-label="Фото блюда">
+					<div class="imageuploader__placeholder">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#image" />
+						</svg>
+						Загрузите фото блюда
+					</div>
+				</label>
+				<button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото блюда">
+					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
+					</svg>
+				</button>
+				<label class="form-field__error  hidden" for="photo">
+					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+					</svg>
+					<span class="form-field__text"></span>
+				</label>
+			</div>
+		</fieldset>
+		<fieldset class="form-section  new-recipe-section  new-recipe-section--step  step" id="new-recipe-step">
+			<legend class="section-h2  form-section__title">Инструкция приготовления</legend>
+			<div class="step__list">
+				<div class="step-item" id="step-5329123723">
+					<label class="form-field__label  step-item__number" for="step-description-5329123723"></label>
+					<button type="button" class="btn-reset  step-item__delete" aria-label="Удалить шаг">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#cross" />
+						</svg>
+					</button>
+					<div class="step-item__body">
+						<div class="imageuploader  imageuploader--small  step-item__imageuploader">
+							<label class="input  input--photo  imageuploader__input">
+								<input type="file" name="step-photo-5329123723" id="step-photo-5329123723" accept=".jpg, .jpeg, .png"
+									aria-label="Фото шага">
+								<div class="imageuploader__placeholder">
+									<svg class="icon" aria-hidden="true" focusable="false">
+										<use href="{% static 'recipes/img/sprite.svg' %}#image" />
+									</svg>
+									Загрузите фото шага
+								</div>
+							</label>
+							<button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото шага">
+								<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+									<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
+								</svg>
+							</button>
+						</div>
+						<textarea name="step-description-5329123723" id="step-description-5329123723"
+							class="input  input--textarea  step-item__input"
+							placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..."
+							autocomplete="off"></textarea>
+						<label class="form-field__error  hidden" for="step-description-5329123723">
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+							</svg>
+							<span class="form-field__text"></span>
+						</label>
+					</div>
+				</div>
+				<div class="step-item" id="step-82391238">
+					<label class="form-field__label  step-item__number" for="step-description-82391238"></label>
+					<button type="button" class="btn-reset  step-item__delete" aria-label="Удалить шаг">
+						<svg class="icon" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#cross" />
+						</svg>
+					</button>
+					<div class="step-item__body">
+						<div class="imageuploader  imageuploader--small  step-item__imageuploader">
+							<label class="input  input--photo  imageuploader__input">
+								<input type="file" name="step-photo-82391238" id="step-photo-82391238" accept=".jpg, .jpeg, .png"
+									aria-label="Фото шага">
+								<div class="imageuploader__placeholder">
+									<svg class="icon" aria-hidden="true" focusable="false">
+										<use href="{% static 'recipes/img/sprite.svg' %}#image" />
+									</svg>
+									Загрузите фото шага
+								</div>
+							</label>
+							<button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото шага">
+								<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+									<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
+								</svg>
+							</button>
+						</div>
+						<textarea name="step-description-82391238" id="step-description-82391238"
+							class="input  input--textarea  step-item__input"
+							placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..."
+							autocomplete="off"></textarea>
+						<label class="form-field__error  hidden" for="step-description-82391238">
+							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+								<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+							</svg>
+							<span class="form-field__text"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<button type="button" class="btn  btn--third  btn--left  step__btn">
+				Добавить шаг
+				<svg class="icon" aria-hidden="true" focusable="false">
+					<use href="{% static 'recipes/img/sprite.svg' %}#circle-plus" />
+				</svg>
+			</button>
+		</fieldset>
+	</form>
 </main>
 {% endblock %}
