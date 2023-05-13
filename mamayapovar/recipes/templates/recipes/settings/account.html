@@ -2,7 +2,7 @@
 
 {% load static recipes_extra %}
 {% block post %}
-<main class="settings  settings--account">
+<main class="settings  settings--account" id="skip-link">
     <h1 class="visually-hidden">Настройки аккаунта</h1>
     <form id="settings-email-form" action="{% url 'settings_account' %}" method="POST" class="settings__form  settings__form--email">
         {% csrf_token %}

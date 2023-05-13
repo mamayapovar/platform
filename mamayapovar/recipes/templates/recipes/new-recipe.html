@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block concon %}
-<main class="new-recipe">
+<main class="new-recipe" id="skip-link">
 	<h1 class="visually-hidden">Создание рецепта</h1>
 	<form id="new-recipe-form" action="{% url 'new_recipe' %}" method="POST" class="new-recipe__form"
 		enctype="multipart/form-data">
@@ -33,7 +33,7 @@
 				</label>
 			</div>
 			<div class="form-field  new-recipe-section__field  new-recipe-section__field--cat">
-				<label class="form-field__label">Категория блюда</label>
+				<label class="form-field__label" for="cat">Категория блюда</label>
 				<div class="select">
 					<select name="cat" id="cat">
 						<option value="">——</option>
@@ -55,7 +55,7 @@
 			</div>
 			<div class="new-recipe-section__group">
 				<div class="form-field  new-recipe-section__field  new-recipe-section__field--persons">
-					<label class="form-field__label" for="persons">Кол-во порций</label>
+					<label class="form-field__label" for="persons">Количество порций</label>
 					<div class="counter">
 						<button type="button" class="btn  counter__btn  counter__btn--minus  disabled" tabindex="-1"
 							aria-label="Убрать порцию">
@@ -78,14 +78,14 @@
 					</label>
 				</div>
 				<div class="form-field  new-recipe-section__field  new-recipe-section__field--time">
-					<label class="form-field__label" for="minutes">Время приготовления</label>
+					<label class="form-field__label">Время приготовления</label>
 					<div class="form-field  new-recipe-section__field  new-recipe-section__field--hours">
 						<input type="number" name="cooking_time_hours" id="hours" placeholder="0"
-							class="input new-recipe-section__field__input" autocomplete="off">
+							class="input new-recipe-section__field__input" autocomplete="off" aria-label="Введите количество часов готовки">
 					</div>
 					<div class="form-field  new-recipe-section__field  new-recipe-section__field--minutes">
 						<input type="number" name="cooking_time_minutes" id="minutes" placeholder="0"
-							class="input  new-recipe-section__field__input" autocomplete="off">
+							class="input  new-recipe-section__field__input" autocomplete="off" aria-label="Введите количество минут готовки">
 					</div>
 					<label class="form-field__error  hidden" for="minutes">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
@@ -186,7 +186,7 @@
 			<legend class="section-h2  form-section__title">Фото блюда</legend>
 			<div class="imageuploader">
 				<label class="input  input--photo  imageuploader__input">
-					<input type="file" name="photo" id="photo" accept=".jpg, .jpeg, .png" aria-label="Фото блюда">
+					<input type="file" name="photo" id="photo" accept=".jpg, .jpeg, .png" aria-label="Загрузите фото блюда">
 					<div class="imageuploader__placeholder">
 						<svg class="icon" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#image" />
@@ -221,7 +221,7 @@
 						<div class="imageuploader  imageuploader--small  step-item__imageuploader">
 							<label class="input  input--photo  imageuploader__input">
 								<input type="file" name="step-photo-5329123723" id="step-photo-5329123723" accept=".jpg, .jpeg, .png"
-									aria-label="Фото шага">
+									aria-label="Загрузите фото шага">
 								<div class="imageuploader__placeholder">
 									<svg class="icon" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#image" />
@@ -238,7 +238,7 @@
 						<textarea name="step-description-5329123723" id="step-description-5329123723"
 							class="input  input--textarea  step-item__input"
 							placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..."
-							autocomplete="off"></textarea>
+							autocomplete="off" aria-label="Описание шага"></textarea>
 						<label class="form-field__error  hidden" for="step-description-5329123723">
 							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 								<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
@@ -258,7 +258,7 @@
 						<div class="imageuploader  imageuploader--small  step-item__imageuploader">
 							<label class="input  input--photo  imageuploader__input">
 								<input type="file" name="step-photo-82391238" id="step-photo-82391238" accept=".jpg, .jpeg, .png"
-									aria-label="Фото шага">
+									aria-label="Загрузите фото шага">
 								<div class="imageuploader__placeholder">
 									<svg class="icon" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#image" />
@@ -275,7 +275,7 @@
 						<textarea name="step-description-82391238" id="step-description-82391238"
 							class="input  input--textarea  step-item__input"
 							placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..."
-							autocomplete="off"></textarea>
+							autocomplete="off" aria-label="Описание шага"></textarea>
 						<label class="form-field__error  hidden" for="step-description-82391238">
 							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 								<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
@@ -292,6 +292,7 @@
 				</svg>
 			</button>
 		</fieldset>
+		<a href="#new-recipe-menu" class="skip-link  skip-link--new-recipe">Перейти к меню публикации рецепта</a>
 	</form>
 </main>
 {% endblock %}

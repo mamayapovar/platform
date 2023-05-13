@@ -10,6 +10,7 @@
 				<a href="/" class="header__logo" title="Вернуться на главную страницу">
 					<img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
 				</a>
+				<a href="#skip-link" class="skip-link">Перейти к контенту</a>
 				<form id="search-form" action="{% url 'search' %}" method="POST" class="search-query  header__search"
 					role="search">
 					{% csrf_token %}
@@ -111,6 +112,7 @@
 				<a href="/" class="header__logo" title="Вернуться на главную страницу">
 					<img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
 				</a>
+				<a href="#skip-link" class="skip-link">Перейти к контенту</a>
 				<form id="search-form" action="{% url 'search' %}" method="POST" class="search-query  header__search"
 					role="search">
 					{% csrf_token %}

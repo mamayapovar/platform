@@ -3,7 +3,7 @@
 {% load static recipes_extra %}
 {% block post %}
 {% get_user_profile request.user.id as user_profile %}
-<main class="settings  settings--profile">
+<main class="settings  settings--profile" id="skip-link">
     <h1 class="visually-hidden">Настройки профиля</h1>
     <form id="settings-profile-form" action="{% url 'settings_profile' %}" method="POST" class="settings__form  settings__form--profile" enctype="multipart/form-data">
         {% csrf_token %}
@@ -36,7 +36,7 @@
                     <label class="form-field__label" for="photo">Фото профиля</label>
                         {% if not user_profile.avatar %}
                             <div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
-                                <label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');" class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
+                                <label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');" class="input  input--photo  info-avatar__input" aria-label="Изменить фото профиля">
                                     <input type="file" name="photo" accept=".jpg, .jpeg, .png"  id="user_photo">
                                     <div class="info-avatar__placeholder">
                                         <svg class="icon" aria-hidden="true" focusable="false">
@@ -47,7 +47,7 @@
                             </div>
                         {% else %}
                             <div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
-                                <label style="background-image: url('{{ user_profile.avatar.url }}');" class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
+                                <label style="background-image: url('{{ user_profile.avatar.url }}');" class="input  input--photo  info-avatar__input" aria-label="Изменить фото профиля">
                                     <input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
                                     <div class="info-avatar__placeholder">
                                         <svg class="icon" aria-hidden="true" focusable="false">

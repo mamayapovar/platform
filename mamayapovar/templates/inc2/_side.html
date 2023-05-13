@@ -1,5 +1,5 @@
 {% block sideside %}
-<aside class="sidebar  sidebar--second">
+<aside class="sidebar  sidebar--second" id="new-recipe-menu">
 	<div class="sidebar__inner">
 		<div class="sidebar-tree">
 			<ul class="list-reset sidebar-tree__list">
@@ -29,9 +29,9 @@
 			{% if 'new-recipe' in request.get_full_path %}
 			<button type="submit" class="btn" form="new-recipe-form">Опубликовать</button>
 			{% elif 'edit_recipe' in request.get_full_path %}
-			<button type="submit" class="btn" form="edit-recipe-form">Обновить</button>
+			<button type="submit" class="btn" form="edit-recipe-form">Отредактировать</button>
 			{% endif %}
-			<a href="/" class="btn  btn--second">Выйти</a>
+			<a href="/" class="btn  btn--second">Вернуться на главную</a>
 		</div>
 	</div>
 </aside>

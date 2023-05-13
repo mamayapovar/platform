@@ -975,7 +975,7 @@ const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
 				<div class="step-item__body">
 					<div class="imageuploader  imageuploader--small  step-item__imageuploader">
 						<label class="input  input--photo  imageuploader__input">
-							<input type="file" name="step-photo-${fieldIndex}" id="step-photo-${fieldIndex}" accept=".jpg, .jpeg, .png" aria-label="Фото шага">
+							<input type="file" name="step-photo-${fieldIndex}" id="step-photo-${fieldIndex}" accept=".jpg, .jpeg, .png" aria-label="Загрузите фото шага">
 							<div class="imageuploader__placeholder">
 								<svg class="icon" aria-hidden="true" focusable="false">
 									<use href="${svgImage}"/>
@@ -989,7 +989,7 @@ const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
 							</svg>
 						</button>
 					</div>
-					<textarea name="step-description-${fieldIndex}" id="step-description-${fieldIndex}" class="input  input--textarea  step-item__input" placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..." autocomplete="off"></textarea>
+					<textarea name="step-description-${fieldIndex}" id="step-description-${fieldIndex}" class="input  input--textarea  step-item__input" placeholder="Замешиваем тесто для блинов. В 1 литр теплого молока добавляем 4 яйца..." autocomplete="off" aria-label="Описание шага"></textarea>
 					<label class="form-field__error  hidden" for="step-description-${fieldIndex}">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="${svgCircleCross}"/>

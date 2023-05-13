@@ -2,7 +2,7 @@
 
 {% load static recipes_extra %}
 {% block post %}
-<main class="user">
+<main class="user" id="skip-link">
 	{% if request.user.id == user.id %}
 	<div class="info  info--avatar  user__info">
 		<div class="info__inner">
@@ -10,8 +10,8 @@
 			<div class="info-avatar  info-avatar--change" data-button-photo
 				data-url_root="{% url 'change_profile_picture' %}">
 				<label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');"
-					class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
-					<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
+					class="input  input--photo  info-avatar__input">
+					<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo" aria-label="Изменить фото профиля">
 					<div class="info-avatar__placeholder">
 						<svg class="icon" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#image" />
@@ -23,7 +23,7 @@
 			<div class="info-avatar  info-avatar--change" data-button-photo
 				data-url_root="{% url 'change_profile_picture' %}">
 				<label style="background-image: url('{{ profile_data.avatar.url }}');"
-					class="input  input--photo  info-avatar__input" title="Изменить фото профиля">
+					class="input  input--photo  info-avatar__input" aria-label="Изменить фото профиля">
 					<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
 					<div class="info-avatar__placeholder">
 						<svg class="icon" aria-hidden="true" focusable="false">

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block concon %}
-<main class="new-recipe">
+<main class="new-recipe" id="skip-link">
 	<h1 class="visually-hidden">Создание рецепта</h1>
 	<form id="edit-recipe-form" action="{% url 'edit_recipe' recipe.id %}" method="POST" class="new-recipe__form"
 		enctype="multipart/form-data">

@@ -64,11 +64,11 @@
 			{% endblock %}
 			{% endif %}
 			{% if request.get_full_path == '/' %}
-			<main class="index">
+			<main class="index" id="skip-link">
 				{% block content %}{% endblock %}
 			</main>
 			{% elif 'search' in request.get_full_path %}
-			<main class="search">
+			<main class="search" id="skip-link">
 				{% block content1 %}{% endblock %}
 			</main>
 			{% elif request.get_full_path == '/new-recipe/' or 'edit_recipe' in request.get_full_path %}
