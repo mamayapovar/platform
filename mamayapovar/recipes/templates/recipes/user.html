@@ -9,7 +9,7 @@
 			{% if not profile_data.avatar %}
 			<div class="info-avatar  info-avatar--change" data-button-photo
 				data-url_root="{% url 'change_profile_picture' %}">
-				<label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');"
+				<div style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');"
 					class="input  input--photo  info-avatar__input">
 					<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo" aria-label="Изменить фото профиля">
 					<div class="info-avatar__placeholder">
@@ -17,12 +17,12 @@
 							<use href="{% static 'recipes/img/sprite.svg' %}#image" />
 						</svg>
 					</div>
-				</label>
+				</div>
 			</div>
 			{% else %}
 			<div class="info-avatar  info-avatar--change" data-button-photo
 				data-url_root="{% url 'change_profile_picture' %}">
-				<label style="background-image: url('{{ profile_data.avatar.url }}');"
+				<div style="background-image: url('{{ profile_data.avatar.url }}');"
 					class="input  input--photo  info-avatar__input" aria-label="Изменить фото профиля">
 					<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
 					<div class="info-avatar__placeholder">
@@ -30,7 +30,7 @@
 							<use href="{% static 'recipes/img/sprite.svg' %}#image" />
 						</svg>
 					</div>
-				</label>
+				</div>
 			</div>
 			{% endif %}
 			<h1 class="section-h1  info__name">{{ user.username }}</h1>

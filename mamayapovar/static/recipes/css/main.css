@@ -2372,6 +2372,14 @@ a {
   align-content: start;
   gap: 40px;
 }
+.settings__form--delete .settings-section {
+  display: grid;
+  gap: 12px;
+}
+.settings__form--delete .settings-section__desc {
+  max-width: 590px;
+  margin-bottom: 12px;
+}
 
 .settings-section {
   display: grid;
@@ -2416,11 +2424,6 @@ a {
   justify-content: start;
   grid-auto-flow: column;
   gap: 32px;
-}
-.settings-section__info {
-  display: grid;
-  max-width: 590px;
-  gap: 12px;
 }
 .settings-section__desc {
   font-weight: 400;

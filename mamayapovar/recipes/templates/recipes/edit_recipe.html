@@ -280,7 +280,7 @@
 		<fieldset class="form-section  new-recipe-section  new-recipe-section--photo  photo" id="new-recipe-photo">
 			<legend class="section-h2  form-section__title">Фото блюда</legend>
 			<div class="imageuploader" data-image-url="{{ recipe.photo.url }}" data-image-name="{{ recipe.photo.name }}">
-				<label class="input  input--photo  imageuploader__input">
+				<div class="input  input--photo  imageuploader__input">
 					<input type="file" name="photo" id="photo" accept=".jpg, .jpeg, .png" aria-label="Фото блюда">
 					<div class="imageuploader__placeholder">
 						<svg class="icon" aria-hidden="true" focusable="false">
@@ -288,7 +288,7 @@
 						</svg>
 						Загрузите фото блюда
 					</div>
-				</label>
+				</div>
 				<button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото блюда">
 					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 						<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
@@ -316,7 +316,7 @@
 					<div class="step-item__body">
 						<div class="imageuploader  imageuploader--small  step-item__imageuploader" data-image-url="{{ photo.url }}"
 							data-image-name="{{ photo.name }}">
-							<label class="input  input--photo  imageuploader__input">
+							<div class="input  input--photo  imageuploader__input">
 								<input type="file" name="step-photo-{{ numero }}" accept=".jpg, .jpeg, .png" aria-label="Фото шага">
 								<div class="imageuploader__placeholder">
 									<svg class="icon" aria-hidden="true" focusable="false">
@@ -324,7 +324,7 @@
 									</svg>
 									Загрузите фото шага
 								</div>
-							</label>
+							</div>
 							<button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото шага">
 								<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 									<use href="{% static 'recipes/img/sprite.svg' %}#delete" />

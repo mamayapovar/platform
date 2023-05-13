@@ -974,7 +974,7 @@ const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
 				</button>
 				<div class="step-item__body">
 					<div class="imageuploader  imageuploader--small  step-item__imageuploader">
-						<label class="input  input--photo  imageuploader__input">
+						<div class="input  input--photo  imageuploader__input">
 							<input type="file" name="step-photo-${fieldIndex}" id="step-photo-${fieldIndex}" accept=".jpg, .jpeg, .png" aria-label="Загрузите фото шага">
 							<div class="imageuploader__placeholder">
 								<svg class="icon" aria-hidden="true" focusable="false">
@@ -982,7 +982,7 @@ const modal = new graph_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
 								</svg>
 								Загрузите фото шага
 							</div>
-						</label>
+						</div>
 						<button type="button" class="btn  btn--other  imageuploader__btn  hidden" aria-label="Удалить фото шага">
 							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 								<use href="${svgDelete}" />

@@ -4,65 +4,74 @@
 {% block post %}
 {% get_user_profile request.user.id as user_profile %}
 <main class="settings  settings--profile" id="skip-link">
-    <h1 class="visually-hidden">Настройки профиля</h1>
-    <form id="settings-profile-form" action="{% url 'settings_profile' %}" method="POST" class="settings__form  settings__form--profile" enctype="multipart/form-data">
-        {% csrf_token %}
-        <fieldset class="form-section  settings-section">
-            <legend class="section-h2  form-section__title">Профиль</legend>
-            <div class="settings-section__group  settings-section__group--avatar">
-                <div class="form-field  settings-section__field  settings-section__field--username">
-                    <label class="form-field__label" for="settings-username">Отображаемое имя</label>
-                    <input type="text" name="username" id="settings-username" class="input" placeholder="Имя и фамилия" value="{{ username }}" autocomplete="off">
-                    {% if error %}
-                        <label class="form-field__error" for="settings-username">
-                            <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                                <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                            </svg>
-                                <span class="form-field__text">{{ error }}</span>
-                        </label>
-                    {% endif %}
-                </div>
-                <div class="form-field  settings-section__field  settings-section__field--desc">
-                    <label class="form-field__label" for="description">Описание профиля</label>
-                    <textarea name="description" id="description" class="input  input--textarea" placeholder="Пара слов о себе" autocomplete="off">{{ user_profile.description }}</textarea>
-                    <label class="form-field__error  hidden" for="description">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-                <div class="form-field  settings-section__field  settings-section__field--avatar">
-                    <label class="form-field__label" for="photo">Фото профиля</label>
-                        {% if not user_profile.avatar %}
-                            <div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
-                                <label style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');" class="input  input--photo  info-avatar__input" aria-label="Изменить фото профиля">
-                                    <input type="file" name="photo" accept=".jpg, .jpeg, .png"  id="user_photo">
-                                    <div class="info-avatar__placeholder">
-                                        <svg class="icon" aria-hidden="true" focusable="false">
-                                            <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
-                                        </svg>
-                                    </div>
-                                </label>
-                            </div>
-                        {% else %}
-                            <div class="info-avatar  info-avatar--change" data-button-photo data-url_root="{% url 'change_profile_picture' %}">
-                                <label style="background-image: url('{{ user_profile.avatar.url }}');" class="input  input--photo  info-avatar__input" aria-label="Изменить фото профиля">
-                                    <input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
-                                    <div class="info-avatar__placeholder">
-                                        <svg class="icon" aria-hidden="true" focusable="false">
-                                            <use href="{% static 'recipes/img/sprite.svg' %}#image"/>
-                                        </svg>
-                                    </div>
-                                </label>
-                            </div>
-                        {% endif %}
-                </div>
-            </div>
-            <div class="settings-section__bottom">
-                <button type="submit" class="btn  settings-section__btn">Обновить информацию</button>
-            </div>
-        </fieldset>
-    </form>
+	<h1 class="visually-hidden">Настройки профиля</h1>
+	<form id="settings-profile-form" action="{% url 'settings_profile' %}" method="POST"
+		class="settings__form  settings__form--profile" enctype="multipart/form-data">
+		{% csrf_token %}
+		<fieldset class="form-section  settings-section">
+			<legend class="section-h2  form-section__title">Профиль</legend>
+			<div class="settings-section__group  settings-section__group--avatar">
+				<div class="form-field  settings-section__field  settings-section__field--username">
+					<label class="form-field__label" for="settings-username">Отображаемое имя</label>
+					<input type="text" name="username" id="settings-username" class="input" placeholder="Имя и фамилия"
+						value="{{ username }}" autocomplete="off">
+					{% if error %}
+					<label class="form-field__error" for="settings-username">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text">{{ error }}</span>
+					</label>
+					{% endif %}
+				</div>
+				<div class="form-field  settings-section__field  settings-section__field--desc">
+					<label class="form-field__label" for="description">Описание профиля</label>
+					<textarea name="description" id="description" class="input  input--textarea" placeholder="Пара слов о себе"
+						autocomplete="off">{{ user_profile.description }}</textarea>
+					<label class="form-field__error  hidden" for="description">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+				<div class="form-field  settings-section__field  settings-section__field--avatar">
+					<label class="form-field__label" for="photo">Фото профиля</label>
+					{% if not user_profile.avatar %}
+					<div class="info-avatar  info-avatar--change" data-button-photo
+						data-url_root="{% url 'change_profile_picture' %}">
+						<div style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');"
+							class="input  input--photo  info-avatar__input">
+							<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo"
+								aria-label="Изменить фото профиля">
+							<div class="info-avatar__placeholder">
+								<svg class="icon" aria-hidden="true" focusable="false">
+									<use href="{% static 'recipes/img/sprite.svg' %}#image" />
+								</svg>
+							</div>
+						</div>
+					</div>
+					{% else %}
+					<div class="info-avatar  info-avatar--change" data-button-photo
+						data-url_root="{% url 'change_profile_picture' %}">
+						<div style="background-image: url('{{ user_profile.avatar.url }}');"
+							class="input  input--photo  info-avatar__input">
+							<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo"
+								aria-label="Изменить фото профиля">
+							<div class="info-avatar__placeholder">
+								<svg class="icon" aria-hidden="true" focusable="false">
+									<use href="{% static 'recipes/img/sprite.svg' %}#image" />
+								</svg>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="settings-section__bottom">
+				<button type="submit" class="btn  settings-section__btn">Обновить информацию</button>
+			</div>
+		</fieldset>
+	</form>
 </main>
 {% endblock %}

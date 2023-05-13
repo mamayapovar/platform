@@ -3,96 +3,104 @@
 {% load static recipes_extra %}
 {% block post %}
 <main class="settings  settings--account" id="skip-link">
-    <h1 class="visually-hidden">Настройки аккаунта</h1>
-    <form id="settings-email-form" action="{% url 'settings_account' %}" method="POST" class="settings__form  settings__form--email">
-        {% csrf_token %}
-        <fieldset class="form-section  settings-section">
-            <legend class="section-h2  form-section__title">Электронная почта</legend>
-            <div class="form-field  settings-section__field  settings-section__field--email">
-                <input type="email" name="email" id="settings-email" class="input" placeholder="Электронная почта"  value="{% get_email request.user.id %}">
-                <button type="submit" class="btn  settings-section__btn">Обновить почту</button>
-                {% if error %}
-                    <label class="form-field__error" for="settings-email">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                            <span class="form-field__text">{{ error }}</span>
-                    </label>
-                {% endif %}
-            </div>
-        </fieldset>
-    </form>
-    <form id="settings-password-form" action="{% url 'settings_account' %}" method="POST" class="settings__form  settings__form--password">
-        {% csrf_token %}
-        <fieldset class="form-section  settings-section">
-            <legend class="section-h2  form-section__title">Изменение пароля</legend>
-            <div class="settings-section__group">
-                <div class="form-field  settings-section__field">
-                    {% if old %}
-                        <input type="password" name="password_old" id="settings-password-old" value="{{ old }}" class="input" placeholder="Старый пароль">
-                    {% else %}
-                        <input type="password" name="password_old" id="settings-password-old" class="input" placeholder="Старый пароль">
-                    {% endif %}
-                    <label class="form-field__error  hidden" for="settings-password-old">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-                <div class="form-field  settings-section__field">
-                    {% if new %}
-                        <input type="password" name="password_new" id="settings-password-new" value="{{ new }}" class="input" placeholder="Новый пароль">
-                    {% else %}
-                        <input type="password" name="password_new" id="settings-password-new" class="input" placeholder="Новый пароль">
-                    {% endif %}
-                    <label class="form-field__error  hidden" for="settings-password-new">
-                        <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                            <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                        </svg>
-                        <span class="form-field__text"></span>
-                    </label>
-                </div>
-                <div class="form-field  settings-section__field">
-                    {% if new_repeat %}
-                        <input type="password" name="password_new_repeat" id="settings-password-new-repeat" value="{{ new_repeat }}" class="input" placeholder="Подтвердите новый пароль">
-                    {% else %}
-                        <input type="password" name="password_new_repeat" id="settings-password-new-repeat" class="input" placeholder="Подтвердите новый пароль">
-                    {% endif %}
-                    {% if error_same %}
-                        <label class="form-field__error" for="settings-password-new-repeat">
-                            <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                                <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                            </svg>
-                            <span class="form-field__text">{{ error_same }}</span>
-                        </label>
-                    {% elif error_wrong %}
-                        <label class="form-field__error" for="settings-password-new-repeat">
-                            <svg class="icon  icon--16" aria-hidden="true" focusable="false">
-                                <use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
-                            </svg>
-                            <span class="form-field__text">{{ error_wrong }}</span>
-                        </label>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="settings-section__bottom">
-                <button type="submit" class="btn  settings-section__btn">Обновить пароль</button>
-                <button type="button" class="btn  btn--third  settings-section__btn">Восстановить пароль</button>
-            </div>
-        </fieldset>
-    </form>
-    <form id="settings-delete-form" action="{% url 'settings_account' %}" method="POST" class="settings__form  settings__form--delete">
-        {% csrf_token %}
-        <fieldset class="form-section  settings-section">
-            <div class="settings-section__info">
-                <legend class="section-h2  form-section__title">Удаление аккаунта</legend>
-                <p class="settings-section__desc">Как только вы удалите свой аккаунт, восстановить его будет невозможно. Пожалуйста, будьте уверены.</p>
-            </div>
-            <div class="settings-section__bottom">
-                <button type="submit" class="btn  btn--second  btn--important  settings-section__btn">Удалить мой аккаунт</button>
-            </div>
-        </fieldset>
-    </form>
+	<h1 class="visually-hidden">Настройки аккаунта</h1>
+	<form id="settings-email-form" action="{% url 'settings_account' %}" method="POST"
+		class="settings__form  settings__form--email">
+		{% csrf_token %}
+		<fieldset class="form-section  settings-section">
+			<legend class="section-h2  form-section__title">Электронная почта</legend>
+			<div class="form-field  settings-section__field  settings-section__field--email">
+				<input type="email" name="email" id="settings-email" class="input" placeholder="Электронная почта"
+					value="{% get_email request.user.id %}">
+				<button type="submit" class="btn  settings-section__btn">Обновить почту</button>
+				{% if error %}
+				<label class="form-field__error" for="settings-email">
+					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+					</svg>
+					<span class="form-field__text">{{ error }}</span>
+				</label>
+				{% endif %}
+			</div>
+		</fieldset>
+	</form>
+	<form id="settings-password-form" action="{% url 'settings_account' %}" method="POST"
+		class="settings__form  settings__form--password">
+		{% csrf_token %}
+		<fieldset class="form-section  settings-section">
+			<legend class="section-h2  form-section__title">Изменение пароля</legend>
+			<div class="settings-section__group">
+				<div class="form-field  settings-section__field">
+					{% if old %}
+					<input type="password" name="password_old" id="settings-password-old" value="{{ old }}" class="input"
+						placeholder="Старый пароль">
+					{% else %}
+					<input type="password" name="password_old" id="settings-password-old" class="input"
+						placeholder="Старый пароль">
+					{% endif %}
+					<label class="form-field__error  hidden" for="settings-password-old">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+				<div class="form-field  settings-section__field">
+					{% if new %}
+					<input type="password" name="password_new" id="settings-password-new" value="{{ new }}" class="input"
+						placeholder="Новый пароль">
+					{% else %}
+					<input type="password" name="password_new" id="settings-password-new" class="input"
+						placeholder="Новый пароль">
+					{% endif %}
+					<label class="form-field__error  hidden" for="settings-password-new">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text"></span>
+					</label>
+				</div>
+				<div class="form-field  settings-section__field">
+					{% if new_repeat %}
+					<input type="password" name="password_new_repeat" id="settings-password-new-repeat" value="{{ new_repeat }}"
+						class="input" placeholder="Подтвердите новый пароль">
+					{% else %}
+					<input type="password" name="password_new_repeat" id="settings-password-new-repeat" class="input"
+						placeholder="Подтвердите новый пароль">
+					{% endif %}
+					{% if error_same %}
+					<label class="form-field__error" for="settings-password-new-repeat">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text">{{ error_same }}</span>
+					</label>
+					{% elif error_wrong %}
+					<label class="form-field__error" for="settings-password-new-repeat">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
+						</svg>
+						<span class="form-field__text">{{ error_wrong }}</span>
+					</label>
+					{% endif %}
+				</div>
+			</div>
+			<div class="settings-section__bottom">
+				<button type="submit" class="btn  settings-section__btn">Обновить пароль</button>
+				<button type="button" class="btn  btn--third  settings-section__btn">Восстановить пароль</button>
+			</div>
+		</fieldset>
+	</form>
+	<form id="settings-delete-form" action="{% url 'settings_account' %}" method="POST"
+		class="settings__form  settings__form--delete">
+		{% csrf_token %}
+		<fieldset class="form-section  settings-section">
+			<legend class="section-h2  form-section__title">Удаление аккаунта</legend>
+			<p class="settings-section__desc">Как только вы удалите свой аккаунт, восстановить его будет невозможно. Пожалуйста, будьте уверены.</p>
+			<div class="settings-section__bottom">
+				<button type="submit" class="btn  btn--second  btn--important  settings-section__btn">Удалить мой аккаунт</button>
+			</div>
+		</fieldset>
+	</form>
 </main>
 {% endblock %}
