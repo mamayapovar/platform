@@ -651,6 +651,7 @@
 			var url_root = current.data('url_root');
 			var list = document.querySelector("[data-comments-list]");
 			var post_id = current.data('post-id');
+
 			$.ajax({
 				type: 'POST',
 				url: url_root,
@@ -658,6 +659,8 @@
 				dataType: 'json',
 
 				success: function (json) {
+					var title = document.querySelector('.comments__title')
+					var count = parseInt(title.textContent[0]) + 1
 					var item = document.createElement('article')
 					item.classList.add("comments-item")
 					item.innerHTML = `
@@ -671,6 +674,7 @@
 						<p class="comments-item__text">${json['text']}</p>
 					`
 					list.prepend(item)
+					title.textContent = count + title.textContent.substring(1)
 				}
 			});
 		});
