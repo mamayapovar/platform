@@ -89,6 +89,7 @@
 	</script>
 	{% endif %}
 
+	<!-- * Иконки для скриптов -->
 	<script>
 		const svgHeart = `{% static 'recipes/img/sprite.svg' %}#heart`;
 		const svgBookmark = `{% static 'recipes/img/sprite.svg' %}#bookmark`;
@@ -100,8 +101,12 @@
 		const svgDelete = `{% static 'recipes/img/sprite.svg' %}#delete`;
 		const svgCircleCross = `{% static 'recipes/img/sprite.svg' %}#circle-cross`;
 	</script>
+
+	<!-- * Подключение jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.3.min.js"
 		integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+	<!-- * Подключение куки-файлов -->
 	<script>
 		function getCookie(name) {
 			var cookieValue = null;
@@ -124,6 +129,8 @@
 			});
 		});
 	</script>
+
+	<!-- * Функционал сайта -->
 	<script>
 		function to_bookmarks(e) {
 			const target = e.target;
@@ -636,6 +643,52 @@
 					}
 				}
 			})
+		});
+
+		$('#comments-form').submit(function (e) {
+			e.preventDefault()
+			$.ajax({
+				type: 'POST',
+				url: this.action,
+				data: $(this).serialize(),
+				dataType: 'json',
+
+				success: function (response) {
+					return true
+				}
+			});
+		});
+
+		function add_comment() {
+			console.log(1);
+			var current = $(this);
+			var url_root = current.data('url_root');
+			var text = current.val();
+
+			$.ajax({
+				url : url_root,
+				type : 'POST',
+
+				success : function (json) {
+					var item = document.createElement('article')
+					item.classList.add("comments-item")
+					item.innerHTML = `
+						<div class="comments-item__info">
+								<a href="" class="comments-item__avatar">
+										<img src="img/placeholder-avatar.jpg" alt="Фото профиля" width="40" height="40" loading="lazy">
+								</a>
+								<a href="user.html" class="comments-item__author">${json['user'].username}</a>
+								<time class="comments-item__date" datetime="2022-12-02 16:28">28 минут</time>
+						</div>
+						<p class="comments-item__text">${text}</p>
+					`
+					list.prepend(item)
+				}
+			});
+		}
+
+		$(function() {
+			$('[data-button-comment]').click(add_comment);
 		});
 
 		$(function () {
