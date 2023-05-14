@@ -561,7 +561,10 @@ def recipe(request, recipe_id):
         one.append(elem.comment)
         one.append(elem.com_user.username)
         one.append(elem.com_user.id)
-        one.append(str(UserProfile.objects.filter(user_id=elem.com_user.id)[0].avatar))
+        if UserProfile.objects.filter(user=request.user):
+            one.append(str(UserProfile.objects.filter(user_id=elem.com_user.id)[0].avatar))
+        else:
+            one.append(None)
         one.append(elem)
 
         data.append(one)
@@ -1206,7 +1209,7 @@ def new_comment(request):
 		'text': text,
         'url_to_user': '',
         'user_id': request.user.id,
-        'pfp': str(UserProfile.objects.filter(user=request.user)[0].avatar)
+        'pfp': str(UserProfile.objects.filter(user=request.user)[0].avatar) if UserProfile.objects.filter(user=request.user) else None
     }, status=200)
 
 def error_404(request, exception):
