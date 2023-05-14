@@ -262,7 +262,7 @@
 
 	<!-- TODO: Сделать систему комментариев -->
 	<section class="comments  post__comments" id="comments">
-		<h2 class="section-h2  comments__title">3 комментария</h2>
+		<h2 class="section-h2  comments__title">{{ count_of_comments }}</h2>
 		<form id="comments-form" action="{% url 'recipe' recipe.id %}" method="POST" class="comments__form" data-post-id="{{ recipe.id }}" data-url_root="{% url 'new_comment' %}">
 			{% csrf_token %}
 			<div class="form-field  comments-field">

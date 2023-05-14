@@ -575,6 +575,7 @@ def recipe(request, recipe_id):
         'cats': Category.objects.all(),
         'title': f'{recipe.title} — Мама, я повар!',
         'comments': data,
+        'count_of_comments': f"{len(Comment.objects.filter(com_post_id=recipe.id))} {morph.parse('комментарий')[0].make_agree_with_number(len(Comment.objects.filter(com_post_id=recipe.id))).word}",
 
     })
 
