@@ -647,48 +647,32 @@
 
 		$('#comments-form').submit(function (e) {
 			e.preventDefault()
+			var current = $(this);
+			var url_root = current.data('url_root');
+			var list = document.querySelector("[data-comments-list]");
+			var post_id = current.data('post-id');
 			$.ajax({
 				type: 'POST',
-				url: this.action,
+				url: url_root,
 				data: $(this).serialize(),
 				dataType: 'json',
 
-				success: function (response) {
-					return true
-				}
-			});
-		});
-
-		function add_comment() {
-			console.log(1);
-			var current = $(this);
-			var url_root = current.data('url_root');
-			var text = current.val();
-
-			$.ajax({
-				url : url_root,
-				type : 'POST',
-
-				success : function (json) {
+				success: function (json) {
 					var item = document.createElement('article')
 					item.classList.add("comments-item")
 					item.innerHTML = `
 						<div class="comments-item__info">
-								<a href="" class="comments-item__avatar">
-										<img src="img/placeholder-avatar.jpg" alt="Фото профиля" width="40" height="40" loading="lazy">
+								<a href="/user/${json['user_id']}" class="comments-item__avatar">
+										<img src="/media/${json['pfp']}" alt="Фото профиля" width="40" height="40" loading="lazy">
 								</a>
-								<a href="user.html" class="comments-item__author">${json['user'].username}</a>
-								<time class="comments-item__date" datetime="2022-12-02 16:28">28 минут</time>
+								<a href="/user/${json['user_id']}" class="comments-item__author">${json['user']}</a>
+								<time class="comments-item__date" datetime="2022-12-02 16:28">Только что</time>
 						</div>
-						<p class="comments-item__text">${text}</p>
+						<p class="comments-item__text">${json['text']}</p>
 					`
 					list.prepend(item)
 				}
 			});
-		}
-
-		$(function() {
-			$('[data-button-comment]').click(add_comment);
 		});
 
 		$(function () {

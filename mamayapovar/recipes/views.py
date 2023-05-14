@@ -19,7 +19,7 @@ from django.core.cache import cache
 from django.utils import datastructures
 
 from .forms import *
-from .models import Like, Recipe, Bookmark, UserProfile, StepImages, Subscribe, Category
+from .models import Like, Recipe, Bookmark, UserProfile, StepImages, Subscribe, Category, Comment
 
 morph = pymorphy2.MorphAnalyzer()
 
@@ -37,7 +37,7 @@ def get_formatted_recipe(recipes):
         pers = int(recipe.persons)
         recipe.persons = f"{pers} {morph.parse('порция')[0].make_agree_with_number(pers).word}"
 
-        # cooking_time  
+        # cooking_time
         if len(recipe.cooking_time.split(':')) == 2 and recipe.cooking_time.split(':')[0] != '':
             if recipe.cooking_time.split(':')[1] == '0':
                 cook = recipe.cooking_time.split(':')
@@ -239,7 +239,7 @@ def new_recipe(request):
     elif request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            # check title 
+            # check title
             if request.POST['title']:
                 if len(form.cleaned_data['title']) > 70:
                     return JsonResponse(data={
@@ -262,7 +262,7 @@ def new_recipe(request):
                         'status': 400,
                         'error': 'Описание рецепта должно содержать не более 150 символов'
                     }, status=200)
-            
+
             # check category
             if not request.POST['cat']:
                 return JsonResponse(data={
@@ -317,7 +317,7 @@ def new_recipe(request):
                             'error': 'Пожалуйста, выберите единицу измерения ингредиента'
                         }, status=200)
 
-            
+
             # check photo
             if not request.FILES.get('photo'):
                 return JsonResponse(data={
@@ -555,11 +555,27 @@ def recipe(request, recipe_id):
         for elem in recipe.steps:
             elem.append(None)
 
+    data = []
+    for elem in Comment.objects.filter(com_post_id=recipe.id):
+        one = []
+        one.append(elem.comment)
+        one.append(elem.com_user.username)
+        one.append(elem.com_user.id)
+        one.append(str(UserProfile.objects.get(user_id=elem.com_user.id).avatar))
+        one.append(elem)
+
+        data.append(one)
+        one = []
+    print(data)
+
+
     return render(request, 'recipes/post.html', {
         'recipe': recipe,
         'is_auth': request.user.is_authenticated,
         'cats': Category.objects.all(),
-        'title': f'{recipe.title} — Мама, я повар!'
+        'title': f'{recipe.title} — Мама, я повар!',
+        'comments': data,
+
     })
 
 
@@ -712,7 +728,7 @@ def delete_recipe(request, id):
         bms = Bookmark.objects.filter(book_post_id=recipe.id)
         for elem in bms:
             elem.delete()
-        
+
         rmtree(os.path.join(settings.MEDIA_ROOT, 'recipes', recipe.folder_id))
 
         recipe.delete()
@@ -821,18 +837,18 @@ def settings_account(request):
                 if elem.avatar:
                     os.remove(elem.avatar.path)
                 elem.delete()
-            
+
             # recipes
             recipes = Recipe.objects.filter(author_id=request.user.id)
             for elem in recipes:
                 # step images
                 for el in StepImages.objects.filter(recipe_id=elem.id):
                     el.delete()
-                    
+
                 # bookmarks
                 for elem1 in Bookmark.objects.filter(book_user_id=request.user.id):
                     elem1.delete()
-                    
+
                 # likes
                 for e in Like.objects.filter(like_user_id=request.user.id):
                     e.delete()
@@ -881,7 +897,7 @@ def edit_recipe(request, id):
     elif request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            # check title 
+            # check title
             if request.POST['title']:
                 if len(form.cleaned_data['title']) > 70:
                     return JsonResponse(data={
@@ -904,7 +920,7 @@ def edit_recipe(request, id):
                         'status': 400,
                         'error': 'Описание рецепта должно содержать не более 150 символов'
                     }, status=200)
-            
+
             # check category
             if not request.POST['cat']:
                 return JsonResponse(data={
@@ -913,7 +929,7 @@ def edit_recipe(request, id):
                     'error': 'Пожалуйста, выберите категорию блюда'
                 }, status=200)
 
-            # check time cooking 
+            # check time cooking
             if request.POST.get("cooking_time_minutes") != '0':
                 if (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
                     return JsonResponse(data={
@@ -959,7 +975,7 @@ def edit_recipe(request, id):
                             'error': 'Пожалуйста, выберите единицу измерения ингредиента'
                         }, status=200)
 
-            
+
             # check photo
             if not request.FILES.get('photo'):
                 return JsonResponse(data={
@@ -1008,8 +1024,8 @@ def edit_recipe(request, id):
                             'status': 400,
                             'error': 'Размер фото не должен превышать 15 мб'
                         }, status=200)
-            
-            
+
+
             recipe = Recipe.objects.get(id=id)
             os.remove(recipe.photo.path)
             categories = {
@@ -1042,13 +1058,13 @@ def edit_recipe(request, id):
                     ings.append(ingredient)
                     ingredient = ''
             recipe.ingredients = ';'.join(ings)
-            
+
 
             itog1 = []
             for elem in request.POST:
                 if 'step-description-' in elem:
                     itog1.append([x for x in request.POST[elem].replace('\r', '').split('\n') if x != ''])
-                    
+
 
             j = 0
             step_descs = []
@@ -1078,7 +1094,7 @@ def edit_recipe(request, id):
 
             full_filename = os.path.join(
                 settings.MEDIA_ROOT, folder, second_folder, uploaded_filename)
-            
+
             fout = open(full_filename, 'wb+')
 
             file_content = ContentFile(request.FILES['photo'].read())
@@ -1099,8 +1115,8 @@ def edit_recipe(request, id):
                             descs.append([elem, True])
                     except ValueError:
                         descs.append([elem, False])
-            
-            
+
+
 
             files = []
             for elem in request.FILES:
@@ -1133,7 +1149,7 @@ def edit_recipe(request, id):
 
                 ful_fil = os.path.join(
                     settings.MEDIA_ROOT, folder, second_folder, 'steps', uploaded_filename)
-                        
+
 
                 try:
                     fout2 = open(ful_fil, 'wb+')
@@ -1179,9 +1195,18 @@ def search(request):
 
 
 def new_comment(request):
-    print(1)
-    return JsonResponse(data={'user': request.user}, status=200)
+    text = request.POST.get('comments-text')
+    post_id = request.POST.get('recipe_id')
+    comment = Comment(comment=text, com_post_id=post_id, com_user=request.user)
+    comment.save()
 
+    return JsonResponse(data={
+        'user': request.user.username,
+		'text': text,
+        'url_to_user': '',
+        'user_id': request.user.id,
+        'pfp': str(UserProfile.objects.get(user=request.user).avatar)
+    }, status=200)
 
 def error_404(request, exception):
     return HttpResponseRedirect('/')

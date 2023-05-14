@@ -263,13 +263,14 @@
 	<!-- TODO: Сделать систему комментариев -->
 	<section class="comments  post__comments" id="comments">
 		<h2 class="section-h2  comments__title">3 комментария</h2>
-		<form id="comments-form" action="{% url 'recipe' recipe.id %}" method="POST" class="comments__form">
+		<form id="comments-form" action="{% url 'recipe' recipe.id %}" method="POST" class="comments__form" data-post-id="{{ recipe.id }}" data-url_root="{% url 'new_comment' %}">
 			{% csrf_token %}
 			<div class="form-field  comments-field">
 				<div class="comments-field__inner">
+					<input value="{{ recipe.id }}" name="recipe_id" class='is-hidden'>
 					<textarea name="comments-text" id="comments-text" class="input  input--textarea  comments__input"
 						placeholder="Написать комментарий..." autocomplete="off" aria-label="Написать комментарий к рецепту"></textarea>
-					<button type="submit" class="btn  btn--small  comments__btn" data-button-comment data-url_root="{% url 'new_comment' %}">Отправить</button>
+					<button type="submit" class="btn  btn--small  comments__btn" data-button-comment>Отправить</button>
 				</div>
 				<label class="form-field__error  hidden" for="comments-text">
 					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
@@ -279,20 +280,19 @@
 				</label>
 			</div>
 		</form>
-		<div class="comments__list">
-			<!-- * Пример скелета комментария -->
-			<!-- <article class="comments-item">
+		<div class="comments__list" data-comments-list>
+			{% for text, username, user_id, pfp, comment in comments %}
+			<article class="comments-item">
 				<div class="comments-item__info">
-					<a href="user.html" class="comments-item__avatar">
-						<img src="img/placeholder-avatar.jpg" alt="Фото профиля" width="40" height="40" loading="lazy">
+					<a href="/user/{{ user_id }}" class="comments-item__avatar">
+							<img src="/media/{{ pfp }}" alt="Фото профиля" width="40" height="40" loading="lazy">
 					</a>
-					<a href="user.html" class="comments-item__author">Алексей Калинин</a>
-					<time class="comments-item__date" datetime="2022-12-02 16:28">28 минут</time>
+					<a href="/user/{{ user_id }}" class="comments-item__author">{{ username }}</a>
+					<time class="comments-item__date" datetime="{{ comment.get_formatted_time_full }}">{{ comment.get_formatted_time }}</time>
 				</div>
-				<p class="comments-item__text">Сразу же, как увидел рецепт, решил оценить его на практике.
-					И, о чудо! Оладьи получаются невероятно пышными :)
-				</p>
-			</article> -->
+				<p class="comments-item__text">{{ text }}</p>
+			</article>
+			{% endfor %}
 		</div>
 	</section>
 </main>

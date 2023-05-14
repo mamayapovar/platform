@@ -129,3 +129,23 @@ class Comment(models.Model):
     com_user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     comment = models.TextField(blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
+
+    def get_formatted_time(self):
+        self.time_created: datetime
+        now = datetime.now(timezone.utc)
+        deltatime = now - self.time_created
+        if deltatime < timedelta(minutes=1):
+            return "только что"
+        elif deltatime < timedelta(hours=1):
+            return f"{deltatime.total_seconds() // 60:.0f} {morph.parse('минута')[0].make_agree_with_number(floor(deltatime.total_seconds() // 60)).word}"
+        elif deltatime < timedelta(days=1):
+            return f"{deltatime.total_seconds() // 3600:.0f} {morph.parse('час')[0].make_agree_with_number(floor(deltatime.total_seconds() // 3600)).word}"
+        elif deltatime < timedelta(days=2):
+            return "вчера"
+        elif deltatime < timedelta(days=365):
+            return f"{self.time_created.strftime('%d %b')}"
+        else:
+            return f"{self.time_created.strftime('%d.%m.%Y')}"
+
+    def get_formatted_time_full(self):
+        return f"{self.time_created.strftime('%Y-%m-%d %H:%M')}"
