@@ -59,18 +59,18 @@
 		</a>
 	</div>
 	<div class="feed  user__feed">
-		<!-- Если рецептов нет и не авторизован -->
+		<!-- TODO: Если рецептов нет и не авторизован -->
 		<!-- <div class="feed-placeholder">
 			<p class="feed-placeholder__desc">Здесь ещё нет рецептов</p>
 		</div> -->
 
-		<!-- Если рецептов нет и это аккаунт пользователя -->
+		<!-- TODO: Если рецептов нет и это аккаунт пользователя -->
 		<!-- <div class="feed-placeholder  feed-placeholder--btn">
 			<p class="feed-placeholder__desc">Опубликуйте первый рецепт, чтобы привлечь читаталей</p>
 			<a href="{% url 'new_recipe' %}" class="btn  btn--small  feed-placeholder__btn">Создать рецепт</a>
 		</div> -->
 
-		<!-- Если рецепты есть -->
+		<!-- * Если рецепты есть -->
 		{% for recipe in recipes %}
 		<article class="feed-item">
 			<header class="content-header  feed-item__header">

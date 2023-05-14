@@ -12,18 +12,18 @@
 		</div>
 	</div>
 	<div class="feed  category__feed">
-		<!-- Если нет рецептов и не авторизован -->
+		<!-- TODO: Если нет рецептов и не авторизован -->
 		<!-- <div class="feed-placeholder">
 			<p class="feed-placeholder__desc">Здесь ещё нет рецептов</p>
 		</div> -->
 
-		<!-- Если нет рецептов -->
+		<!-- TODO: Если нет рецептов -->
 		<!-- <div class="feed-placeholder  feed-placeholder--btn">
 			<p class="feed-placeholder__desc">Опубликуйте первый рецепт, чтобы привлечь читаталей</p>
 			<a href="{% url 'new_recipe' %}" class="btn  btn--small  feed-placeholder__btn">Создать рецепт</a>
 		</div> -->
 
-		<!-- Если есть рецепты -->
+		<!-- * Если есть рецепты -->
 		{% for recipe in recipes %}
 		<article class="feed-item">
 			<header class="content-header  feed-item__header">

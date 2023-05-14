@@ -4,22 +4,20 @@
 {% block content %}
 
 <h1 class="visually-hidden">Свежие рецепты</h1>
-
-<!-- Пост -->
 <div class="feed">
-	<!-- Если рецептов нет и не авторизован -->
+	<!-- TODO: Если рецептов нет и не авторизован -->
 	<!-- <div class="feed-placeholder  feed-placeholder--btn">
 		<p class="feed-placeholder__desc">Опубликуйте первый рецепт, чтобы привлечь читаталей</p>
 		<button class="btn  btn--small  feed-placeholder__btn" data-graph-path="register" data-graph-speed="100" aria-label="Создать новый рецепт">Создать рецепт</button>
 	</div> -->
 
-	<!-- Если рецептов нет -->
+	<!-- TODO: Если рецептов нет -->
 	<!-- <div class="feed-placeholder  feed-placeholder--btn">
 		<p class="feed-placeholder__desc">Опубликуйте первый рецепт, чтобы привлечь читаталей</p>
 		<a href="{% url 'new_recipe' %}" class="btn  btn--small  feed-placeholder__btn">Создать рецепт</a>
 	</div> -->
 
-	<!-- Если рецепты есть -->
+	<!-- * Если рецепты есть -->
 	{% for recipe in recipes %}
 	<article class="feed-item">
 		<header class="content-header  feed-item__header">
