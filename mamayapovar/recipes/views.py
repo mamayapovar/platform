@@ -1178,5 +1178,10 @@ def search(request):
         })
 
 
+def new_comment(request):
+    print(1)
+    return JsonResponse(data={'user': request.user}, status=200)
+
+
 def error_404(request, exception):
     return HttpResponseRedirect('/')

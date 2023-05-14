@@ -119,3 +119,13 @@ class Subscribe(models.Model):
     subscribe_to = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='subscribe_to')
     time_created = models.DateTimeField(auto_now_add=True)
 
+
+class Comment(models.Model):
+    class Meta:
+        db_table = 'comment'
+        ordering = ['-time_created']
+
+    com_post = models.ForeignKey('Recipe', on_delete=models.DO_NOTHING)
+    com_user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    comment = models.TextField(blank=True)
+    time_created = models.DateTimeField(auto_now_add=True)
