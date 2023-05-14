@@ -1206,7 +1206,7 @@ def new_comment(request):
 		'text': text,
         'url_to_user': '',
         'user_id': request.user.id,
-        'pfp': str(UserProfile.objects.get(user=request.user).avatar)
+        'pfp': str(UserProfile.objects.filter(user=request.user)[0].avatar)
     }, status=200)
 
 def error_404(request, exception):
