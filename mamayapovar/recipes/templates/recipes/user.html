@@ -163,11 +163,12 @@
 					</button>
 					{% endif %}
 					<a href="recipe/{{ recipe.id }}#comments"
-						class="btn-reset  content-footer__btn  content-footer__btn--comment disabled"
-						aria-label="Перейти к комментариям" tabindex="-1">
+						class="btn-reset  content-footer__btn  content-footer__btn--comment"
+						aria-label="Перейти к комментариям">
 						<svg class="icon" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle" />
 						</svg>
+						<!-- TODO: добавить число комментариев -->
 						<span>11</span>
 					</a>
 				</div>
@@ -191,20 +192,6 @@
 		</article>
 		{% endfor %}
 	{% endif %}
-
-		<!-- TODO: Если рецептов нет и не авторизован -->
-		<!-- <div class="feed-placeholder">
-			<p class="feed-placeholder__desc">Здесь ещё нет рецептов</p>
-		</div> -->
-
-		<!-- TODO: Если рецептов нет и это аккаунт пользователя -->
-		<!-- <div class="feed-placeholder  feed-placeholder--btn">
-			<p class="feed-placeholder__desc">Опубликуйте первый рецепт, чтобы привлечь читаталей</p>
-			<a href="{% url 'new_recipe' %}" class="btn  btn--small  feed-placeholder__btn">Создать рецепт</a>
-		</div> -->
-
-		<!-- * Если рецепты есть -->
-
 	</div>
 
 	{% elif is_auth and request.user.id != user.id %}
@@ -351,11 +338,12 @@
 						</button>
 						{% endif %}
 						<a href="recipe/{{ recipe.id }}#comments"
-							class="btn-reset  content-footer__btn  content-footer__btn--comment disabled"
+							class="btn-reset  content-footer__btn  content-footer__btn--comment"
 							aria-label="Перейти к комментариям" tabindex="-1">
 							<svg class="icon" aria-hidden="true" focusable="false">
 								<use href="{% static 'recipes/img/sprite.svg' %}#circle" />
 							</svg>
+							<!-- TODO: добавить число комментариев -->
 							<span>11</span>
 						</a>
 					</div>
@@ -502,11 +490,12 @@
 					</button>
 					{% endif %}
 					<a href="recipe/{{ recipe.id }}#comments"
-						class="btn-reset  content-footer__btn  content-footer__btn--comment disabled"
+						class="btn-reset  content-footer__btn  content-footer__btn--comment"
 						aria-label="Перейти к комментариям" tabindex="-1">
 						<svg class="icon" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle" />
 						</svg>
+						<!-- TODO: добавить число комментариев -->
 						<span>11</span>
 					</a>
 				</div>
