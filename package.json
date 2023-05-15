@@ -8,7 +8,7 @@
     "url": "https://github.com/mamayapovar/platform.git"
   },
   "scripts": {
-    "dev": "cd .start && dev.bat"
+    "dev": "cd .utility && dev.bat"
   },
   "author": "Alexey Kalinin, Kolya Krylov"
 }
