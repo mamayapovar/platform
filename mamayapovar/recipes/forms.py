@@ -26,7 +26,6 @@ class LoginForm(forms.Form):
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
 
-
 class ProfileSettingsForm(forms.Form):
     username = forms.CharField(
         required=False,
@@ -61,7 +60,6 @@ class ProfileSettingsForm(forms.Form):
         username = cleaned_data.get('username')
         description = cleaned_data.get('description')
 
-
 class ChangeEmailForm(forms.Form):
     email = forms.CharField(
         required=False,
@@ -76,7 +74,6 @@ class ChangeEmailForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get('email')
-
 
 class ChangePasswordForm(forms.Form):
     password_old = forms.CharField(
@@ -119,8 +116,6 @@ class ChangePasswordForm(forms.Form):
         password_new = cleaned_data.get('password_new')
         password_new_repeat = cleaned_data.get('password_new_repeat')
 
-
-
 class RecipeForm(forms.Form):
     title = forms.CharField(required=False)
     description = forms.CharField(required=False)
@@ -140,8 +135,6 @@ class RecipeForm(forms.Form):
         cooking_time_minutes = cleaned_data.get('cooking_time_minutes')
         photo = cleaned_data.get('photo')
 
-
-
 class RegistrationForm(forms.Form):
     username = forms.CharField(
         required=False,
@@ -151,7 +144,7 @@ class RegistrationForm(forms.Form):
             'id': 'username-register',
             'placeholder': 'Имя и фамилия'
         }))
-    
+
     email = forms.CharField(
         required=False,
         widget=forms.EmailInput(attrs={
@@ -170,3 +163,6 @@ class RegistrationForm(forms.Form):
             'placeholder': "Пароль"
         })
     )
+
+class CommentsForm(forms.Form):
+    comments_text = forms.CharField(required=False)

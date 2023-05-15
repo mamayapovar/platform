@@ -652,29 +652,53 @@
 			var list = document.querySelector("[data-comments-list]");
 			var post_id = current.data('post-id');
 
+			const commentsArea = document.querySelector('.comments-field #comments-text')
+			const commentsError = document.querySelector('.comments-field .form-field__error')
+			const commentsErrorText = document.querySelector('.comments-field .form-field__error .form-field__text')
+
+			commentsArea.classList.remove('invalid')
+			commentsError.classList.add('hidden')
+			commentsErrorText.textContent = ''
+
+			function morph_word(number, words) {
+				cases = [2, 0, 1, 1, 1, 2];
+				return words[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];
+			}
+
 			$.ajax({
 				type: 'POST',
 				url: url_root,
 				data: $(this).serialize(),
 				dataType: 'json',
 
-				success: function (json) {
-					var title = document.querySelector('.comments__title')
-					var count = parseInt(title.textContent[0]) + 1
-					var item = document.createElement('article')
-					item.classList.add("comments-item")
-					item.innerHTML = `
-						<div class="comments-item__info">
-								<a href="/user/${json['user_id']}" class="comments-item__avatar">
-										<img src="/media/${json['pfp']}" alt="Фото профиля" width="40" height="40" loading="lazy">
-								</a>
-								<a href="/user/${json['user_id']}" class="comments-item__author">${json['user']}</a>
-								<time class="comments-item__date" datetime="2022-12-02 16:28">Только что</time>
-						</div>
-						<p class="comments-item__text">${json['text']}</p>
-					`
-					list.prepend(item)
-					title.textContent = count + title.textContent.substring(1)
+				success: function (response) {
+					if (response.status === 201) {
+						const title = document.querySelector('.comments__title')
+						let titleElements = title.textContent.split(' ')
+						let titleCount = parseInt(titleElements[0])
+
+						const item = document.createElement('article')
+						item.classList.add("comments-item")
+						item.innerHTML = `
+							<div class="comments-item__info">
+									<a href="/user/${response['user_id']}" class="comments-item__avatar">
+											<img src="/media/${response['pfp']}" alt="Фото профиля" width="40" height="40" loading="lazy">
+									</a>
+									<a href="/user/${response['user_id']}" class="comments-item__author">${response['user']}</a>
+									<time class="comments-item__date" datetime="2022-12-02 16:28">Только что</time>
+							</div>
+							<p class="comments-item__text">${response['text']}</p>
+						`
+						list.prepend(item)
+
+						titleCount++
+						let titleText = ' ' + morph_word(titleCount, ['комментарий', 'комментария', 'комментариев'])
+						title.textContent = titleCount + titleText
+					} else if (response.status === 400) {
+						commentsArea.classList.add('invalid')
+						commentsError.classList.remove('hidden')
+						commentsErrorText.textContent = response.error
+					}
 				}
 			});
 		});

@@ -579,7 +579,6 @@ def recipe(request, recipe_id):
         'title': f'{recipe.title} — Мама, я повар!',
         'comments': data,
         'count_of_comments': f"{len(Comment.objects.filter(com_post_id=recipe.id))} {morph.parse('комментарий')[0].make_agree_with_number(len(Comment.objects.filter(com_post_id=recipe.id))).word}",
-
     })
 
 
@@ -1201,16 +1200,26 @@ def search(request):
 def new_comment(request):
     text = request.POST.get('comments-text')
     post_id = request.POST.get('recipe_id')
-    comment = Comment(comment=text, com_post_id=post_id, com_user=request.user)
-    comment.save()
 
-    return JsonResponse(data={
-        'user': request.user.username,
-		'text': text,
-        'url_to_user': '',
-        'user_id': request.user.id,
-        'pfp': str(UserProfile.objects.filter(user=request.user)[0].avatar) if UserProfile.objects.filter(user=request.user) else None
-    }, status=200)
+    form = CommentsForm(request.POST)
+    if form.is_valid():
+        if len(text) < 1:
+            return JsonResponse(data={
+                'status': 400,
+                'error': 'Пожалуйста, введите текст комментария'
+            }, status=200)
+        else:
+            comment = Comment(comment=text, com_post_id=post_id, com_user=request.user)
+            comment.save()
+
+            return JsonResponse(data={
+                'status': 201,
+                'user': request.user.username,
+                'text': text,
+                'url_to_user': '',
+                'user_id': request.user.id,
+                'pfp': str(UserProfile.objects.filter(user=request.user)[0].avatar) if UserProfile.objects.filter(user=request.user) else None
+            }, status=200)
 
 def error_404(request, exception):
     return HttpResponseRedirect('/')
