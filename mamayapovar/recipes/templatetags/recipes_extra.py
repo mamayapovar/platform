@@ -2,7 +2,7 @@
 
 from django import template
 from django.contrib.auth.models import User
-from recipes.models import Bookmark, UserProfile, Like, Subscribe, Recipe
+from recipes.models import Bookmark, UserProfile, Like, Subscribe, Recipe, Comment
 import pymorphy2
 
 morph = pymorphy2.MorphAnalyzer()
@@ -31,7 +31,7 @@ def get_avatar_url(id_):
         return UserProfile.objects.get(user=id_).avatar.url if UserProfile.objects.get(user=id_).avatar else None
     except:
         return None
-        
+
 
 @register.simple_tag
 def get_likes_count(id_):
@@ -125,5 +125,10 @@ def get_user_profile(id_):
 
 @register.simple_tag
 def get_amount(id_):
-    return 
+    return
+
+
+@register.simple_tag
+def get_comments_count(id_):
+    return len(Comment.objects.filter(com_post_id=id_))
 

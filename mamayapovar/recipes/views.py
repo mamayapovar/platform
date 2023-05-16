@@ -561,7 +561,7 @@ def recipe(request, recipe_id):
         one.append(elem.comment)
         one.append(elem.com_user.username)
         one.append(elem.com_user.id)
-        if UserProfile.objects.filter(user=request.user):
+        if UserProfile.objects.filter(user=elem.com_user.id):
             one.append(str(UserProfile.objects.filter(user_id=elem.com_user.id)[0].avatar))
         else:
             one.append(None)

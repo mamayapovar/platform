@@ -270,9 +270,11 @@
 					<input value="{{ recipe.id }}" name="recipe_id" class='is-hidden'>
 					<textarea name="comments-text" id="comments-text" class="input  input--textarea  comments__input"
 						placeholder="Написать комментарий..." autocomplete="off" aria-label="Написать комментарий к рецепту"></textarea>
-					<!-- TODO: у гостя должна отобраться кнопка ниже -->
-					<!-- <button type="button" class="btn  btn--small  comments__btn" data-graph-path="register" data-graph-speed="100">Отправить</button> -->
-					<button type="submit" class="btn  btn--small  comments__btn" data-button-comment>Отправить</button>
+					{% if request.user.is_authenticated %}
+						<button type="submit" class="btn  btn--small  comments__btn" data-button-comment>Отправить</button>
+					{% else %}
+						<button type="button" class="btn  btn--small  comments__btn" data-graph-path="register" data-graph-speed="100">Отправить</button>
+					{% endif %}
 				</div>
 				<label class="form-field__error  hidden" for="comments-text">
 					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
