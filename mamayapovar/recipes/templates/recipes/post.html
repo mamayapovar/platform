@@ -287,12 +287,20 @@
 		<div class="comments__list" data-comments-list>
 			{% for text, username, user_id, pfp, comment in comments %}
 			<article class="comments-item">
-				<div class="comments-item__info">
-					<a href="/user/{{ user_id }}" class="comments-item__avatar">
-							<img src="/media/{{ pfp }}" alt="Фото профиля" width="40" height="40" loading="lazy">
-					</a>
-					<a href="/user/{{ user_id }}" class="comments-item__author">{{ username }}</a>
-					<time class="comments-item__date" datetime="{{ comment.get_formatted_time_full }}">{{ comment.get_formatted_time }}</time>
+				<div class="comments-item__header">
+					<div class="comments-item__info">
+						<a href="/user/{{ user_id }}" class="comments-item__avatar">
+								<img src="/media/{{ pfp }}" alt="Фото профиля" width="40" height="40" loading="lazy">
+						</a>
+						<a href="/user/{{ user_id }}" class="comments-item__author">{{ username }}</a>
+						<time class="comments-item__date" datetime="{{ comment.get_formatted_time_full }}">{{ comment.get_formatted_time }}</time>
+					</div>
+					<!-- TODO: Добавить возможность удаления комментариев по кнопке снизу -->
+					<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий">
+						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+							<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
+						</svg>
+					</button>
 				</div>
 				<p class="comments-item__text">{{ text }}</p>
 			</article>
