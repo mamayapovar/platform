@@ -731,6 +731,10 @@ def delete_recipe(request, id):
         for elem in bms:
             elem.delete()
 
+        cmts = Comment.objects.filter(com_post_id=recipe.id)
+        for elem in cmts:
+            elem.delete()
+
         rmtree(os.path.join(settings.MEDIA_ROOT, 'recipes', recipe.folder_id))
 
         recipe.delete()
@@ -838,6 +842,10 @@ def settings_account(request):
             for elem in UserProfile.objects.filter(user_id=request.user.id):
                 if elem.avatar:
                     os.remove(elem.avatar.path)
+                elem.delete()
+
+            # comments
+            for elem in Comment.objects.filter(com_user_id=request.user.id):
                 elem.delete()
 
             # recipes
