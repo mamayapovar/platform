@@ -711,6 +711,26 @@
 			});
 		});
 
+		function delete_comment(e) {
+			var current = $(this);
+			var url_root = current.data('url_root');
+			const post = document.querySelector('.comments-item');
+			post.classList.add('visually-hidden');
+
+			$.ajax({
+				url: url_root,
+				type: 'POST',
+
+				success: function () {
+					return true
+				}
+			});
+		}
+
+		$(function () {
+			$('[data-delete-comment-button]').click(delete_comment);
+		});
+
 		$(function () {
 			$('[data-button-bookmark]').click(to_bookmarks);
 		});

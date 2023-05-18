@@ -208,14 +208,14 @@
 				{% endif %}
 				{% endif %}
 
-				<a href="recipe/{{ recipe.id }}#comments"
+				<a href="/recipe/{{ recipe.id }}#comments"
 					class="btn-reset  content-footer__btn  content-footer__btn--comment"
 					aria-label="Перейти к комментариям">
 					<svg class="icon" aria-hidden="true" focusable="false">
 						<use href="{% static 'recipes/img/sprite.svg' %}#circle" />
 					</svg>
 					<!-- TODO: добавить число комментариев -->
-					<span>11</span>
+					<span>{% get_comments_count recipe.id %}</span>
 				</a>
 			</div>
 			{% if is_auth %}

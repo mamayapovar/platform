@@ -569,7 +569,6 @@ def recipe(request, recipe_id):
 
         data.append(one)
         one = []
-    print(data)
 
 
     return render(request, 'recipes/post.html', {
@@ -1220,6 +1219,14 @@ def new_comment(request):
                 'user_id': request.user.id,
                 'pfp': str(UserProfile.objects.filter(user=request.user)[0].avatar) if UserProfile.objects.filter(user=request.user) else None
             }, status=200)
+
+
+def delete_comment(request, id):
+    if request.user.id == Comment.objects.get(id=id).com_user.id:
+        Comment.objects.filter(id=id).delete()
+        return JsonResponse(data={'status': 200}, status=200)
+    return JsonResponse(data={'status': 400}, status=200)
+
 
 def error_404(request, exception):
     return HttpResponseRedirect('/')
