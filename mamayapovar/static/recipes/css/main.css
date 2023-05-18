@@ -588,15 +588,13 @@ a {
   height: 100%;
   line-height: var(--lh-s);
   text-align: center;
-  cursor: pointer;
 }
 .input--photo input[type=file] {
   position: absolute;
-  z-index: -1;
-  display: block;
-  width: 0;
-  height: 0;
+  width: 100%;
+  height: 140%;
   opacity: 0;
+  cursor: pointer;
 }
 .input--photo .icon {
   margin-bottom: 12px;
@@ -797,18 +795,19 @@ a {
   position: relative;
   display: grid;
   grid-template-rows: 300px auto;
+  overflow: hidden;
   width: 100%;
   gap: 8px;
 }
-.imageuploader__input {
+.imageuploader__wrapper {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 }
-.imageuploader__input:focus-within {
+.imageuploader__wrapper:focus-within {
   border-color: var(--color-fields-border-focused);
 }
-.imageuploader__input:focus-within:hover {
+.imageuploader__wrapper:focus-within:hover {
   border-color: var(--color-fields-border-focused);
 }
 .imageuploader__placeholder {
@@ -2282,21 +2281,31 @@ a {
 }
 
 .info-avatar {
+  position: relative;
+  overflow: hidden;
   border-radius: 100%;
 }
-.info-avatar__input {
+.info-avatar__wrapper {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  position: relative;
-  border: none;
+  border-style: solid;
+  border-color: var(--color-bg-island);
   border-radius: 100%;
 }
-.info-avatar__input:hover .info-avatar__placeholder {
+.info-avatar__wrapper:focus-within {
+  border-color: var(--color-fields-border-focused);
+}
+.info-avatar__wrapper:focus-within:hover {
+  border-color: var(--color-fields-border-focused);
+}
+.info-avatar__wrapper:hover {
+  border-color: var(--color-bg-island);
+}
+.info-avatar__wrapper:hover .info-avatar__placeholder {
   opacity: 1;
 }
 .info-avatar__placeholder {
-  position: absolute;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2314,6 +2323,7 @@ a {
   -webkit-transition: opacity 0.2s ease;
   -o-transition: opacity 0.2s ease;
   transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 .info-avatar .icon {
   margin: 0;
@@ -2659,7 +2669,7 @@ a {
   -ms-transform: translateY(-100%);
   transform: translateY(-100%);
 }
-.skip-link--new-recipe {
+.skip-link--recipe-menu {
   bottom: 0;
   opacity: 0;
   -webkit-transform: none;
@@ -2669,7 +2679,7 @@ a {
   -o-transition: opacity 0.3s;
   transition: opacity 0.3s;
 }
-.skip-link--new-recipe:focus {
+.skip-link--recipe-menu:focus {
   opacity: 1;
   -webkit-transform: none;
   -ms-transform: none;

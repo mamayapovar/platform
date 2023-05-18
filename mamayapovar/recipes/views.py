@@ -637,7 +637,7 @@ def user_profile(request, id):
     }
     return render(request, 'recipes/user.html', content)
 
-
+# TODO: Исправить обновление аватарки
 def change_profile_picture(request):
     if UserProfile.objects.filter(user=request.user):
         user = UserProfile.objects.get(user=request.user)

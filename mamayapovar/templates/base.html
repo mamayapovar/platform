@@ -21,9 +21,6 @@
 	<link rel="preload" href="{% static 'recipes/fonts/NunitoSans-Bold.woff2' %}" as="font" type="font/woff2" crossorigin>
 	<link rel="stylesheet" href="{% static 'recipes/css/vendor.css' %}">
 	<link rel="stylesheet" href="{% static 'recipes/css/main.css' %}">
-	{% if 'edit_recipe' in request.get_full_path %}
-	<script defer src="{% static 'recipes/js/edit.js' %}"></script>
-	{% endif %}
 	<script defer src="{% static 'recipes/js/main.js' %}"></script>
 </head>
 
@@ -236,7 +233,6 @@
 				processData: false,
 				data: formData,
 
-
 				success: function () {
 					return true
 				}
@@ -434,11 +430,11 @@
 			$('.new-recipe-section__field--desc input').removeClass('invalid')
 			$('.new-recipe-section__field--cat .select').removeClass('invalid')
 			$('.new-recipe-section__field--time input').removeClass('invalid')
-			$('.new-recipe-section--photo .imageuploader__input').removeClass('invalid')
+			$('.new-recipe-section--photo .imageuploader__wrapper').removeClass('invalid')
 			$('.ingredient-item input').removeClass('invalid')
 			$('.ingredient-item .select').removeClass('invalid')
 			$('.step-item .step-item__input').removeClass('invalid')
-			$('.step-item .imageuploader__input').removeClass('invalid')
+			$('.step-item .imageuploader__wrapper').removeClass('invalid')
 
 			$('.new-recipe-section__field--title .form-field__error').addClass('hidden')
 			$('.new-recipe-section__field--desc .form-field__error').addClass('hidden')
@@ -502,7 +498,7 @@
 						$('html, body').animate({
 							scrollTop: $(photo).offset().top - 400
 						}, 300);
-						$('.new-recipe-section--photo .imageuploader__input').addClass('invalid')
+						$('.new-recipe-section--photo .imageuploader__wrapper').addClass('invalid')
 						$('.new-recipe-section--photo .imageuploader .form-field__error').removeClass('hidden')
 						$('.new-recipe-section--photo .imageuploader .form-field__text').text(response.error)
 					} else if (response.status === 400 && response.form_id === 'ingredient') {
@@ -526,7 +522,7 @@
 							$(`#step-${response.step_id} .invalid`).focus()
 							$(`#step-${response.step_id} .form-field__error`).attr('for', `step-description-${response.step_id}`)
 						} else if (response.step_field === 'photo') {
-							$(`#step-${response.step_id} .imageuploader__input`).addClass('invalid')
+							$(`#step-${response.step_id} .imageuploader__wrapper`).addClass('invalid')
 							$(`#step-${response.step_id} .form-field__error`).attr('for', `step-photo-${response.step_id}`)
 						}
 						$(`#step-${response.step_id} .form-field__error`).removeClass('hidden')
@@ -543,11 +539,11 @@
 			$('.new-recipe-section__field--desc input').removeClass('invalid')
 			$('.new-recipe-section__field--cat .select').removeClass('invalid')
 			$('.new-recipe-section__field--time input').removeClass('invalid')
-			$('.new-recipe-section--photo .imageuploader__input').removeClass('invalid')
+			$('.new-recipe-section--photo .imageuploader__wrapper').removeClass('invalid')
 			$('.ingredient-item input').removeClass('invalid')
 			$('.ingredient-item .select').removeClass('invalid')
 			$('.step-item .step-item__input').removeClass('invalid')
-			$('.step-item .imageuploader__input').removeClass('invalid')
+			$('.step-item .imageuploader__wrapper').removeClass('invalid')
 
 			$('.new-recipe-section__field--title .form-field__error').addClass('hidden')
 			$('.new-recipe-section__field--desc .form-field__error').addClass('hidden')
@@ -611,7 +607,7 @@
 						$('html, body').animate({
 							scrollTop: $(photo).offset().top - 400
 						}, 300);
-						$('.new-recipe-section--photo .imageuploader__input').addClass('invalid')
+						$('.new-recipe-section--photo .imageuploader__wrapper').addClass('invalid')
 						$('.new-recipe-section--photo .imageuploader .form-field__error').removeClass('hidden')
 						$('.new-recipe-section--photo .imageuploader .form-field__text').text(response.error)
 					} else if (response.status === 400 && response.form_id === 'ingredient') {
@@ -635,7 +631,7 @@
 							$(`#step-${response.step_id} .invalid`).focus()
 							$(`#step-${response.step_id} .form-field__error`).attr('for', `step-description-${response.step_id}`)
 						} else if (response.step_field === 'photo') {
-							$(`#step-${response.step_id} .imageuploader__input`).addClass('invalid')
+							$(`#step-${response.step_id} .imageuploader__wrapper`).addClass('invalid')
 							$(`#step-${response.step_id} .form-field__error`).attr('for', `step-photo-${response.step_id}`)
 						}
 						$(`#step-${response.step_id} .form-field__error`).removeClass('hidden')
@@ -688,7 +684,6 @@
 									<a href="/user/${response['user_id']}" class="comments-item__author">${response['user']}</a>
 									<time class="comments-item__date" datetime="2022-12-02 16:28">Только что</time>
 								</div>
-								<!-- TODO: Добавить возможность удаления комментариев по кнопке снизу -->
 								<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий">
 									<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#delete" />

@@ -229,10 +229,10 @@ __webpack_require__.r(__webpack_exports__);
           if (uploader.getAttribute('data-image-url') != '' && uploader.getAttribute('data-image-url') != null) {
             const url = uploader.getAttribute('data-image-url');
             const nameFile = uploader.getAttribute('data-image-name');
-            const image = uploader.querySelector('.imageuploader__input');
-            const input = uploader.querySelector('input[type="file"]');
-            const placeholder = image.querySelector('.imageuploader__placeholder');
-            const delBtn = image.parentNode.querySelector('.imageuploader__btn');
+            const wrapper = uploader.querySelector('.imageuploader__wrapper');
+            const input = uploader.querySelector('.imageuploader__input');
+            const placeholder = wrapper.querySelector('.imageuploader__placeholder');
+            const delBtn = wrapper.parentNode.querySelector('.imageuploader__btn');
             const fetchImage = async url => {
               const data = await fetch(url);
               const buffer = await data.arrayBuffer();
@@ -246,7 +246,7 @@ __webpack_require__.r(__webpack_exports__);
             const dT = new ClipboardEvent('').clipboardData || new DataTransfer();
             dT.items.add(file);
             input.files = dT.files;
-            image.style.backgroundImage = `url(${url})`;
+            wrapper.style.backgroundImage = `url(${url})`;
             placeholder.classList.add('hidden');
             delBtn.classList.remove('hidden');
           }
@@ -426,17 +426,17 @@ __webpack_require__.r(__webpack_exports__);
     document.addEventListener('click', e => {
       const target = e.target;
       if (target.classList.contains('imageuploader__input')) {
-        const image = target;
-        const input = image.querySelector('input[type="file"]');
-        const placeholder = image.querySelector('.imageuploader__placeholder');
-        const delBtn = target.parentNode.querySelector('.imageuploader__btn');
+        const input = target;
+        const wrapper = target.parentNode;
+        const placeholder = wrapper.querySelector('.imageuploader__placeholder');
+        const delBtn = wrapper.parentNode.querySelector('.imageuploader__btn');
         input.addEventListener('change', () => {
           if (!input.value == "") {
             const reader = new FileReader();
             file = input.files[0] || input.dataTransfer.files[0];
             reader.addEventListener('load', () => {
               uploadedImage = reader.result;
-              image.style.backgroundImage = `url(${uploadedImage})`;
+              wrapper.style.backgroundImage = `url(${uploadedImage})`;
               placeholder.classList.add('hidden');
               delBtn.classList.remove('hidden');
             });
@@ -445,14 +445,14 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
       if (target.classList.contains('imageuploader__btn')) {
-        const image = target.parentNode.querySelector('.imageuploader__input');
-        const input = image.querySelector('input[type="file"]');
-        const placeholder = image.querySelector('.imageuploader__placeholder');
+        const wrapper = target.parentNode.querySelector('.imageuploader__wrapper');
+        const input = wrapper.querySelector('.imageuploader__input');
+        const placeholder = wrapper.querySelector('.imageuploader__placeholder');
         const delBtn = target;
         e.preventDefault();
         input.value = "";
         uploadedImage = "";
-        image.style.backgroundImage = 'none';
+        wrapper.style.backgroundImage = 'none';
         placeholder.classList.remove('hidden');
         delBtn.classList.add('hidden');
       }
@@ -471,15 +471,15 @@ __webpack_require__.r(__webpack_exports__);
 (function () {
   if (document.querySelector('.info-avatar--change')) {
     const infoAvatar = document.querySelector('.info-avatar--change');
-    const image = infoAvatar.querySelector('.info-avatar__input');
-    const input = infoAvatar.querySelector('input[type="file"]');
+    const wrapper = infoAvatar.querySelector('.info-avatar__wrapper');
+    const input = infoAvatar.querySelector('.info-avatar__input');
     let uploadedImage = "";
     input.addEventListener('change', () => {
       if (!input.value == "") {
         const reader = new FileReader();
         reader.addEventListener('load', () => {
           uploadedImage = reader.result;
-          image.style.backgroundImage = `url(${uploadedImage})`;
+          wrapper.style.backgroundImage = `url(${uploadedImage})`;
         });
         reader.readAsDataURL(input.files[0]);
       }
@@ -974,8 +974,8 @@ const modal = new _functions_graph_modal_js__WEBPACK_IMPORTED_MODULE_0__["defaul
 				</button>
 				<div class="step-item__body">
 					<div class="imageuploader  imageuploader--small  step-item__imageuploader">
-						<div class="input  input--photo  imageuploader__input">
-							<input type="file" name="step-photo-${fieldIndex}" id="step-photo-${fieldIndex}" accept=".jpg, .jpeg, .png" aria-label="Загрузите фото шага">
+						<div class="input  input--photo  imageuploader__wrapper">
+							<input type="file" class="imageuploader__input" name="step-photo-${fieldIndex}" id="step-photo-${fieldIndex}" accept=".jpg, .jpeg, .png" aria-label="Загрузите фото шага">
 							<div class="imageuploader__placeholder">
 								<svg class="icon" aria-hidden="true" focusable="false">
 									<use href="${svgImage}"/>

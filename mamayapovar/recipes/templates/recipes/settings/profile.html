@@ -38,11 +38,12 @@
 				<div class="form-field  settings-section__field  settings-section__field--avatar">
 					<label class="form-field__label" for="photo">Фото профиля</label>
 					{% if not user_profile.avatar %}
+					<!-- TODO: Исправить обновление аватарки -->
 					<div class="info-avatar  info-avatar--change" data-button-photo
 						data-url_root="{% url 'change_profile_picture' %}">
 						<div style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');"
-							class="input  input--photo  info-avatar__input">
-							<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo"
+							class="input  input--photo  info-avatar__wrapper">
+							<input type="file" class="info-avatar__input" name="photo" accept=".jpg, .jpeg, .png" id="user_photo"
 								aria-label="Изменить фото профиля">
 							<div class="info-avatar__placeholder">
 								<svg class="icon" aria-hidden="true" focusable="false">
@@ -52,11 +53,12 @@
 						</div>
 					</div>
 					{% else %}
+					<!-- TODO: Исправить обновление аватарки -->
 					<div class="info-avatar  info-avatar--change" data-button-photo
 						data-url_root="{% url 'change_profile_picture' %}">
 						<div style="background-image: url('{{ user_profile.avatar.url }}');"
-							class="input  input--photo  info-avatar__input">
-							<input type="file" name="photo" accept=".jpg, .jpeg, .png" id="user_photo"
+							class="input  input--photo  info-avatar__wrapper">
+							<input type="file" class="info-avatar__input" name="photo" accept=".jpg, .jpeg, .png" id="user_photo"
 								aria-label="Изменить фото профиля">
 							<div class="info-avatar__placeholder">
 								<svg class="icon" aria-hidden="true" focusable="false">
