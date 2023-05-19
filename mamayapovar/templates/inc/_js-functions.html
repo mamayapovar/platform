@@ -576,95 +576,105 @@
 
 
 		// Комментарии
-		$('#comments-form').submit(function (e) {
-			e.preventDefault()
-			var current = $(this);
-			var url_root = current.data('url_root');
-			var list = document.querySelector("[data-comments-list]");
-			var post_id = current.data('post-id');
-
-			const commentsArea = document.querySelector('.comments-field #comments-text')
-			const commentsError = document.querySelector('.comments-field .form-field__error')
-			const commentsErrorText = document.querySelector('.comments-field .form-field__error .form-field__text')
-
-			commentsArea.classList.remove('invalid')
-			commentsError.classList.add('hidden')
-			commentsErrorText.textContent = ''
-
-			function morph_word(number, words) {
-				cases = [2, 0, 1, 1, 1, 2];
-				return words[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];
-			}
-
-			$.ajax({
-				type: 'POST',
-				url: url_root,
-				data: $(this).serialize(),
-				dataType: 'json',
-
-				success: function (response) {
-					if (response.status === 201) {
-						const title = document.querySelector('.comments__title')
-						let titleElements = title.textContent.split(' ')
-						let titleCount = parseInt(titleElements[0])
-
-						const item = document.createElement('article')
-						item.classList.add("comments-item")
-						item.innerHTML = `
-							<div class="comments-item__header">
-								<div class="comments-item__info">
-									<a href="/user/${response['user_id']}" class="comments-item__avatar">
-										<img src="/media/${response['pfp']}" alt="Фото профиля" width="40" height="40" loading="lazy">
-									</a>
-									<a href="/user/${response['user_id']}" class="comments-item__author">${response['user']}</a>
-									<time class="comments-item__date" datetime="2022-12-02 16:28">Только что</time>
-								</div>
-								<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий" data-delete-comment-button data-url_root="/delete_comment/${response['comment_id']}">
-									<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-										<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
-									</svg>
-								</button>
-							</div>
-							<p class="comments-item__text">${response['text']}</p>
-						`
-						list.prepend(item)
-
-						titleCount++
-						let titleText = ' ' + morph_word(titleCount, ['комментарий', 'комментария', 'комментариев'])
-						title.textContent = titleCount + titleText
-					} else if (response.status === 400) {
-						commentsArea.classList.add('invalid')
-						commentsError.classList.remove('hidden')
-						commentsErrorText.textContent = response.error
-					}
-				}
-			});
-		});
-
-		function delete_comment() {
-			var current = $(this);
-			var url_root = current.data('url_root');
-			const btnDel = current.get()[0]
-
-			$.ajax({
-				url: url_root,
-				type: 'POST',
-
-				success: function () {
-					const comment = btnDel.parentNode.parentNode
-					comment.classList.add('visually-hidden')
-				}
-			});
-		}
-
-		$(function () {
-			$('[data-delete-comment-button]').click(delete_comment);
-		});
-
 		(function(){
-			const commentsList = document.querySelector('[data-comments-list]')
+			if (document.querySelector('[data-comments-list]')) {
+				const commentsList = document.querySelector('[data-comments-list]')
+				let btnDel = document.querySelectorAll('[data-delete-comment-button]')
 
-			if (commentsList) {
+				const metaCounter = document.querySelector('.content-footer__btn--comment span')
+				const title = document.querySelector('.comments__title')
+				let titleElements = title.textContent.split(' ')
+				let titleCount = parseInt(titleElements[0])
+
+				function morph_word(number, words) {
+					cases = [2, 0, 1, 1, 1, 2];
+					return words[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];
+				}
+
+				function updateCount(count) {
+					let titleText = ' ' + morph_word(count, ['комментарий', 'комментария', 'комментариев'])
+					title.textContent = count + titleText
+					metaCounter.textContent = count
+				}
+
+				$('#comments-form').submit(function (e) {
+					e.preventDefault()
+					var current = $(this);
+					var url_root = current.data('url_root');
+					var list = document.querySelector("[data-comments-list]");
+					var post_id = current.data('post-id');
+
+					const commentsArea = document.querySelector('.comments-field #comments-text')
+					const commentsError = document.querySelector('.comments-field .form-field__error')
+					const commentsErrorText = document.querySelector('.comments-field .form-field__error .form-field__text')
+
+					commentsArea.classList.remove('invalid')
+					commentsError.classList.add('hidden')
+					commentsErrorText.textContent = ''
+
+					$.ajax({
+						type: 'POST',
+						url: url_root,
+						data: $(this).serialize(),
+						dataType: 'json',
+
+						success: function (response) {
+							if (response.status === 201) {
+								const item = document.createElement('article')
+								item.classList.add("comments-item")
+								item.innerHTML = `
+									<div class="comments-item__header">
+										<div class="comments-item__info">
+											<a href="/user/${response['user_id']}" class="comments-item__avatar">
+												<img src="/media/${response['pfp']}" alt="Фото профиля" width="40" height="40" loading="lazy">
+											</a>
+											<a href="/user/${response['user_id']}" class="comments-item__author">${response['user']}</a>
+											<time class="comments-item__date" datetime="2022-12-02 16:28">только что</time>
+										</div>
+										<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий" data-delete-comment-button data-url_root="/delete_comment/${response['comment_id']}">
+											<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+												<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
+											</svg>
+										</button>
+									</div>
+									<p class="comments-item__text">${response['text']}</p>
+								`
+								list.prepend(item)
+
+								titleCount++
+								updateCount(titleCount)
+								commentsArea.value = ''
+							} else if (response.status === 400) {
+								commentsArea.classList.add('invalid')
+								commentsError.classList.remove('hidden')
+								commentsErrorText.textContent = response.error
+							}
+						}
+					});
+				});
+
+				function delete_comment() {
+					var current = $(this);
+					var url_root = current.data('url_root');
+					const btnDel = current.get()[0]
+
+					$.ajax({
+						url: url_root,
+						type: 'POST',
+
+						success: function () {
+							titleCount--
+							updateCount(titleCount)
+							const comment = btnDel.parentNode.parentNode
+							comment.remove()
+						}
+					});
+				}
+
+				btnDel.forEach(el => {
+					el.addEventListener('click', delete_comment)
+				})
+
 				const config = {
 					childList: true,
 				};
@@ -672,9 +682,11 @@
 				const callback = function (mutationsList, observer) {
 					for (let mutation of mutationsList) {
 						if (mutation.type === 'childList') {
-							$(function () {
-								$('[data-delete-comment-button]').click(delete_comment);
-							});
+							let btnDel = document.querySelectorAll('[data-delete-comment-button]')
+
+							btnDel.forEach(el => {
+								el.addEventListener('click', delete_comment)
+							})
 						}
 					}
 				};

@@ -2186,6 +2186,9 @@ a {
   grid-template-rows: auto auto;
 }
 .comments-item__avatar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   grid-column: 1/2;
   grid-row: 1/3;
   overflow: hidden;
