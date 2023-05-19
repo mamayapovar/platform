@@ -664,22 +664,24 @@
 		(function(){
 			const commentsList = document.querySelector('[data-comments-list]')
 
-			const config = {
-				childList: true,
-			};
+			if (commentsList) {
+				const config = {
+					childList: true,
+				};
 
-			const callback = function (mutationsList, observer) {
-				for (let mutation of mutationsList) {
-					if (mutation.type === 'childList') {
-						$(function () {
-							$('[data-delete-comment-button]').click(delete_comment);
-						});
+				const callback = function (mutationsList, observer) {
+					for (let mutation of mutationsList) {
+						if (mutation.type === 'childList') {
+							$(function () {
+								$('[data-delete-comment-button]').click(delete_comment);
+							});
+						}
 					}
-				}
-			};
+				};
 
-			const observer = new MutationObserver(callback);
-			observer.observe(commentsList, config);
+				const observer = new MutationObserver(callback);
+				observer.observe(commentsList, config);
+			}
 		})();
 	</script>
 {% endblock %}
