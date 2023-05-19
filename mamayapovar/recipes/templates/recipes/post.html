@@ -295,7 +295,7 @@
 						<time class="comments-item__date" datetime="{{ comment.get_formatted_time_full }}">{{ comment.get_formatted_time }}</time>
 					</div>
 					{% if request.user.id == user_id %}
-						<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий" data-delete-comment-button data-url_root="{% url 'delete_comment' comment.id %}">
+						<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий" data-delete-comment-button  data-url_root="{% url 'delete_comment' comment.id %}">
 							<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 								<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
 							</svg>

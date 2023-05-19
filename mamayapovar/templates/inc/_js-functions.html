@@ -619,7 +619,7 @@
 									<a href="/user/${response['user_id']}" class="comments-item__author">${response['user']}</a>
 									<time class="comments-item__date" datetime="2022-12-02 16:28">Только что</time>
 								</div>
-								<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий">
+								<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий" data-delete-comment-button>
 									<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 										<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
 									</svg>
@@ -641,18 +641,18 @@
 			});
 		});
 
-		function delete_comment(e) {
+		function delete_comment() {
 			var current = $(this);
 			var url_root = current.data('url_root');
-			const post = document.querySelector('.comments-item');
-			post.classList.add('visually-hidden');
+			const btnDel = current.get()[0]
 
 			$.ajax({
 				url: url_root,
 				type: 'POST',
 
 				success: function () {
-					return true
+					const comment = btnDel.parentNode.parentNode
+					comment.classList.add('visually-hidden')
 				}
 			});
 		}
