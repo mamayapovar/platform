@@ -618,7 +618,7 @@ def bookmarks(request):
 
 def user_profile(request, id):
     try:
-        profile_data = UserProfile.objects.get(user=id)
+        profile_data = UserProfile.objects.get(user_id=id)
     except:
         profile_data = None
     objs = Recipe.objects.filter(author_id=id)
@@ -658,7 +658,7 @@ def change_profile_picture(request):
         avatar = os.path.join('avatars', str(request.user.id) + '.jpg')
         new_photo = UserProfile(user=request.user, avatar=avatar, posts=len(recipes))
         new_photo.save()
-    return HttpResponseRedirect(f'user/{str(request.user.id)}/')
+    return HttpResponseRedirect(f'/user/{str(request.user.id)}/')
 
 
 def like_post(request, pk):

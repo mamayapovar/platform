@@ -22,7 +22,7 @@
 			{% else %}
 			<div class="info-avatar  info-avatar--change" data-button-photo
 				data-url_root="{% url 'change_profile_picture' %}">
-				<div style="background-image: url('{{ profile_data.avatar.url }}');"
+				<div style="background-image: url('{% get_avatar_url request.user.id %}');"
 					class="input  input--photo  info-avatar__wrapper" aria-label="Изменить фото профиля">
 					<input type="file" class="info-avatar__input" name="photo" accept=".jpg, .jpeg, .png" id="user_photo">
 					<div class="info-avatar__placeholder">
@@ -197,7 +197,7 @@
 	<div class="info  info--avatar  user__info">
 		<div class="info__inner">
 			{% if profile_data.avatar %}
-			<img src="{{ profile_data.avatar.url }}" class="info-avatar" width="120" height="120" alt="Фото профиля">
+			<img src="{% get_avatar_url request.user.id %}" class="info-avatar" width="120" height="120" alt="Фото профиля">
 			{% else %}
 			<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="info-avatar" width="120" height="120"
 				alt="Фото профиля">
@@ -371,7 +371,7 @@
 	<div class="info  info--avatar  user__info">
 		<div class="info__inner">
 			{% if profile_data.avatar %}
-			<img src="{{ profile_data.avatar.url }}" class="info-avatar" width="120" height="120" alt="Фото профиля">
+			<img src="{% get_avatar_url request.user.id %}" class="info-avatar" width="120" height="120" alt="Фото профиля">
 			{% else %}
 			<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="info-avatar" width="120" height="120"
 				alt="Фото профиля">

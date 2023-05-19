@@ -56,7 +56,7 @@
 					<!-- TODO: Исправить обновление аватарки -->
 					<div class="info-avatar  info-avatar--change" data-button-photo
 						data-url_root="{% url 'change_profile_picture' %}">
-						<div style="background-image: url('{{ user_profile.avatar.url }}');"
+						<div style="background-image: url('{% get_avatar_url request.user.id %}');"
 							class="input  input--photo  info-avatar__wrapper">
 							<input type="file" class="info-avatar__input" name="photo" accept=".jpg, .jpeg, .png" id="user_photo"
 								aria-label="Изменить фото профиля">
