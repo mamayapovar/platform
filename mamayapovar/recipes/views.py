@@ -1225,7 +1225,8 @@ def new_comment(request):
                 'text': text,
                 'url_to_user': '',
                 'user_id': request.user.id,
-                'pfp': str(UserProfile.objects.filter(user=request.user)[0].avatar) if UserProfile.objects.filter(user=request.user) else None
+                'pfp': str(UserProfile.objects.filter(user=request.user)[0].avatar) if UserProfile.objects.filter(user=request.user) else None,
+                'comment_id': comment.id
             }, status=200)
 
 
