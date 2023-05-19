@@ -1,0 +1,14 @@
+{% load static %}
+{% block js-icons %}
+	<script>
+		const svgHeart = `{% static 'recipes/img/sprite.svg' %}#heart`;
+		const svgBookmark = `{% static 'recipes/img/sprite.svg' %}#bookmark`;
+		const svgHeartFilled = `{% static 'recipes/img/sprite.svg' %}#heart-filled`;
+		const svgBookmarkFilled = `{% static 'recipes/img/sprite.svg' %}#bookmark-filled`;
+		const svgChevron = `{% static 'recipes/img/sprite.svg' %}#chevron-down`;
+		const svgCross = `{% static 'recipes/img/sprite.svg' %}#cross`;
+		const svgImage = `{% static 'recipes/img/sprite.svg' %}#image`;
+		const svgDelete = `{% static 'recipes/img/sprite.svg' %}#delete`;
+		const svgCircleCross = `{% static 'recipes/img/sprite.svg' %}#circle-cross`;
+	</script>
+{% endblock %}
