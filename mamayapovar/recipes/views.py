@@ -658,6 +658,7 @@ def change_profile_picture(request):
         avatar = os.path.join('avatars', str(request.user.id) + '.jpg')
         new_photo = UserProfile(user=request.user, avatar=avatar, posts=len(recipes))
         new_photo.save()
+    cache.clear()
     return HttpResponseRedirect(f'/user/{str(request.user.id)}/')
 
 
