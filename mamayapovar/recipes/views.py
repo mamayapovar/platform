@@ -1183,16 +1183,26 @@ def momental_search(request):
     data = {}
     query = request.POST.get('query')
     if query:
-        data['categories'] = list(Category.objects.filter(name__icontains=query).values())
-        data['users'] = list(User.objects.filter(username__icontains=query).values())
-        data['recipes'] = list(Recipe.objects.filter(title__icontains=query).values())
+        # *Поиск для сервера
+        # data['categories'] = list(Category.objects.filter(name__icontains=query).values())
+        # data['users'] = list(User.objects.filter(username__icontains=query).values())
+        # data['recipes'] = list(Recipe.objects.filter(title__icontains=query).values())
+
+        # *Поиск для локалки
+        data['categories'] = list(Category.objects.filter(name__iregex=query).values())
+        data['users'] = list(User.objects.filter(username__iregex=query).values())
+        data['recipes'] = list(Recipe.objects.filter(title__iregex=query).values())
         return JsonResponse(data=data, status=200)
     return JsonResponse(data=data, status=200)
 
 
 def search(request):
     query = request.POST.get('query')
-    recipes = get_formatted_recipe(Recipe.objects.filter(title__icontains=query))
+    # *Поиск для сервера
+    # recipes = get_formatted_recipe(Recipe.objects.filter(title__icontains=query))
+
+    # *Поиск для локалки
+    recipes = get_formatted_recipe(Recipe.objects.filter(title__iregex=query))
     return render(request, 'recipes/search.html', {
             'title': f'{query} - Мама, я повар!',
             'recipes': recipes,
