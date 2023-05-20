@@ -197,7 +197,7 @@
 	<div class="info  info--avatar  user__info">
 		<div class="info__inner">
 			{% if profile_data.avatar %}
-			<img src="{% get_avatar_url request.user.id %}" class="info-avatar" width="120" height="120" alt="Фото профиля">
+			<img src="{% get_avatar_url user.id %}" class="info-avatar" width="120" height="120" alt="Фото профиля">
 			{% else %}
 			<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="info-avatar" width="120" height="120"
 				alt="Фото профиля">
@@ -371,7 +371,7 @@
 	<div class="info  info--avatar  user__info">
 		<div class="info__inner">
 			{% if profile_data.avatar %}
-			<img src="{% get_avatar_url request.user.id %}" class="info-avatar" width="120" height="120" alt="Фото профиля">
+			<img src="{% get_avatar_url user.id %}" class="info-avatar" width="120" height="120" alt="Фото профиля">
 			{% else %}
 			<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" class="info-avatar" width="120" height="120"
 				alt="Фото профиля">
