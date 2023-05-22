@@ -915,7 +915,7 @@ const modal = new _functions_graph_modal_js__WEBPACK_IMPORTED_MODULE_0__["defaul
   }
 })();
 
-// ИНСТРУКЦИЯ ПРИГОТОВЛЕНИЯ
+// СПОСОБ ПРИГОТОВЛЕНИЯ
 (function () {
   if (document.querySelector('.step')) {
     const stepSection = document.querySelector('.step');
@@ -1789,7 +1789,7 @@ window.Element&&!Element.prototype.closest&&(Element.prototype.closest=function(
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -1803,14 +1803,14 @@ window.Element&&!Element.prototype.closest&&(Element.prototype.closest=function(
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -1823,7 +1823,7 @@ window.Element&&!Element.prototype.closest&&(Element.prototype.closest=function(
 /******/ 			return getter;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -1835,7 +1835,7 @@ window.Element&&!Element.prototype.closest&&(Element.prototype.closest=function(
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -1847,12 +1847,12 @@ window.Element&&!Element.prototype.closest&&(Element.prototype.closest=function(
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -1863,7 +1863,7 @@ window.Element&&!Element.prototype.closest&&(Element.prototype.closest=function(
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
