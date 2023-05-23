@@ -695,5 +695,27 @@
 				observer.observe(commentsList, config);
 			}
 		})();
+
+		function approve(e) {
+			var current = $(this);
+			var pk = current.data('pk');
+
+			$.ajax({
+				url: '/approve_button/',
+				type: 'POST',
+				data: { 'obj': pk },
+
+				success: function () {
+					return true
+				}
+			});
+
+			return false;
+		}
+
+		$(function () {
+			$('[data-approve-button]').click(approve);
+		});
 	</script>
+
 {% endblock %}

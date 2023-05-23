@@ -8,6 +8,7 @@ from math import floor
 from os.path import splitext
 from uuid import uuid4
 from django.core.files.storage import FileSystemStorage
+from django.urls import reverse
 
 if sys.platform == 'win32':
     locale.setlocale(locale.LC_ALL, 'rus_rus')
@@ -149,3 +150,11 @@ class Comment(models.Model):
 
     def get_formatted_time_full(self):
         return f"{self.time_created.strftime('%Y-%m-%d %H:%M')}"
+
+
+class Approve(models.Model):
+    class Meta:
+        db_table = 'approve'
+
+    post = models.ForeignKey('Recipe', on_delete=models.DO_NOTHING)
+    status = models.BooleanField(default=False)

@@ -1248,5 +1248,10 @@ def delete_comment(request, id):
     return JsonResponse(data={'status': 400}, status=200)
 
 
+def approve_button(request):
+    pass
+    #request.POST['obj']
+
+
 def error_404(request, exception):
     return HttpResponseRedirect('/')
