@@ -8,7 +8,6 @@ from math import floor
 from os.path import splitext
 from uuid import uuid4
 from django.core.files.storage import FileSystemStorage
-from django.urls import reverse
 
 if sys.platform == 'win32':
     locale.setlocale(locale.LC_ALL, 'rus_rus')
@@ -36,6 +35,7 @@ class Recipe(models.Model):
     ingredients = models.TextField(blank=True)
     steps = models.TextField(blank=True)
     folder_id = models.CharField(max_length=7, blank=True)
+    is_approved = models.BooleanField(default=False)
 
     def get_beautiful_ingredients(self):
         ings = len(self.ingredients)

@@ -19,7 +19,7 @@ from django.core.cache import cache
 from django.utils import datastructures
 
 from .forms import *
-from .models import Like, Recipe, Bookmark, UserProfile, StepImages, Subscribe, Category, Comment
+from .models import Like, Recipe, Bookmark, UserProfile, StepImages, Subscribe, Category, Comment, Approve
 
 morph = pymorphy2.MorphAnalyzer()
 
@@ -454,6 +454,9 @@ def new_recipe(request):
                 folder_id=folder_id,
             )
             recipe.save()
+
+            approve = Approve(post=recipe, status=False)
+            approve.save()
 
             like = Like(like_post=recipe, like_user=request.user)
             like.save()
@@ -1248,9 +1251,19 @@ def delete_comment(request, id):
     return JsonResponse(data={'status': 400}, status=200)
 
 
-def approve_button(request):
-    pass
-    #request.POST['obj']
+def approve_button(request, id):
+    Approve.objects.filter(post_id=id).delete()
+    recipe = Recipe.objects.get(id=id)
+    recipe.is_approved = True
+    recipe.save()
+    return HttpResponseRedirect('/admin/recipes/approve/')
+
+def deny_button(request, id):
+    Approve.objects.filter(post_id=id).delete()
+    recipe = Recipe.objects.get(id=id)
+    recipe.is_approved = False
+    recipe.save()
+    return HttpResponseRedirect('/admin/recipes/approve/')
 
 
 def error_404(request, exception):

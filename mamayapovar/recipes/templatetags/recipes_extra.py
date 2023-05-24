@@ -2,7 +2,7 @@
 
 from django import template
 from django.contrib.auth.models import User
-from recipes.models import Bookmark, UserProfile, Like, Subscribe, Recipe, Comment
+from recipes.models import Bookmark, UserProfile, Like, Subscribe, Recipe, Comment, Approve
 import pymorphy2
 
 morph = pymorphy2.MorphAnalyzer()
@@ -131,4 +131,3 @@ def get_amount(id_):
 @register.simple_tag
 def get_comments_count(id_):
     return len(Comment.objects.filter(com_post_id=id_))
-

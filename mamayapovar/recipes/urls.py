@@ -25,7 +25,8 @@ urlpatterns = [
     path('momental_search/', momental_search, name='momental_search'),
     path('new_comment/', new_comment, name='new_comment'),
     path('delete_comment/<int:id>', delete_comment, name='delete_comment'),
-    path('approve_button/', approve_button, name='approve_button')
+    path('approve_button/<int:id>', approve_button, name='approve_button'),
+    path('deny_button/<int:id>', deny_button, name='deny_button'),
 ]
 
 if settings.DEBUG:

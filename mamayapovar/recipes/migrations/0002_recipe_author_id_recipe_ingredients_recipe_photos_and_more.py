@@ -22,11 +22,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='recipe',
-            name='photos',
-            field=models.TextField(blank=True),
-        ),
-        migrations.AddField(
-            model_name='recipe',
             name='steps',
             field=models.TextField(blank=True),
         ),

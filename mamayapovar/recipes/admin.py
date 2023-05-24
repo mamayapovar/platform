@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django.urls import reverse
 
 from .models import *
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'time_create', 'get_author_name', 'get_html_photo')
+    list_display = ('id', 'title', 'is_approved', 'get_author_name', 'get_html_photo')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'description')
 
@@ -23,10 +24,10 @@ class ApproveAdmin(admin.ModelAdmin):
     list_display_links = ('post',)
 
     def get_approve(self, object):
-        return mark_safe(f"<button data-approve-button data-pk='{object.post.id}' class='accept' style='color: #FFF; background: #44CC44; padding: 15px 20px; box-shadow: 0 4px 0 0 #2EA62E; border-radius: 10px;'>ACCEPT <span class='fa fa-check'></span></button>")
+        return mark_safe(f"<a href='/approve_button/{object.post.id}' class='accept' style='color: #FFF; background: #44CC44; padding: 10px 15px; border-radius: 10px;'>ACCEPT <span class='fa fa-check'></span></a>")
 
     def get_deny(self, object):
-        return mark_safe(f"<button data-deny-button data-pk='{object.post.id}' class='deny' style='color: #FFF; background: tomato; padding: 15px 20px; box-shadow: 0 4px 0 0 #CB4949; border-radius: 10px;'>DENY <span class='fa fa-close'></span></button>")
+        return mark_safe(f"<a href='/deny_button/{object.post.id}' class='deny' style='color: #FFF; background: tomato; padding: 10px 15px; border-radius: 10px;'>DENY <span class='fa fa-close'></span></a>")
 
 
 admin.site.register(Approve, ApproveAdmin)
