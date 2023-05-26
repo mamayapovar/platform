@@ -402,9 +402,8 @@ def new_recipe(request):
             folder = 'recipes'
             second_folder = folder_id
 
-
             try:
-                uploaded_filename = '_'.join(transliterate.translit(request.FILES.get('photo').name, reversed=True).split())
+                uploaded_filename = '_'.join(transliterate.translit(request.FILES.get('photo').name.replace('ь', ''), reversed=True).split())
             except transliterate.exceptions.LanguageDetectionError:
                 uploaded_filename = '_'.join(request.FILES.get('photo').name.split())
 
@@ -1265,6 +1264,34 @@ def deny_button(request, id):
     recipe.is_approved = False
     recipe.save()
     return HttpResponseRedirect('/admin/recipes/approve/')
+
+def admin_recipe_deleting(request, id):
+    recipe = Recipe.objects.get(id=id)
+    if request.user.id == 33:
+        # likes
+        likes = Like.objects.filter(like_post_id=recipe.id)
+        for elem in likes:
+            elem.delete()
+
+        # images of steps
+        imgs = StepImages.objects.filter(recipe_id=recipe.id)
+        for elem in imgs:
+            elem.delete()
+
+        # bookmarks
+        bms = Bookmark.objects.filter(book_post_id=recipe.id)
+        for elem in bms:
+            elem.delete()
+
+        cmts = Comment.objects.filter(com_post_id=recipe.id)
+        for elem in cmts:
+            elem.delete()
+
+        rmtree(os.path.join(settings.MEDIA_ROOT, 'recipes', recipe.folder_id))
+
+        recipe.delete()
+
+        return HttpResponseRedirect('/admin/recipes/recipe/')
 
 
 def error_404(request, exception):

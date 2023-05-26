@@ -24,18 +24,18 @@ class UUIDFileStorage(FileSystemStorage):
 
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
-    time_create = models.DateTimeField(auto_now_add=True)
-    cooking_time = models.CharField(max_length=20)
-    persons = models.CharField(max_length=20)
+    title = models.CharField(max_length=100, verbose_name='Название')
+    description = models.TextField(blank=True, verbose_name='Описание')
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+    cooking_time = models.CharField(max_length=20, verbose_name='Время приготовления')
+    persons = models.CharField(max_length=20, verbose_name='Кол-во порций')
     photo = models.ImageField(upload_to='', null=True, blank=True, verbose_name='Изображение')
-    cat = models.ForeignKey('Category', on_delete=models.DO_NOTHING)
-    author_id = models.IntegerField(null=True)
-    ingredients = models.TextField(blank=True)
-    steps = models.TextField(blank=True)
+    cat = models.ForeignKey('Category', on_delete=models.DO_NOTHING, verbose_name='Категория')
+    author_id = models.IntegerField(null=True, verbose_name='Автор')
+    ingredients = models.TextField(blank=True, verbose_name='Ингредиенты')
+    steps = models.TextField(blank=True, verbose_name='Шаги')
     folder_id = models.CharField(max_length=7, blank=True)
-    is_approved = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False, verbose_name='Статус')
 
     def get_beautiful_ingredients(self):
         ings = len(self.ingredients)
@@ -65,6 +65,8 @@ class Recipe(models.Model):
         return self.title
 
     class Meta:
+        verbose_name = 'Рецепты'
+        verbose_name_plural = 'Рецепты'
         ordering = ['-time_create']
 
 
@@ -154,7 +156,9 @@ class Comment(models.Model):
 
 class Approve(models.Model):
     class Meta:
+        verbose_name = 'Запросы на одобрение'
+        verbose_name_plural = 'Запросы на одобрение'
         db_table = 'approve'
 
-    post = models.ForeignKey('Recipe', on_delete=models.DO_NOTHING)
-    status = models.BooleanField(default=False)
+    post = models.ForeignKey('Recipe', on_delete=models.DO_NOTHING, verbose_name='Рецепт')
+    status = models.BooleanField(default=False, verbose_name='Статус')
