@@ -624,8 +624,9 @@ def user_profile(request, id):
         profile_data = UserProfile.objects.get(user_id=id)
     except:
         profile_data = None
-    objs = Recipe.objects.filter(author_id=id)
+    objs = Recipe.objects.filter(author_id=id, is_approved=True)
     new_recipes = get_formatted_recipe(objs)
+
 
     user = models.User.objects.get(id=id)
 

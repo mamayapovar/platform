@@ -9,6 +9,8 @@ class RecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'is_approved', 'get_author_name', 'get_html_photo')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'description')
+    fields = ('title', 'description', 'cooking_time', 'persons', 'photo', 'get_html_photo', 'cat', 'ingredients', 'steps', 'is_approved')
+    readonly_fields = ('time_create', 'get_html_photo')
 
     def get_html_photo(self, object):
         if object.photo:
@@ -17,6 +19,8 @@ class RecipeAdmin(admin.ModelAdmin):
 
     def get_author_name(self, object):
         return User.objects.get(id=object.author_id).username
+
+    get_html_photo.short_description = 'Фото рецепта'
 
 
 class ApproveAdmin(admin.ModelAdmin):

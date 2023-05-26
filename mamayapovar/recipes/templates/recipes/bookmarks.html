@@ -12,6 +12,7 @@
 			</div>
 			{% else %}
 				{% for recipe in bookmarks %}
+				{% if recipe.is_approved %}
 					<article class="feed-item">
 						<header class="content-header  feed-item__header">
 							<div class="content-info">
@@ -168,6 +169,7 @@
 						{% endif %}
 						</footer>
 					</article>
+				{% endif %}
 				{% endfor %}
 		</div>
 	{% endif %}

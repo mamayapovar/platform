@@ -66,6 +66,7 @@
 		</div>
 	{% else %}
 		{% for recipe in recipes %}
+		{% if recipe.is_approved %}
 		<article class="feed-item">
 			<header class="content-header  feed-item__header">
 				<div class="content-info">
@@ -189,6 +190,7 @@
 				{% endif %}
 			</footer>
 		</article>
+		{% endif %}
 		{% endfor %}
 	{% endif %}
 	</div>
@@ -245,6 +247,7 @@
 			</div>
 		{% else %}
 			{% for recipe in recipes %}
+			{% if recipe.is_approved %}
 			<article class="feed-item">
 				<header class="content-header  feed-item__header">
 					<div class="content-info">
@@ -363,6 +366,7 @@
 					{% endif %}
 				</footer>
 			</article>
+			{% endif %}
 			{% endfor %}
 	{% endif %}
 	</div>
@@ -409,6 +413,7 @@
 			</div>
 		{% else %}
 		{% for recipe in recipes %}
+		{% if recipe.is_approved %}
 		<article class="feed-item">
 			<header class="content-header  feed-item__header">
 				<div class="content-info">
@@ -516,6 +521,7 @@
 
 			</footer>
 		</article>
+		{% endif %}
 		{% endfor %}
 		{% endif %}
 	</div>
