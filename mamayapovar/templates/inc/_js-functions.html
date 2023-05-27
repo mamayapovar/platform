@@ -167,6 +167,7 @@
 			$('[data-button-photo]').change(change_profile_picture);
 		});
 
+
 		// Создание, удаление и редактирование рецепта
 		$('#new-recipe-form').submit(function (e) {
 			e.preventDefault()
@@ -386,17 +387,29 @@
 			})
 		});
 
+		function predelete_recipe() {
+			const recipeUrl = this.getAttribute("data-url_root")
+			const delBtn = document.querySelector('[data-post-button-delete]')
+			delBtn.setAttribute('data-url_root', `${recipeUrl}`)
+		}
+
+		$(function () {
+			$('[data-post-button-predelete]').click(predelete_recipe);
+		});
+
 		function delete_recipe(e) {
 			var current = $(this);
 			var url_root = current.data('url_root');
-			const post = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-			post.classList.add('visually-hidden');
+			// const delBtn = document.querySelector(`[data-post-button-predelete][data-url_root='${url_root}']`);
+			// console.log(url_root);
+			// post.classList.add('visually-hidden');
 
 			$.ajax({
 				url: url_root,
 				type: 'POST',
 
 				success: function (json) {
+					document.location.href = "/"
 					return true
 				}
 			});

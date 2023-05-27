@@ -85,7 +85,7 @@
 						</button>
 						<ul class="list-reset  content-more-menu" data-menu-more-list>
 							<li class="content-more-menu__item" data-menu-more-item>
-								<button class="btn-reset  content-more-menu__button" tabindex="-1" data-graph-path="delete-recipe">Удалить</button>
+								<button class="btn-reset  content-more-menu__button" tabindex="-1" data-graph-path="delete-recipe"  data-post-button-delete data-url_root="{% url 'delete_recipe' recipe.id %}">Удалить</button>
 							</li>
 							<li class="content-more-menu__item" data-menu-more-item>
 								<a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}"

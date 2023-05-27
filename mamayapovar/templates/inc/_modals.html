@@ -17,7 +17,6 @@
 			</div>
       <div class="dialog__bottom">
 				<button class="btn  btn--default  btn--small  dialog__btn  js-modal-close">Отменить</button>
-				<!-- TODO: Сделать удаление аккаунта пользователя по кнопке -->
 				<a href="{% url 'delete_account' %}" class="btn  btn--important  btn--small  dialog__btn">Удалить</a>
       </div>
     </div>
@@ -35,14 +34,10 @@
 			</div>
       <div class="dialog__bottom">
 				<button class="btn  btn--default  btn--small  dialog__btn  js-modal-close">Отменить</button>
-				<!-- TODO: Сделать удаление рецепта по кнопке (снизу коммент с функцией, которая должна стоять в кнопке) -->
-				{% comment %}
-					data-url_root="{% url 'delete_recipe' recipe.id %}"
-				{% endcomment %}
-				<button class="btn  btn--important  btn--small  dialog__btn"  data-post-button-delete>Удалить</button>
-      </div>
-    </div>
-  </div>
+				<button class="btn  btn--important  btn--small  dialog__btn" data-post-button-delete  data-url_root>Удалить</button>
+			</div>
+		</div>
+	</div>
 	{% else %}
 	<div class="graph-modal__container  popup__container  popup__container--register" role="dialog" aria-modal="true" data-graph-target="register">
 		<button class="btn-reset js-modal-close graph-modal__close  btn  btn--other" aria-label="Закрыть модальное окно">
