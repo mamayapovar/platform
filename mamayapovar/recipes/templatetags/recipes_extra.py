@@ -124,10 +124,5 @@ def get_user_profile(id_):
 
 
 @register.simple_tag
-def get_amount(id_):
-    return
-
-
-@register.simple_tag
 def get_comments_count(id_):
     return len(Comment.objects.filter(com_post_id=id_))

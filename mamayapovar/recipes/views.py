@@ -833,45 +833,6 @@ def settings_account(request):
                         'title': "Настройки аккаунта - Мама, я повар!",
                         'error_wrong': "Пожалуйста, введите данные"
                     })
-        # TODO: Сделать удаление аккаунта пользователя по кнопке
-        elif len(request.POST) == 1:  # Удаление аккаунта
-            # subs from
-            for elem in Subscribe.objects.filter(subscribe_from_id=request.user.id):
-                elem.delete()
-
-            # subs to
-            for elem in Subscribe.objects.filter(subscribe_to_id=request.user.id):
-                elem.delete()
-
-            # user profile
-            for elem in UserProfile.objects.filter(user_id=request.user.id):
-                if elem.avatar:
-                    os.remove(elem.avatar.path)
-                elem.delete()
-
-            # comments
-            for elem in Comment.objects.filter(com_user_id=request.user.id):
-                elem.delete()
-
-            # recipes
-            recipes = Recipe.objects.filter(author_id=request.user.id)
-            for elem in recipes:
-                # step images
-                for el in StepImages.objects.filter(recipe_id=elem.id):
-                    el.delete()
-
-                # bookmarks
-                for elem1 in Bookmark.objects.filter(book_user_id=request.user.id):
-                    elem1.delete()
-
-                # likes
-                for e in Like.objects.filter(like_user_id=request.user.id):
-                    e.delete()
-                elem.delete()
-
-            user = User.objects.get(id=request.user.id)
-            user.delete()
-            return HttpResponseRedirect('/')
     return render(request, 'recipes/settings/account.html', {
         'title': "Настройки аккаунта - Мама, я повар!"
     })
@@ -1293,6 +1254,46 @@ def admin_recipe_deleting(request, id):
         recipe.delete()
 
         return HttpResponseRedirect('/admin/recipes/recipe/')
+
+
+def delete_account(request):
+    # subs from
+    for elem in Subscribe.objects.filter(subscribe_from_id=request.user.id):
+        elem.delete()
+
+    # subs to
+    for elem in Subscribe.objects.filter(subscribe_to_id=request.user.id):
+        elem.delete()
+
+    # user profile
+    for elem in UserProfile.objects.filter(user_id=request.user.id):
+        if elem.avatar:
+            os.remove(elem.avatar.path)
+        elem.delete()
+
+    # comments
+    for elem in Comment.objects.filter(com_user_id=request.user.id):
+        elem.delete()
+
+    # recipes
+    recipes = Recipe.objects.filter(author_id=request.user.id)
+    for elem in recipes:
+        # step images
+        for el in StepImages.objects.filter(recipe_id=elem.id):
+            el.delete()
+
+        # bookmarks
+        for elem1 in Bookmark.objects.filter(book_user_id=request.user.id):
+            elem1.delete()
+
+        # likes
+        for e in Like.objects.filter(like_user_id=request.user.id):
+            e.delete()
+        elem.delete()
+
+    user = User.objects.get(id=request.user.id)
+    user.delete()
+    return HttpResponseRedirect('/')
 
 
 def error_404(request, exception):

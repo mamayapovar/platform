@@ -167,28 +167,6 @@
 			$('[data-button-photo]').change(change_profile_picture);
 		});
 
-
-		// Удаление аккаунта
-		// TODO: Сделать удаление аккаунта пользователя по кнопке
-		function delete_account() {
-			var current = $(this);
-			var url_root = current.data('url_root');
-
-			$.ajax({
-				url: url_root,
-				type: 'POST',
-
-				success: function (json) {
-					return true
-				}
-			});
-		}
-
-		$(function () {
-			$('[data-account-button-delete]').click(delete_account);
-		});
-
-
 		// Создание, удаление и редактирование рецепта
 		$('#new-recipe-form').submit(function (e) {
 			e.preventDefault()
@@ -607,7 +585,10 @@
 
 
 		// Комментарии
+
 		(function(){
+
+
 			if (document.querySelector('[data-comments-list]')) {
 				const commentsList = document.querySelector('[data-comments-list]')
 				let btnDel = document.querySelectorAll('[data-delete-comment-button]')

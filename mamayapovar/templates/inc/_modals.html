@@ -18,7 +18,7 @@
       <div class="dialog__bottom">
 				<button class="btn  btn--default  btn--small  dialog__btn  js-modal-close">Отменить</button>
 				<!-- TODO: Сделать удаление аккаунта пользователя по кнопке -->
-				<button class="btn  btn--important  btn--small  dialog__btn"  data-account-button-delete  data-url_root="{% url 'settings_account' %}">Удалить</button>
+				<a href="{% url 'delete_account' %}" class="btn  btn--important  btn--small  dialog__btn">Удалить</a>
       </div>
     </div>
   </div>
