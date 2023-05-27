@@ -47,6 +47,7 @@
 
 	<div class="container">
 		<div class="site-container">
+			<ul class="notifications  list-reset"></ul>
 			{% if request.get_full_path == '/new-recipe/' or 'edit_recipe' in request.get_full_path %}
 			{% block sideside %}
 			{% include "inc2/_side.html" %}

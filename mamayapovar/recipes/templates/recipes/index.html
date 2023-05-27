@@ -9,7 +9,7 @@
 		{% if not recipes %}
 			<div class="feed-placeholder  feed-placeholder--btn">
 				<p class="feed-placeholder__desc">Опубликуйте первый рецепт, чтобы привлечь читаталей</p>
-				<button class="btn  btn--small  feed-placeholder__btn" data-graph-path="register" data-graph-speed="100" aria-label="Создать новый рецепт">Создать рецепт</button>
+				<button class="btn  btn--small  feed-placeholder__btn" data-graph-path="register" aria-label="Создать новый рецепт">Создать рецепт</button>
 			</div>
 		{% else %}
 		{% for recipe in recipes %}
@@ -34,8 +34,7 @@
 						</button>
 						<ul class="list-reset  content-more-menu" data-menu-more-list>
 							<li class="content-more-menu__item" data-menu-more-item>
-								<button class="btn-reset  content-more-menu__button" data-post-button-delete
-									data-url_root="{% url 'delete_recipe' recipe.id %}" tabindex="-1">Удалить</button>
+								<button class="btn-reset  content-more-menu__button" tabindex="-1" data-graph-path="delete-recipe">Удалить</button>
 							</li>
 							<li class="content-more-menu__item" data-menu-more-item>
 								<a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}"
@@ -132,7 +131,7 @@
 					{% get_likes_status recipe.id request.user.id as like_status %}
 					{% if not like_status %}
 					<button class="btn-reset  content-footer__btn  content-footer__btn--like"
-						aria-label="Поставить отметку 'Нравится'" data-graph-path="register" data-graph-speed="100">
+						aria-label="Поставить отметку 'Нравится'" data-graph-path="register">
 						<svg class="icon" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#heart" />
 						</svg>
@@ -140,7 +139,7 @@
 					</button>
 					{% else %}
 					<button class="btn-reset  content-footer__btn  content-footer__btn--like active"
-						aria-label="Поставить отметку 'Нравится'" data-graph-path="register" data-graph-speed="100">
+						aria-label="Поставить отметку 'Нравится'" data-graph-path="register">
 						<svg class="icon" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled" />
 						</svg>
@@ -231,8 +230,7 @@
 						</button>
 						<ul class="list-reset  content-more-menu" data-menu-more-list>
 							<li class="content-more-menu__item" data-menu-more-item>
-								<button class="btn-reset  content-more-menu__button" data-post-button-delete
-									data-url_root="{% url 'delete_recipe' recipe.id %}" tabindex="-1">Удалить</button>
+								<button class="btn-reset  content-more-menu__button" tabindex="-1" data-graph-path="delete-recipe">Удалить</button>
 							</li>
 							<li class="content-more-menu__item" data-menu-more-item>
 								<a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}"
@@ -329,7 +327,7 @@
 					{% get_likes_status recipe.id request.user.id as like_status %}
 					{% if not like_status %}
 					<button class="btn-reset  content-footer__btn  content-footer__btn--like"
-						aria-label="Поставить отметку 'Нравится'" data-graph-path="register" data-graph-speed="100">
+						aria-label="Поставить отметку 'Нравится'" data-graph-path="register">
 						<svg class="icon" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#heart" />
 						</svg>
@@ -337,7 +335,7 @@
 					</button>
 					{% else %}
 					<button class="btn-reset  content-footer__btn  content-footer__btn--like active"
-						aria-label="Поставить отметку 'Нравится'" data-graph-path="register" data-graph-speed="100">
+						aria-label="Поставить отметку 'Нравится'" data-graph-path="register">
 						<svg class="icon" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#heart-filled" />
 						</svg>

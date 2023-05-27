@@ -715,7 +715,7 @@ def category(request, id):
         "is_auth": request.user.is_authenticated
     })
 
-
+# TODO: Сделать удаление рецепта по кнопке
 def delete_recipe(request, id):
     recipe = Recipe.objects.get(id=id)
     if request.user.id == recipe.author_id:
@@ -833,6 +833,7 @@ def settings_account(request):
                         'title': "Настройки аккаунта - Мама, я повар!",
                         'error_wrong': "Пожалуйста, введите данные"
                     })
+        # TODO: Сделать удаление аккаунта пользователя по кнопке
         elif len(request.POST) == 1:  # Удаление аккаунта
             # subs from
             for elem in Subscribe.objects.filter(subscribe_from_id=request.user.id):

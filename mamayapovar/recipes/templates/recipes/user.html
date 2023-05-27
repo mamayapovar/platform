@@ -85,8 +85,7 @@
 						</button>
 						<ul class="list-reset  content-more-menu" data-menu-more-list>
 							<li class="content-more-menu__item" data-menu-more-item>
-								<button class="btn-reset  content-more-menu__button" data-post-button-delete
-									data-url_root="{% url 'delete_recipe' recipe.id %}" tabindex="-1">Удалить</button>
+								<button class="btn-reset  content-more-menu__button" tabindex="-1" data-graph-path="delete-recipe">Удалить</button>
 							</li>
 							<li class="content-more-menu__item" data-menu-more-item>
 								<a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}"
@@ -505,14 +504,14 @@
 				{% get_bookmark_status recipe.id request.user.id as check %}
 				{% if not check %}
 				<button class="btn-reset  content-footer__btn content-footer__btn--bookmark" data-id="{{ recipe.id }}"
-					data-graph-path="register" data-graph-speed="100" aria-label="Добавить в закладки">
+					data-graph-path="register" aria-label="Добавить в закладки">
 					<svg class="icon" aria-hidden="true" focusable="false">
 						<use href="{% static 'recipes/img/sprite.svg' %}#bookmark" />
 					</svg>
 				</button>
 				{% else %}
 				<button class="btn-reset  content-footer__btn content-footer__btn--bookmark active" data-id="{{ recipe.id }}"
-					data-graph-path="register" data-graph-speed="100" aria-label="Добавить в закладки">
+					data-graph-path="register" aria-label="Добавить в закладки">
 					<svg class="icon" aria-hidden="true" focusable="false">
 						<use href="{% static 'recipes/img/sprite.svg' %}#bookmark-filled" />
 					</svg>

@@ -1,6 +1,16 @@
 {% load static %}
 {% block js-functions %}
-	<script>
+	<script type="module">
+		// Тестовая функция
+		// import {createToast} from '/static/recipes/js/main.js'
+
+		// if (document.querySelector('[data-account-button-delete]')) {
+		// 	document.querySelector('[data-account-button-delete]').addEventListener('click', (e) => {
+		// 		e.stopPropagation()
+		// 		createToast('success', '12345')
+		// 	})
+		// }
+
 		// Куки-файлы
 		function getCookie(name) {
 			var cookieValue = null;
@@ -155,6 +165,27 @@
 
 		$(function () {
 			$('[data-button-photo]').change(change_profile_picture);
+		});
+
+
+		// Удаление аккаунта
+		// TODO: Сделать удаление аккаунта пользователя по кнопке
+		function delete_account() {
+			var current = $(this);
+			var url_root = current.data('url_root');
+
+			$.ajax({
+				url: url_root,
+				type: 'POST',
+
+				success: function (json) {
+					return true
+				}
+			});
+		}
+
+		$(function () {
+			$('[data-account-button-delete]').click(delete_account);
 		});
 
 

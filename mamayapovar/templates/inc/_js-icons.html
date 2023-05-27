@@ -1,6 +1,9 @@
 {% load static %}
 {% block js-icons %}
 	<script>
+		const svgCheck = `{% static 'recipes/img/sprite.svg' %}#check`;
+		const svgInfo = `{% static 'recipes/img/sprite.svg' %}#info`;
+		const svgWarning = `{% static 'recipes/img/sprite.svg' %}#warning`;
 		const svgHeart = `{% static 'recipes/img/sprite.svg' %}#heart`;
 		const svgBookmark = `{% static 'recipes/img/sprite.svg' %}#bookmark`;
 		const svgHeartFilled = `{% static 'recipes/img/sprite.svg' %}#heart-filled`;

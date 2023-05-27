@@ -87,20 +87,16 @@
 			</div>
 			<div class="settings-section__bottom">
 				<button type="submit" class="btn  settings-section__btn">Обновить пароль</button>
-				<button type="button" class="btn  btn--third  settings-section__btn">Восстановить пароль</button>
+				<button type="button" class="btn  btn--third  settings-section__btn  disabled" tabindex="-1">Восстановить пароль</button>
 			</div>
 		</fieldset>
 	</form>
-	<form id="settings-delete-form" action="{% url 'settings_account' %}" method="POST"
-		class="settings__form  settings__form--delete">
-		{% csrf_token %}
-		<fieldset class="form-section  settings-section">
-			<legend class="section-h2  form-section__title">Удаление аккаунта</legend>
-			<p class="settings-section__desc">Как только вы удалите свой аккаунт, восстановить его будет невозможно. Пожалуйста, будьте уверены.</p>
-			<div class="settings-section__bottom">
-				<button type="submit" class="btn  btn--second  btn--important  settings-section__btn">Удалить мой аккаунт</button>
-			</div>
-		</fieldset>
-	</form>
+	<fieldset class="form-section  settings-section  settings-section--delete">
+		<legend class="section-h2  form-section__title">Удаление аккаунта</legend>
+		<p class="settings-section__desc">Вы можете навсегда удалить свой аккаунт и все его данные</p>
+		<div class="settings-section__bottom">
+			<button type="button" class="btn  btn--important  btn--second  settings-section__btn" data-graph-path="delete-account">Удалить мой аккаунт</button>
+		</div>
+	</fieldset>
 </main>
 {% endblock %}
