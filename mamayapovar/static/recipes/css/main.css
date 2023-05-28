@@ -1031,6 +1031,18 @@ a {
   -ms-flex-direction: column;
   flex-direction: column;
 }
+.popup__content--success {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+}
+.popup__content--success .popup__title {
+  margin-bottom: 12px;
+}
+.popup__content--success .popup__icon {
+  margin-bottom: 24px;
+}
 .popup__form {
   display: grid;
   gap: 16px;

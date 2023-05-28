@@ -601,54 +601,67 @@
 			$('.form-field--password-register .form-field__error').addClass('hidden')
 			$('.form-field--email-register .form-field__error').addClass('hidden')
 
-			let modalContainer = document.querySelector('[data-graph-target="register"] .popup__content')
-			console.log(modalContainer);
+			let modalContainer = document.querySelector('.popup__container--register')
+			let modalContent = modalContainer.querySelector('[data-graph-target="register"] .popup__content')
 
-			// $.ajax({
-			// 	type: 'POST',
-			// 	url: this.action,
-			// 	data: $(this).serialize(),
-			// 	dataType: 'json',
 
-			// 	success: function (response) {
-			// 		if (response.status === 201) {
-			// 			window.location.reload()
-			// 		} else if (response.status === 400 && response.form_id === 'password') {
-			// 			$('.form-field--password-register input').addClass('invalid')
-			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
-			// 			$('.form-field--password-register .form-field__text').text(response.error)
-			// 		} else if (response.status === 400 && response.form_id === 'email') {
-			// 			$('.form-field--email-register input').addClass('invalid')
-			// 			$('.form-field--email-register .form-field__error').removeClass('hidden')
-			// 			$('.form-field--email-register .form-field__text').text(response.error)
-			// 		} else if (response.status === 400 && response.form_id === 'username') {
-			// 			$('.form-field--username-register input').addClass('invalid')
-			// 			$('.form-field--username-register .form-field__error').removeClass('hidden')
-			// 			$('.form-field--username-register .form-field__text').text(response.error)
-			// 		} else if (response.status === 400 && response.form_id === 'all') {
-			// 			$('.form-field--username-register input').addClass('invalid')
-			// 			$('.form-field--password-register input').addClass('invalid')
-			// 			$('.form-field--email-register input').addClass('invalid')
-			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
-			// 			$('.form-field--password-register .form-field__text').text(response.error)
-			// 		} else if (response.status === 400 && response.form_id === 'only_email') {
-			// 			$('.form-field--username-register input').addClass('invalid')
-			// 			$('.form-field--password-register input').addClass('invalid')
-			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
-			// 			$('.form-field--password-register .form-field__text').text(response.error)
-			// 		} else if (response.status === 400 && response.form_id === 'only_password') {
-			// 			$('.form-field--username-register input').addClass('invalid')
-			// 			$('.form-field--email-register input').addClass('invalid')
-			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
-			// 			$('.form-field--password-register .form-field__text').text(response.error)
-			// 		} else if (response.status === 400 && response.form_id === 'only_username') {
-			// 			$('.form-field--password-register input').addClass('invalid')
-			// 			$('.form-field--email-register input').addClass('invalid')
-			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
-			// 			$('.form-field--password-register .form-field__text').text(response.error)
-			// 		}
-			// 	}
-			// })
+			$.ajax({
+				type: 'POST',
+				url: this.action,
+				data: $(this).serialize(),
+				dataType: 'json',
+
+				success: function (response) {
+					if (response.status === 201) {
+						// Очистка модального окна
+						modalContent.remove()
+						// Вывод успешной регистрации
+						let modalContentNew = document.createElement('div')
+						modalContentNew.className = 'graph-modal__content  popup__content  popup__content--success'
+						modalContentNew.innerHTML = `
+							<img class="popup__icon" src="{% static 'recipes/img/success-register.svg' %}" alt="" width="80" height="80">
+							<h2 class="section-h2  popup__title">Добро пожаловать!</h2>
+							<p class="popup__desc">Регистрация прошла успешно</p>
+							<p class="popup__desc">Скоро вас перенаправит на главную</p>
+						`
+						modalContainer.append(modalContentNew)
+						setTimeout(() => window.location.reload(), 3000)
+					} else if (response.status === 400 && response.form_id === 'password') {
+						$('.form-field--password-register input').addClass('invalid')
+						$('.form-field--password-register .form-field__error').removeClass('hidden')
+						$('.form-field--password-register .form-field__text').text(response.error)
+					} else if (response.status === 400 && response.form_id === 'email') {
+						$('.form-field--email-register input').addClass('invalid')
+						$('.form-field--email-register .form-field__error').removeClass('hidden')
+						$('.form-field--email-register .form-field__text').text(response.error)
+					} else if (response.status === 400 && response.form_id === 'username') {
+						$('.form-field--username-register input').addClass('invalid')
+						$('.form-field--username-register .form-field__error').removeClass('hidden')
+						$('.form-field--username-register .form-field__text').text(response.error)
+					} else if (response.status === 400 && response.form_id === 'all') {
+						$('.form-field--username-register input').addClass('invalid')
+						$('.form-field--password-register input').addClass('invalid')
+						$('.form-field--email-register input').addClass('invalid')
+						$('.form-field--password-register .form-field__error').removeClass('hidden')
+						$('.form-field--password-register .form-field__text').text(response.error)
+					} else if (response.status === 400 && response.form_id === 'only_email') {
+						$('.form-field--username-register input').addClass('invalid')
+						$('.form-field--password-register input').addClass('invalid')
+						$('.form-field--password-register .form-field__error').removeClass('hidden')
+						$('.form-field--password-register .form-field__text').text(response.error)
+					} else if (response.status === 400 && response.form_id === 'only_password') {
+						$('.form-field--username-register input').addClass('invalid')
+						$('.form-field--email-register input').addClass('invalid')
+						$('.form-field--password-register .form-field__error').removeClass('hidden')
+						$('.form-field--password-register .form-field__text').text(response.error)
+					} else if (response.status === 400 && response.form_id === 'only_username') {
+						$('.form-field--password-register input').addClass('invalid')
+						$('.form-field--email-register input').addClass('invalid')
+						$('.form-field--password-register .form-field__error').removeClass('hidden')
+						$('.form-field--password-register .form-field__text').text(response.error)
+					}
+				}
+			})
 		});
 
 
