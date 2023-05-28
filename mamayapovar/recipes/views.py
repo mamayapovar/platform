@@ -1300,6 +1300,7 @@ def delete_account(request):
 
 
 def successful_recipe(request):
+    objs = Recipe.objects.all()
     return HttpResponseRedirect('/')
 
 
