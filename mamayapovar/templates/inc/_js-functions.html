@@ -126,6 +126,14 @@
 		});
 
 
+		// Создание уведомления об отправке рецепта
+		document.addEventListener('DOMContentLoaded', () => {
+			if (window.frames.top.document.referrer === 'http://127.0.0.1:8000/successful_recipe/'){
+				createToast('info', 'Рецепт отправлен на проверку')
+			}
+		})
+
+
 		// Лайки
 		function like_recipe(e) {
 			const target = e.target;
@@ -625,6 +633,7 @@
 							<p class="popup__desc">Скоро вас перенаправит на главную</p>
 						`
 						modalContainer.append(modalContentNew)
+						// Перезагрузка страницы
 						setTimeout(() => window.location.reload(), 3000)
 					} else if (response.status === 400 && response.form_id === 'password') {
 						$('.form-field--password-register input').addClass('invalid')
