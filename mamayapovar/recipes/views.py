@@ -1300,8 +1300,7 @@ def delete_account(request):
 
 
 def successful_recipe(request):
-    objs = Recipe.objects.all()
-    return HttpResponseRedirect('/')
+    return render(request, 'recipes/successful_recipe.html', {})
 
 
 def error_404(request, exception):
