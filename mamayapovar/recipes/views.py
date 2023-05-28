@@ -1,7 +1,6 @@
 import json
 import os
 import random
-from django.urls import reverse_lazy
 import transliterate
 from shutil import rmtree, copy2
 
@@ -16,7 +15,6 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render
 from django.core.cache import cache
-from django.utils import datastructures
 
 from .forms import *
 from .models import Like, Recipe, Bookmark, UserProfile, StepImages, Subscribe, Category, Comment, Approve
@@ -88,6 +86,11 @@ def postindex(request):
                         user.save()
                         copy2(os.path.join(settings.STATIC_ROOT, 'recipes', 'img', 'placeholder-avatar.jpg'), os.path.join(settings.MEDIA_ROOT, 'avatars', str(user.id) + '.jpg'))
                         UserProfile(posts=0, user=user, avatar=os.path.join('avatars', str(user.id) + '.jpg')).save()
+
+                        # login
+                        user1 = authenticate(request, email=form.cleaned_data['email'], password=form.cleaned_data['password'])
+                        login(request, user1)
+
                         return JsonResponse(data={'status': 201}, status=200)
                     else:
                         return JsonResponse(data={
