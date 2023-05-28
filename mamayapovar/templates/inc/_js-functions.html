@@ -1,15 +1,68 @@
 {% load static %}
 {% block js-functions %}
-	<script type="module">
-		// Тестовая функция
-		// import {createToast} from '/static/recipes/js/main.js'
+	<script>
+		// Создание и удаление уведомлений
+		const notifications = document.querySelector('.notifications')
+		let count = 0
 
-		// if (document.querySelector('[data-account-button-delete]')) {
-		// 	document.querySelector('[data-account-button-delete]').addEventListener('click', (e) => {
-		// 		e.stopPropagation()
-		// 		createToast('success', '12345')
-		// 	})
-		// }
+		const toastDetails = {
+			timer: 5000,
+			success: {
+				icon: `${svgCheck}`,
+			},
+			info: {
+				icon:  `${svgInfo}`,
+			},
+			warning: {
+				icon:  `${svgWarning}`,
+			},
+			error: {
+				icon: `${svgWarning}`,
+			}
+		}
+
+		function removeToast (toast) {
+			count--
+			toast.classList.add('toast--hide')
+			setTimeout(() => toast.remove(), 200)
+		}
+
+		function createToast (id, text) {
+			const {icon} = toastDetails[id]
+			const toast = document.createElement('li')
+			toast.className = `toast  toast--${id}  toast--show`
+
+			toast.innerHTML = `
+				<div class="toast__icon">
+					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+						<use href="${icon}"/>
+					</svg>
+				</div>
+				<span class="toast__text">${text}</span>
+				<button class="toast__close  btn-reset" aria-label="Закрыть уведомление">
+					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
+						<use href="${svgCross}"/>
+					</svg>
+				</button>
+			`
+			notifications.appendChild(toast)
+
+			count++
+			if (count > 4) {
+				let topToast = document.querySelector('.toast')
+				removeToast(topToast)
+			}
+
+			setTimeout(() => removeToast(toast), toastDetails.timer)
+		}
+
+		document.addEventListener('click', (e) => {
+			const target = e.target
+			if (target.classList.contains('toast__close')) {
+				removeToast(target.parentElement)
+			}
+		})
+
 
 		// Куки-файлы
 		function getCookie(name) {
@@ -397,19 +450,18 @@
 			$('[data-post-button-predelete]').click(predelete_recipe);
 		});
 
-		function delete_recipe(e) {
-			var current = $(this);
-			var url_root = current.data('url_root');
-			// const delBtn = document.querySelector(`[data-post-button-predelete][data-url_root='${url_root}']`);
-			// console.log(url_root);
-			// post.classList.add('visually-hidden');
+		function delete_recipe() {
+			var url_root = this.getAttribute("data-url_root")
+			let postDelBtn = document.querySelector(`[data-post-button-predelete][data-url_root='${url_root}']`);
+			let post = postDelBtn.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
 
 			$.ajax({
 				url: url_root,
 				type: 'POST',
 
 				success: function (json) {
-					document.location.href = "/"
+					post.remove()
+					createToast('success', 'Рецепт успешно удалён')
 					return true
 				}
 			});
@@ -549,59 +601,60 @@
 			$('.form-field--password-register .form-field__error').addClass('hidden')
 			$('.form-field--email-register .form-field__error').addClass('hidden')
 
-			$.ajax({
-				type: 'POST',
-				url: this.action,
-				data: $(this).serialize(),
-				dataType: 'json',
+			let modalContainer = document.querySelector('[data-graph-target="register"] .popup__content')
+			console.log(modalContainer);
 
-				success: function (response) {
-					if (response.status === 201) {
-						window.location.reload()
-					} else if (response.status === 400 && response.form_id === 'password') {
-						$('.form-field--password-register input').addClass('invalid')
-						$('.form-field--password-register .form-field__error').removeClass('hidden')
-						$('.form-field--password-register .form-field__text').text(response.error)
-					} else if (response.status === 400 && response.form_id === 'email') {
-						$('.form-field--email-register input').addClass('invalid')
-						$('.form-field--email-register .form-field__error').removeClass('hidden')
-						$('.form-field--email-register .form-field__text').text(response.error)
-					} else if (response.status === 400 && response.form_id === 'username') {
-						$('.form-field--username-register input').addClass('invalid')
-						$('.form-field--username-register .form-field__error').removeClass('hidden')
-						$('.form-field--username-register .form-field__text').text(response.error)
-					} else if (response.status === 400 && response.form_id === 'all') {
-						$('.form-field--username-register input').addClass('invalid')
-						$('.form-field--password-register input').addClass('invalid')
-						$('.form-field--email-register input').addClass('invalid')
-						$('.form-field--password-register .form-field__error').removeClass('hidden')
-						$('.form-field--password-register .form-field__text').text(response.error)
-					} else if (response.status === 400 && response.form_id === 'only_email') {
-						$('.form-field--username-register input').addClass('invalid')
-						$('.form-field--password-register input').addClass('invalid')
-						$('.form-field--password-register .form-field__error').removeClass('hidden')
-						$('.form-field--password-register .form-field__text').text(response.error)
-					} else if (response.status === 400 && response.form_id === 'only_password') {
-						$('.form-field--username-register input').addClass('invalid')
-						$('.form-field--email-register input').addClass('invalid')
-						$('.form-field--password-register .form-field__error').removeClass('hidden')
-						$('.form-field--password-register .form-field__text').text(response.error)
-					} else if (response.status === 400 && response.form_id === 'only_username') {
-						$('.form-field--password-register input').addClass('invalid')
-						$('.form-field--email-register input').addClass('invalid')
-						$('.form-field--password-register .form-field__error').removeClass('hidden')
-						$('.form-field--password-register .form-field__text').text(response.error)
-					}
-				}
-			})
+			// $.ajax({
+			// 	type: 'POST',
+			// 	url: this.action,
+			// 	data: $(this).serialize(),
+			// 	dataType: 'json',
+
+			// 	success: function (response) {
+			// 		if (response.status === 201) {
+			// 			window.location.reload()
+			// 		} else if (response.status === 400 && response.form_id === 'password') {
+			// 			$('.form-field--password-register input').addClass('invalid')
+			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
+			// 			$('.form-field--password-register .form-field__text').text(response.error)
+			// 		} else if (response.status === 400 && response.form_id === 'email') {
+			// 			$('.form-field--email-register input').addClass('invalid')
+			// 			$('.form-field--email-register .form-field__error').removeClass('hidden')
+			// 			$('.form-field--email-register .form-field__text').text(response.error)
+			// 		} else if (response.status === 400 && response.form_id === 'username') {
+			// 			$('.form-field--username-register input').addClass('invalid')
+			// 			$('.form-field--username-register .form-field__error').removeClass('hidden')
+			// 			$('.form-field--username-register .form-field__text').text(response.error)
+			// 		} else if (response.status === 400 && response.form_id === 'all') {
+			// 			$('.form-field--username-register input').addClass('invalid')
+			// 			$('.form-field--password-register input').addClass('invalid')
+			// 			$('.form-field--email-register input').addClass('invalid')
+			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
+			// 			$('.form-field--password-register .form-field__text').text(response.error)
+			// 		} else if (response.status === 400 && response.form_id === 'only_email') {
+			// 			$('.form-field--username-register input').addClass('invalid')
+			// 			$('.form-field--password-register input').addClass('invalid')
+			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
+			// 			$('.form-field--password-register .form-field__text').text(response.error)
+			// 		} else if (response.status === 400 && response.form_id === 'only_password') {
+			// 			$('.form-field--username-register input').addClass('invalid')
+			// 			$('.form-field--email-register input').addClass('invalid')
+			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
+			// 			$('.form-field--password-register .form-field__text').text(response.error)
+			// 		} else if (response.status === 400 && response.form_id === 'only_username') {
+			// 			$('.form-field--password-register input').addClass('invalid')
+			// 			$('.form-field--email-register input').addClass('invalid')
+			// 			$('.form-field--password-register .form-field__error').removeClass('hidden')
+			// 			$('.form-field--password-register .form-field__text').text(response.error)
+			// 		}
+			// 	}
+			// })
 		});
 
 
 		// Комментарии
 
 		(function(){
-
-
 			if (document.querySelector('[data-comments-list]')) {
 				const commentsList = document.querySelector('[data-comments-list]')
 				let btnDel = document.querySelectorAll('[data-delete-comment-button]')
@@ -692,6 +745,7 @@
 							updateCount(titleCount)
 							const comment = btnDel.parentNode.parentNode
 							comment.remove()
+							createToast('success', 'Комментарий успешно удалён')
 						}
 					});
 				}
