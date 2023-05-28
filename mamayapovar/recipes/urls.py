@@ -27,7 +27,8 @@ urlpatterns = [
     path('delete_comment/<int:id>', delete_comment, name='delete_comment'),
     path('approve_button/<int:id>', approve_button, name='approve_button'),
     path('deny_button/<int:id>', deny_button, name='deny_button'),
-    path('delete_account/', delete_account, name='delete_account')
+    path('delete_account/', delete_account, name='delete_account'),
+    path('successful_recipe', successful_recipe, name='successful_recipe')
 ]
 
 if settings.DEBUG:

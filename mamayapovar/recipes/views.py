@@ -1299,5 +1299,9 @@ def delete_account(request):
     return HttpResponseRedirect('/')
 
 
+def successful_recipe(request):
+    return HttpResponseRedirect('/')
+
+
 def error_404(request, exception):
     return HttpResponseRedirect('/')

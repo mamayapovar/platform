@@ -260,7 +260,7 @@
 
 				success: function (response) {
 					if (response.status === 201) {
-						window.location.href = '/';
+						window.location.href = '/successful_recipe/';
 					} else if (response.status === 400 && response.form_id === 'title') {
 						$('html, body').animate({
 							scrollTop: $(title).offset().top - 200
