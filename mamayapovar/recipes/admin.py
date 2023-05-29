@@ -92,10 +92,10 @@ class ApproveAdmin(admin.ModelAdmin):
     list_display_links = ('post',)
 
     def get_approve(self, object):
-        return mark_safe(f"<a href='/approve_button/{object.post.id}' class='accept' style='color: #FFF; background: #44CC44; padding: 10px 15px; border-radius: 10px;'>ПРИНЯТЬ <span class='fa fa-check'></span></a>")
+        return mark_safe(f"<a href='/approve_button/{object.post.id}' class='accept' style='color: #FFF; background: rgba(137, 203, 36, 1); padding: 8px 16px; border-radius: 8px;'>ПРИНЯТЬ <span class='fa fa-check'></span></a>")
 
     def get_deny(self, object):
-        return mark_safe(f"<a href='/deny_button/{object.post.id}' class='deny' style='color: #FFF; background: tomato; padding: 10px 15px; border-radius: 10px;'>ОТКЛОНИТЬ <span class='fa fa-close'></span></a>")
+        return mark_safe(f"<a href='/deny_button/{object.post.id}' class='deny' style='color: #FFF; background: rgba(249, 50, 50, 1); padding: 8px 16px; border-radius: 8px;'>ОТКЛОНИТЬ <span class='fa fa-close'></span></a>")
 
     get_approve.short_description = 'Одобрение'
     get_deny.short_description = 'Отклонение'
