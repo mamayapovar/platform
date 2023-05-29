@@ -13,32 +13,21 @@
 			<div class="settings-section__group  settings-section__group--avatar">
 				<div class="form-field  settings-section__field  settings-section__field--username">
 					<label class="form-field__label" for="settings-username">Отображаемое имя</label>
-					<input type="text" name="username" id="settings-username" class="input" placeholder="Имя и фамилия"
-						value="{{ username }}" autocomplete="off">
-					{% if error %}
-					<label class="form-field__error" for="settings-username">
+					<input type="text" name="username" id="settings-username" class="input" placeholder="Имя и фамилия" value="{{ username }}" autocomplete="off">
+					<label class="form-field__error hidden" for="settings-username">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
-						</svg>
-						<span class="form-field__text">{{ error }}</span>
-					</label>
-					{% endif %}
-				</div>
-				<div class="form-field  settings-section__field  settings-section__field--desc">
-					<label class="form-field__label" for="description">Описание профиля</label>
-					<textarea name="description" id="description" class="input  input--textarea" placeholder="Пара слов о себе"
-						autocomplete="off">{{ user_profile.description }}</textarea>
-					<label class="form-field__error  hidden" for="description">
-						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
-							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross"/>
 						</svg>
 						<span class="form-field__text"></span>
 					</label>
 				</div>
+				<div class="form-field  settings-section__field  settings-section__field--desc">
+					<label class="form-field__label" for="description">Описание профиля</label>
+					<textarea name="description" id="description" class="input  input--textarea" placeholder="Пара слов о себе" autocomplete="off">{{ user_profile.description }}</textarea>
+				</div>
 				<div class="form-field  settings-section__field  settings-section__field--avatar">
 					<label class="form-field__label" for="photo">Фото профиля</label>
 					{% if not user_profile.avatar %}
-					<!-- TODO: Исправить обновление аватарки -->
 					<div class="info-avatar  info-avatar--change" data-button-photo
 						data-url_root="{% url 'change_profile_picture' %}">
 						<div style="background-image: url('{% static 'recipes/img/placeholder-avatar.jpg' %}');"
@@ -53,7 +42,6 @@
 						</div>
 					</div>
 					{% else %}
-					<!-- TODO: Исправить обновление аватарки -->
 					<div class="info-avatar  info-avatar--change" data-button-photo
 						data-url_root="{% url 'change_profile_picture' %}">
 						<div style="background-image: url('{% get_avatar_url request.user.id %}');"

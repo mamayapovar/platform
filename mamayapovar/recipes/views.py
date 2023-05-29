@@ -643,7 +643,7 @@ def user_profile(request, id):
     }
     return render(request, 'recipes/user.html', content)
 
-# TODO: Исправить обновление аватарки
+
 def change_profile_picture(request):
     if UserProfile.objects.filter(user=request.user):
         user = UserProfile.objects.get(user=request.user)
@@ -718,7 +718,6 @@ def category(request, id):
         "is_auth": request.user.is_authenticated
     })
 
-# TODO: Сделать удаление рецепта по кнопке
 def delete_recipe(request, id):
     recipe = Recipe.objects.get(id=id)
     if request.user.id == recipe.author_id:
@@ -770,16 +769,13 @@ def settings_profile(request):
                         user = User.objects.get(id=request.user.id)
                         user.username = form.cleaned_data['username']
                         user.save()
-                return render(request, 'recipes/settings/profile.html', {
-                    'title': 'Настройки профиля - Мама, я повар!',
-                    'username': User.objects.get(id=request.user.id).username
-                })
+                return JsonResponse(data={'status': 201}, status=200)
             else:
-                return render(request, 'recipes/settings/profile.html', {
-                    'title': 'Настройки профиля - Мама, я повар!',
-                    'username': User.objects.get(id=request.user.id).username,
-                    'error': "Пожалуйста, введите имя"
-                })
+                return JsonResponse(data={
+                        'form_id': 'username',
+                        'status': 400,
+                        'error': 'Пожалуйста, введите имя'
+                    }, status=200)
     return render(request, 'recipes/settings/profile.html', {
         'title': 'Настройки профиля - Мама, я повар!',
         'username': User.objects.get(id=request.user.id).username
@@ -792,20 +788,22 @@ def settings_account(request):
             form = ChangeEmailForm(request.POST)
             if form.is_valid():
                 if form.cleaned_data['email'] in [x.email for x in User.objects.all()]:
-                    return render(request, 'recipes/settings/account.html', {
-                        'title': "Настройки аккаунта - Мама, я повар!",
+                    return JsonResponse(data={
+                        'form_id': 'email',
+                        'status': 400,
                         'error': 'Пользователь с такой почтой уже зарегистрирован'
-                    })
+                    }, status=200)
                 elif request.POST.get("email") and request.POST.get('email') != request.user.email:
                     user = User.objects.get(id=request.user.id)
                     user.email = form.cleaned_data['email']
                     user.save()
-                    return render(request, 'recipes/settings/account.html', {'title': "Настройки аккаунта - Мама, я повар!"})
+                    return JsonResponse(data={'status': 201}, status=200)
                 elif not form.cleaned_data['email']:
-                    return render(request, 'recipes/settings/account.html', {
-                        'title': "Настройки аккаунта - Мама, я повар!",
+                    return JsonResponse(data={
+                        'form_id': 'email',
+                        'status': 400,
                         'error': 'Пожалуйста, введите почту'
-                    })
+                    }, status=200)
         elif 'password_old' in request.POST:  # Установка нового пароля
             form = ChangePasswordForm(request.POST)
             if form.is_valid():
@@ -815,27 +813,26 @@ def settings_account(request):
                             user = User.objects.get(id=request.user.id)
                             user.set_password(form.cleaned_data['password_new'])
                             user.save()
-                            return render(request, 'recipes/settings/account.html', {
-                                'title': "Настройки аккаунта - Мама, я повар!"
-                            })
+                            return JsonResponse(data={'status': 201}, status=200)
                         elif form.cleaned_data['password_new'] != form.cleaned_data['password_new_repeat']:
-                            return render(request, 'recipes/settings/account.html', {
-                                'title': "Настройки аккаунта - Мама, я повар!",
-                                'error_same': "Пароли не совпадают",
-                                'old': form.cleaned_data['password_old']
-                            })
+                            return JsonResponse(data={
+                                'form_id': 'password-new-repeat',
+                                'status': 400,
+                                'error': 'Пароли не совпадают'
+                            }, status=200)
                     else:
-                        return render(request, 'recipes/settings/account.html', {
-                            'title': "Настройки аккаунта - Мама, я повар!",
-                            'error_wrong': "Введен неверный пароль",
-                            'new': form.cleaned_data['password_new'],
-                            'new_repeat': form.cleaned_data['password_new_repeat']
-                        })
+                        return JsonResponse(data={
+                            'form_id': 'password-old',
+                            'status': 400,
+                            'error': 'Введен неверный пароль'
+                        }, status=200)
                 else:
-                    return render(request, 'recipes/settings/account.html', {
-                        'title': "Настройки аккаунта - Мама, я повар!",
-                        'error_wrong': "Пожалуйста, введите данные"
-                    })
+                    return JsonResponse(data={
+                        'form_id': 'password-empty',
+                        'status': 400,
+                        'error': 'Пожалуйста, введите данные'
+                    }, status=200)
+
     return render(request, 'recipes/settings/account.html', {
         'title': "Настройки аккаунта - Мама, я повар!"
     })
@@ -1297,10 +1294,6 @@ def delete_account(request):
     user = User.objects.get(id=request.user.id)
     user.delete()
     return HttpResponseRedirect('/')
-
-
-def successful_recipe(request):
-    return render(request, 'recipes/successful_recipe.html', {})
 
 
 def error_404(request, exception):

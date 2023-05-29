@@ -31,8 +31,8 @@
 							<use href="{% static 'recipes/img/sprite.svg' %}#chevron-down" />
 						</svg>
 					</button>
-					<ul class="list-reset  header-profile-menu" data-menu-profile>
-						<li class="header-profile-menu__item">
+					<ul role="listbox" class="list-reset  header-profile-menu" aria-label="Меню профиля" data-menu-profile>
+						<li role="option" class="header-profile-menu__item">
 							<span class="header-profile-menu__label">Мой профиль</span>
 							<a href="{% url 'user_profile' request.user.id %}" class="header-profile-menu__link"
 								data-menu-profile-link tabindex="-1">
@@ -46,7 +46,7 @@
 								<span>{{ request.user.username }}</span>
 							</a>
 						</li>
-						<li class="header-profile-menu__item">
+						<li role="option" class="header-profile-menu__item">
 							<a href="{% url 'settings_profile' %}" class="header-profile-menu__link" data-menu-profile-link
 								tabindex="-1">
 								<svg class="icon" aria-hidden="true" focusable="false">
@@ -55,7 +55,7 @@
 								<span>Настройки</span>
 							</a>
 						</li>
-						<li class="header-profile-menu__item">
+						<li role="option" class="header-profile-menu__item">
 							<a href="{% url 'logout' %}" class="header-profile-menu__link" data-menu-profile-link tabindex="-1">
 								<svg class="icon" aria-hidden="true" focusable="false">
 									<use href="{% static 'recipes/img/sprite.svg' %}#log-out" />
