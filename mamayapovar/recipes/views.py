@@ -769,6 +769,7 @@ def settings_profile(request):
                         user = User.objects.get(id=request.user.id)
                         user.username = form.cleaned_data['username']
                         user.save()
+                cache.clear()
                 return JsonResponse(data={'status': 201}, status=200)
             else:
                 return JsonResponse(data={
