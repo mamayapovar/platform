@@ -11,7 +11,7 @@
 			<legend class="section-h2  form-section__title">Электронная почта</legend>
 			<div class="form-field  settings-section__field  settings-section__field--email">
 				<input type="email" name="email" id="settings-email" class="input" placeholder="Электронная почта"
-					value="{% get_email request.user.id %}">
+					value="{% get_email request.user.id %}" autocomplete="email">
 				<button type="submit" class="btn  settings-section__btn">Обновить почту</button>
 				<label class="form-field__error hidden" for="settings-email">
 					<svg class="icon  icon--16" aria-hidden="true" focusable="false">
@@ -29,7 +29,7 @@
 			<legend class="section-h2  form-section__title">Изменение пароля</legend>
 			<div class="settings-section__group">
 				<div class="form-field  settings-section__field  settings-section__field--old">
-					<input type="password" name="password_old" id="settings-password-old" class="input" placeholder="Старый пароль">
+					<input type="password" name="password_old" id="settings-password-old" class="input" placeholder="Старый пароль" autocomplete="current-password">
 					<label class="form-field__error  hidden" for="settings-password-old">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
@@ -38,7 +38,7 @@
 					</label>
 				</div>
 				<div class="form-field  settings-section__field  settings-section__field--new">
-					<input type="password" name="password_new" id="settings-password-new" class="input" placeholder="Новый пароль">
+					<input type="password" name="password_new" id="settings-password-new" class="input" placeholder="Новый пароль" autocomplete="new-password">
 					<label class="form-field__error  hidden" for="settings-password-new">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
@@ -47,7 +47,7 @@
 					</label>
 				</div>
 				<div class="form-field  settings-section__field  settings-section__field--new-repeat">
-					<input type="password" name="password_new_repeat" id="settings-password-new-repeat" class="input" placeholder="Подтвердите новый пароль">
+					<input type="password" name="password_new_repeat" id="settings-password-new-repeat" class="input" placeholder="Подтвердите новый пароль" autocomplete="new-password">
 					<label class="form-field__error  hidden" for="settings-password-new-repeat">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />

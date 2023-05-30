@@ -75,6 +75,8 @@
 				createToast('success', 'Почта успешно обновлена')
 			} else if (success === 'update-password') {
 				createToast('success', 'Пароль успешно обновлён')
+			} else if (success === 'delete-recipe') {
+				createToast('success', 'Рецепт успешно удалён')
 			}
 			window.localStorage.removeItem('success')
 		})
@@ -465,16 +467,19 @@
 
 		function delete_recipe() {
 			var url_root = this.getAttribute("data-url_root")
-			let postDelBtn = document.querySelector(`[data-post-button-predelete][data-url_root='${url_root}']`);
-			let post = postDelBtn.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
 
 			$.ajax({
 				url: url_root,
 				type: 'POST',
 
 				success: function (json) {
-					post.remove()
-					createToast('success', 'Рецепт успешно удалён')
+					if (window.location.pathname.includes('/recipe/')) {
+						window.location.href = '/'
+						localStorage.setItem('success', 'delete-recipe')
+					} else {
+						window.location.reload()
+						localStorage.setItem('success', 'delete-recipe')
+					}
 					return true
 				}
 			});
