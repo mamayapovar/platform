@@ -655,6 +655,7 @@ def change_profile_picture(request):
                 destination.write(chunk)
         user.avatar = os.path.join('avatars', str(request.user.id) + '.jpg')
         user.save()
+        cache.clear()
     else:
         recipes = Recipe.objects.filter(author_id=request.user.id)
         new_path = os.path.join(settings.MEDIA_ROOT, 'avatars', str(request.user.id) + '.jpg')
@@ -664,7 +665,7 @@ def change_profile_picture(request):
         avatar = os.path.join('avatars', str(request.user.id) + '.jpg')
         new_photo = UserProfile(user=request.user, avatar=avatar, posts=len(recipes))
         new_photo.save()
-    cache.clear()
+        cache.clear()
     return HttpResponseRedirect(f'/user/{str(request.user.id)}/')
 
 
@@ -769,7 +770,6 @@ def settings_profile(request):
                         user = User.objects.get(id=request.user.id)
                         user.username = form.cleaned_data['username']
                         user.save()
-                cache.clear()
                 return JsonResponse(data={'status': 201}, status=200)
             else:
                 return JsonResponse(data={
