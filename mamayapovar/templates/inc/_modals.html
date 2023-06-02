@@ -51,7 +51,7 @@
 				{% csrf_token %}
 				<div class="form-field  form-field--username-register">
 					<input type="text" name="username" id="username-register" class="input  popup__input"
-						placeholder="Имя и фамилия">
+						placeholder="Имя и фамилия" autocomplete="name">
 					<label class="form-field__error  hidden" for="username-register">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
@@ -61,7 +61,7 @@
 				</div>
 				<div class="form-field  form-field--email-register">
 					<input type="email" name="email" id="email-register" class="input  popup__input"
-						placeholder="Электронная почта">
+						placeholder="Электронная почта" autocomplete="username">
 					<label class="form-field__error  hidden" for="email-register">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
@@ -71,7 +71,7 @@
 				</div>
 				<div class="form-field  form-field--password-register">
 					<input type="password" name="password" id="password-register" class="input  popup__input"
-						placeholder="Пароль">
+						placeholder="Пароль" autocomplete="new-password">
 					<label class="form-field__error  hidden" for="password-register">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
@@ -99,7 +99,7 @@
 			<form id="auth-form" action="{% url 'login' %}" class="popup__form" method="post">
 				{% csrf_token %}
 				<div class="form-field  form-field--email">
-					<input type="email" name="email" id="email-auth" class="input  popup__input" placeholder="Электронная почта">
+					<input type="email" name="email" id="email-auth" class="input  popup__input" placeholder="Электронная почта" autocomplete="username">
 					<label class="form-field__error  hidden" for="email-auth">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />
@@ -108,7 +108,7 @@
 					</label>
 				</div>
 				<div class="form-field  form-field--password">
-					<input type="password" name="password" id="password-auth" class="input  popup__input" placeholder="Пароль">
+					<input type="password" name="password" id="password-auth" class="input  popup__input" placeholder="Пароль" autocomplete="current-password">
 					<label class="form-field__error  hidden" for="password-auth">
 						<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 							<use href="{% static 'recipes/img/sprite.svg' %}#circle-cross" />

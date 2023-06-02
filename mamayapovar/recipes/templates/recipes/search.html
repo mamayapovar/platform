@@ -92,11 +92,11 @@
 							<use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal" />
 						</svg>
 					</button>
-					<ul class="list-reset  content-more-menu" data-menu-more-list>
-						<li class="content-more-menu__item" data-menu-more-item>
+					<ul role="listbox" class="list-reset  content-more-menu" aria-label="Меню действий" data-menu-more-list>
+						<li role="option" class="content-more-menu__item" data-menu-more-item>
 							<button class="btn-reset  content-more-menu__button" tabindex="-1" data-graph-path="delete-recipe"  data-post-button-delete data-url_root="{% url 'delete_recipe' recipe.id %}">Удалить</button>
 						</li>
-						<li class="content-more-menu__item" data-menu-more-item>
+						<li role="option" class="content-more-menu__item" data-menu-more-item>
 							<a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}"
 								tabindex="-1">Редактировать</a>
 						</li>
@@ -110,8 +110,8 @@
 							<use href="{% static 'recipes/img/sprite.svg' %}#more-horizontal" />
 						</svg>
 					</button>
-					<ul class="list-reset  content-more-menu" data-menu-more-list>
-						<li class="content-more-menu__item" data-menu-more-item>
+					<ul role="listbox" class="list-reset  content-more-menu" aria-label="Меню действий" data-menu-more-list>
+						<li role="option" class="content-more-menu__item" data-menu-more-item>
 							<button class="btn-reset  content-more-menu__button" tabindex="-1">Пожаловаться</button>
 						</li>
 					</ul>

@@ -27,31 +27,9 @@ class LoginForm(forms.Form):
         password = cleaned_data.get('password')
 
 class ProfileSettingsForm(forms.Form):
-    username = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'input',
-            'name': 'username',
-            'id': 'settings-username',
-            'placeholder': "Имя и фамилия",
-            'pattern': "[A-Za-zА-Яа-яЁё\s]{0,100}",
-            'minlength': "0",
-            'maxlength': "100",
-            'autocomplete': "off",
-        })
-    )
+    username = forms.CharField(required=False)
 
-    description = forms.CharField(
-        required=False,
-        widget=forms.Textarea(attrs={
-            'class': 'input',
-            'name': 'description',
-            'id': 'description',
-            'placeholder': "Пара слов о себе",
-            'maxlength': "120",
-            'autocomplete': "off",
-        })
-    )
+    description = forms.CharField(required=False)
 
     photo = forms.ImageField(required=False)
 
@@ -61,54 +39,16 @@ class ProfileSettingsForm(forms.Form):
         description = cleaned_data.get('description')
 
 class ChangeEmailForm(forms.Form):
-    email = forms.CharField(
-        required=False,
-        widget=forms.EmailInput(attrs={
-            'class': "input",
-            'name': "email",
-            'id': "settings-email",
-            'placeholder': "Электронная почта"
-        })
-    )
+    email = forms.CharField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get('email')
 
 class ChangePasswordForm(forms.Form):
-    password_old = forms.CharField(
-        required=False,
-        min_length=4,
-        max_length=32,
-        widget=forms.PasswordInput(attrs={
-            'class': "input",
-            'name': "password-old",
-            'id': "settings-password-old",
-            'placeholder': "Старый пароль"
-        })
-    )
-    password_new = forms.CharField(
-        required=False,
-        min_length=4,
-        max_length=32,
-        widget=forms.PasswordInput(attrs={
-            'class': "input",
-            'name': "password-new",
-            'id': "settings-password-new",
-            'placeholder': "Новый пароль"
-        })
-    )
-    password_new_repeat = forms.CharField(
-        required=False,
-        min_length=4,
-        max_length=32,
-        widget=forms.PasswordInput(attrs={
-            'class': "input",
-            'name': "password-new-repeat",
-            'id': "settings-password-new-repeat",
-            'placeholder': "Подтвердите новый пароль"
-        })
-    )
+    password_old = forms.CharField(required=False)
+    password_new = forms.CharField(required=False)
+    password_new_repeat = forms.CharField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()

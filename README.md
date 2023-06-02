@@ -128,6 +128,6 @@ source venv/bin/activate & cd mamayapovar & python3 manage.py runserver
 
 ## Браузеры
 На данный момент мы поддерживаем браузеры следующих версий:
-- Safari >= 13.1
+- Safari >= 14
 - Chrome >= 80
 - Firefox >= 72

@@ -63,6 +63,23 @@
 			}
 		})
 
+		document.addEventListener('DOMContentLoaded', () => {
+			const success = window.localStorage.getItem('success')
+			if (success === 'new-recipe'){
+				createToast('info', 'Рецепт отправлен на проверку')
+			} else if (success === 'edit-recipe') {
+				createToast('success', 'Рецепт успешно обновлён')
+			} else if (success === 'update-profile') {
+				createToast('success', 'Профиль успешно обновлён')
+			} else if (success === 'update-email') {
+				createToast('success', 'Почта успешно обновлена')
+			} else if (success === 'update-password') {
+				createToast('success', 'Пароль успешно обновлён')
+			} else if (success === 'delete-recipe') {
+				createToast('success', 'Рецепт успешно удалён')
+			}
+			window.localStorage.removeItem('success')
+		})
 
 		// Куки-файлы
 		function getCookie(name) {
@@ -124,14 +141,6 @@
 		$(function () {
 			$('[data-button-bookmark]').click(to_bookmarks);
 		});
-
-
-		// Создание уведомления об отправке рецепта
-		document.addEventListener('DOMContentLoaded', () => {
-			if (window.frames.top.document.referrer === 'http://127.0.0.1:8000/successful_recipe/'){
-				createToast('info', 'Рецепт отправлен на проверку')
-			}
-		})
 
 
 		// Лайки
@@ -268,7 +277,8 @@
 
 				success: function (response) {
 					if (response.status === 201) {
-						window.location.href = '/successful_recipe/';
+						window.localStorage.setItem('success', 'new-recipe')
+						window.location.href = '/';
 					} else if (response.status === 400 && response.form_id === 'title') {
 						$('html, body').animate({
 							scrollTop: $(title).offset().top - 200
@@ -377,6 +387,7 @@
 
 				success: function (response) {
 					if (response.status === 201) {
+						window.localStorage.setItem('success', 'edit-recipe')
 						window.location.href = '/';
 					} else if (response.status === 400 && response.form_id === 'title') {
 						$('html, body').animate({
@@ -454,29 +465,121 @@
 			delBtn.setAttribute('data-url_root', `${recipeUrl}`)
 		}
 
-		$(function () {
-			$('[data-post-button-predelete]').click(predelete_recipe);
-		});
-
 		function delete_recipe() {
 			var url_root = this.getAttribute("data-url_root")
-			let postDelBtn = document.querySelector(`[data-post-button-predelete][data-url_root='${url_root}']`);
-			let post = postDelBtn.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
 
 			$.ajax({
 				url: url_root,
 				type: 'POST',
 
 				success: function (json) {
-					post.remove()
-					createToast('success', 'Рецепт успешно удалён')
+					if (window.location.pathname.includes('/recipe/')) {
+						window.location.href = '/'
+						localStorage.setItem('success', 'delete-recipe')
+					} else {
+						window.location.reload()
+						localStorage.setItem('success', 'delete-recipe')
+					}
 					return true
 				}
 			});
 		}
 
 		$(function () {
+			$('[data-post-button-predelete]').click(predelete_recipe);
+		});
+
+		$(function () {
 			$('[data-post-button-delete]').click(delete_recipe);
+		});
+
+
+		// Обновление настроек профиля и аккаунта
+		$('#settings-profile-form').submit(function (e) {
+			e.preventDefault()
+			$('.settings-section__field--username input').removeClass('invalid')
+			$('.settings-section__field--username .form-field__error').addClass('hidden')
+
+			$.ajax({
+				type: 'POST',
+				url: this.action,
+				data: $(this).serialize(),
+				dataType: 'json',
+
+				success: function (response) {
+					if (response.status === 201) {
+						location.reload()
+						localStorage.setItem('success', 'update-profile')
+					} else if (response.status === 400 && response.form_id === 'username') {
+						$('.settings-section__field--username input').addClass('invalid')
+						$('.settings-section__field--username .form-field__error').removeClass('hidden')
+						$('.settings-section__field--username .form-field__text').text(response.error)
+					}
+				}
+			})
+		});
+
+		$('#settings-email-form').submit(function (e) {
+			e.preventDefault()
+			$('.settings-section__field--email input').removeClass('invalid')
+			$('.settings-section__field--email .form-field__error').addClass('hidden')
+
+			$.ajax({
+				type: 'POST',
+				url: this.action,
+				data: $(this).serialize(),
+				dataType: 'json',
+
+				success: function (response) {
+					if (response.status === 201) {
+						location.reload()
+						localStorage.setItem('success', 'update-email')
+					} else if (response.status === 400 && response.form_id === 'email') {
+						$('.settings-section__field--email input').addClass('invalid')
+						$('.settings-section__field--email .form-field__error').removeClass('hidden')
+						$('.settings-section__field--email .form-field__text').text(response.error)
+					}
+				}
+			})
+		});
+
+		$('#settings-password-form').submit(function (e) {
+			e.preventDefault()
+			$('.settings-section__field--old input').removeClass('invalid')
+			$('.settings-section__field--old .form-field__error').addClass('hidden')
+			$('.settings-section__field--new input').removeClass('invalid')
+			$('.settings-section__field--new .form-field__error').addClass('hidden')
+			$('.settings-section__field--new-repeat input').removeClass('invalid')
+			$('.settings-section__field--new-repeat .form-field__error').addClass('hidden')
+
+			$.ajax({
+				type: 'POST',
+				url: this.action,
+				data: $(this).serialize(),
+				dataType: 'json',
+
+				success: function (response) {
+					if (response.status === 201) {
+						window.location.href = '/'
+						localStorage.setItem('success', 'update-password')
+					} else if (response.status === 400 && response.form_id === 'password-old') {
+						$('.settings-section__field--old input').addClass('invalid')
+						$('.settings-section__field--old .form-field__error').removeClass('hidden')
+						$('.settings-section__field--old .form-field__text').text(response.error)
+					} else if (response.status === 400 && response.form_id === 'password-new-repeat') {
+						$('.settings-section__field--new input').addClass('invalid')
+						$('.settings-section__field--new-repeat input').addClass('invalid')
+						$('.settings-section__field--new-repeat .form-field__error').removeClass('hidden')
+						$('.settings-section__field--new-repeat .form-field__text').text(response.error)
+					} else if (response.status === 400 && response.form_id === 'password-empty') {
+						$('.settings-section__field--old input').addClass('invalid')
+						$('.settings-section__field--new input').addClass('invalid')
+						$('.settings-section__field--new-repeat input').addClass('invalid')
+						$('.settings-section__field--new-repeat .form-field__error').removeClass('hidden')
+						$('.settings-section__field--new-repeat .form-field__text').text(response.error)
+					}
+				}
+			})
 		});
 
 
@@ -515,6 +618,7 @@
 												const item = document.createElement(`li`)
 												item.classList.add("search-query-menu__item")
 												item.setAttribute('data-search-link', '')
+												item.setAttribute('role', 'option')
 												item.innerHTML = `
 																				<a href="/category/${json[elements[i]][j].id}" class="search-query-menu__link" tabindex="-1">
 																						<img src="/static/recipes/img/category/${json[elements[i]][j].id}.svg" class="search-query-menu__avatar" width="24" height="24" alt="">
@@ -527,6 +631,7 @@
 												const item = document.createElement(`li`)
 												item.classList.add("search-query-menu__item")
 												item.setAttribute('data-search-link', '')
+												item.setAttribute('role', 'option')
 												item.innerHTML = `
 																				<a href="/user/${json[elements[i]][j].id}" class="search-query-menu__link" tabindex="-1">
 																						<img src="/media/avatars/${json[elements[i]][j].id}.jpg" class="search-query-menu__avatar" width="24" height="24" alt="Фото профиля">
@@ -539,6 +644,7 @@
 												const item = document.createElement(`li`)
 												item.classList.add("search-query-menu__item")
 												item.setAttribute('data-search-link', '')
+												item.setAttribute('role', 'option')
 												item.innerHTML = `
 																				<a href="/recipe/${json[elements[i]][j].id}/" class="search-query-menu__link" tabindex="-1">
 																						<svg class="icon" aria-hidden="true" focusable="false">
@@ -675,7 +781,6 @@
 
 
 		// Комментарии
-
 		(function(){
 			if (document.querySelector('[data-comments-list]')) {
 				const commentsList = document.querySelector('[data-comments-list]')
