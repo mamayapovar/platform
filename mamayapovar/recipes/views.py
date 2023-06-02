@@ -60,7 +60,7 @@ def get_formatted_recipe(recipes):
 
 
 def index(request):
-    recipes = Recipe.objects.all()
+    recipes = Recipe.objects.filter(is_approved=True)
 
     new_recipes = get_formatted_recipe(recipes)
     content = {
@@ -710,7 +710,7 @@ def subscribe_post(request, pk):
 
 
 def category(request, id):
-    recipes = Recipe.objects.filter(cat_id=id)
+    recipes = Recipe.objects.filter(cat_id=id, is_approved=True)
     return render(request, "recipes/category.html", {
         'recipes': get_formatted_recipe(recipes),
         "cat": Category.objects.get(id=id),
@@ -1159,7 +1159,7 @@ def momental_search(request):
         # *Поиск для локалки
         data['categories'] = list(Category.objects.filter(name__iregex=query).values())
         data['users'] = list(User.objects.filter(username__iregex=query).values())
-        data['recipes'] = list(Recipe.objects.filter(title__iregex=query).values())
+        data['recipes'] = list(Recipe.objects.filter(title__iregex=query, is_approved=True).values())
         return JsonResponse(data=data, status=200)
     return JsonResponse(data=data, status=200)
 
@@ -1170,7 +1170,7 @@ def search(request):
     # recipes = get_formatted_recipe(Recipe.objects.filter(title__icontains=query))
 
     # *Поиск для локалки
-    recipes = get_formatted_recipe(Recipe.objects.filter(title__iregex=query))
+    recipes = get_formatted_recipe(Recipe.objects.filter(title__iregex=query, is_approved=True))
     return render(request, 'recipes/search.html', {
             'title': f'{query} - Мама, я повар!',
             'recipes': recipes,
