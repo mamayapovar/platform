@@ -78,7 +78,7 @@ def postindex(request):
     form = RegistrationForm(request.POST)
     if form.is_valid():
         if request.POST['username'] and request.POST['email'] and request.POST['password']:
-            if 4 <= len(form.cleaned_data['username']) <= 30:
+            if 2 <= len(form.cleaned_data['username']) <= 30:
                 if len(form.cleaned_data['password']) >= 4:
                     if not User.objects.filter(email=form.cleaned_data['email']):
                         user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'],
@@ -96,26 +96,26 @@ def postindex(request):
                         return JsonResponse(data={
                             'form_id': 'email',
                             'status': 400,
-                            'error': 'Пользователь с такой почтой уже зарегистрирован'
+                            'error': 'Хмм, ты уже зарегистрирован, попробуй войти в аккаунт'
                         }, status=200)
                 else:
                     return JsonResponse(data={
                             'form_id': 'password',
                             'status': 400,
-                            'error': 'Пожалуйста, придумайте пароль, состоящий, как минимум из 4 символов.'
+                            'error': 'Придумай пароль от 4 символов'
                         }, status=200)
             else:
                 return JsonResponse(data={
                         'form_id': 'username',
                         'status': 400,
-                        'error': 'Имя должно содержать не более 30 символов и не менее 4.'
+                        'error': 'Проверь правильно ли написано имя'
                     }, status=200)
         elif request.POST['username'] and request.POST['email']:
                 return JsonResponse(
                     data={
                         'form_id': 'password',
                         'status': 400,
-                        'error': 'Пожалуйста, введите пароль'
+                        'error': 'Придумай пароль от 4 символов'
                     },
                     status=200
                 )
@@ -124,7 +124,7 @@ def postindex(request):
                     data={
                         'form_id': 'email',
                         'status': 400,
-                        'error': 'Пожалуйста, введите почту'
+                        'error': 'Укажи почту'
                     },
                     status=200
                 )
@@ -133,7 +133,7 @@ def postindex(request):
                     data={
                         'form_id': 'username',
                         'status': 400,
-                        'error': 'Пожалуйста, введите имя'
+                        'error': 'Не спеши, сначала назовись'
                     },
                     status=200
                 )
@@ -142,7 +142,7 @@ def postindex(request):
                     data={
                         'form_id': 'only_email',
                         'status': 400,
-                        'error': 'Пожалуйста, введите имя и почту'
+                        'error': 'Укажи имя и придумай пароль от 4 символов'
                     },
                     status=200
                 )
@@ -151,7 +151,7 @@ def postindex(request):
                     data={
                         'form_id': 'only_username',
                         'status': 400,
-                        'error': 'Пожалуйста, введите почту и пароль'
+                        'error': 'Укажи почту и придумай пароль от 4 символов'
                     },
                     status=200
                 )
@@ -160,15 +160,15 @@ def postindex(request):
                     data={
                         'form_id': 'only_password',
                         'status': 400,
-                        'error': 'Пожалуйста, введите имя и почту'
+                        'error': 'Укажи имя и почту'
                     },
                     status=200
                 )
         else:
             return JsonResponse(data={
-                'form_id': 'all',
+                'form_id': 'username',
                 'status': 400,
-                'error': 'Пожалуйста, введите данные'
+                'error': 'Не спеши, сначала назовись'
             }, status=200)
 
 
@@ -189,7 +189,7 @@ def postlogin(request):
                         data={
                             'form_id': 'email',
                             'status': 400,
-                            'error': 'Пользователя с такой почтой не существует'
+                            'error': 'Хмм, мы ещё не знакомы, попробуй зарегистрироваться'
                         },
                         status=200
                     )
@@ -197,7 +197,7 @@ def postlogin(request):
                     data={
                         'form_id': 'password',
                         'status': 400,
-                        'error': 'Неправильный пароль'
+                        'error': 'Неправильный пароль, попробуй ещё раз'
                     },
                     status=200
                 )
@@ -206,7 +206,7 @@ def postlogin(request):
                     data={
                         'form_id': 'email',
                         'status': 400,
-                        'error': 'Пожалуйста, введите почту'
+                        'error': 'Укажи почту'
                     },
                     status=200
                 )
@@ -215,15 +215,15 @@ def postlogin(request):
                     data={
                         'form_id': 'password',
                         'status': 400,
-                        'error': 'Пожалуйста, введите пароль'
+                        'error': 'Укажи пароль'
                     },
                     status=200
                 )
             return JsonResponse(
                 data={
-                    'form_id': 'all',
+                    'form_id': 'email',
                     'status': 400,
-                    'error': 'Пожалуйста, введите данные'
+                    'error': 'Укажи почту'
                 },
                 status=200
             )
@@ -244,26 +244,26 @@ def new_recipe(request):
         if form.is_valid():
             # check title
             if request.POST['title']:
-                if len(form.cleaned_data['title']) > 70:
+                if len(form.cleaned_data['title']) > 80:
                     return JsonResponse(data={
                         'form_id': 'title',
                         'status': 400,
-                        'error': 'Название рецепта должно содержать не более 70 символов'
+                        'error': 'Укажи более короткое название блюда, до 80 символов'
                     }, status=200)
             else:
                 return JsonResponse(data={
                     'form_id': 'title',
                     'status': 400,
-                    'error': 'Пожалуйста, введите название рецепта'
+                    'error': 'Укажи название блюда'
                 }, status=200)
 
             # check description
             if request.POST['description']:
-                if len(form.cleaned_data['description']) > 150:
+                if len(form.cleaned_data['description']) > 180:
                     return JsonResponse(data={
                         'form_id': 'desc',
                         'status': 400,
-                        'error': 'Описание рецепта должно содержать не более 150 символов'
+                        'error': 'Опиши рецепт покороче, до 180 символов'
                     }, status=200)
 
             # check category
@@ -271,7 +271,7 @@ def new_recipe(request):
                 return JsonResponse(data={
                     'form_id': 'cat',
                     'status': 400,
-                    'error': 'Пожалуйста, выберите категорию блюда'
+                    'error': 'Укажи категорию блюда'
                 }, status=200)
 
             # check time cooking
@@ -279,14 +279,14 @@ def new_recipe(request):
                 if (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
                     return JsonResponse(data={
                         'form_id': 'cooking-time',
-                        'error': 'Пожалуйста, укажите время приготовления',
+                        'error': 'Укажи время приготовления блюда',
                         'status': 400,
                     }, status=200)
             else:
                 if request.POST.get("cooking_time_hours") == '0' or request.POST.get("cooking_time_hours") == '':
                     return JsonResponse(data={
                         'form_id': 'cooking-time',
-                        'error': 'Пожалуйста, укажите время приготовления',
+                        'error': 'Укажи время приготовления блюда',
                         'status': 400,
                     }, status=200)
 
@@ -294,13 +294,13 @@ def new_recipe(request):
             for elem in request.POST:
                 if 'ingredient-name-' in elem:
                     if request.POST[elem]:
-                        if len(request.POST[elem]) > 40:
+                        if len(request.POST[elem]) > 80:
                             return JsonResponse(data={
                                 'form_id': 'ingredient',
                                 'ingredient_id': elem.split('-')[-1],
                                 'ingredient_field': 'name',
                                 'status': 400,
-                                'error': 'Название блюда должно содержать не более 40 символов'
+                                'error': 'Укажи более короткое название ингредиента, до 80 символов'
                             }, status=200)
                     else:
                         return JsonResponse(data={
@@ -308,7 +308,7 @@ def new_recipe(request):
                             'ingredient_id': elem.split('-')[-1],
                             'ingredient_field': 'name',
                             'status': 400,
-                            'error': 'Пожалуйста, введите название ингредиента'
+                            'error': 'Укажи название ингредиента'
                         }, status=200)
                 if 'ingredient-measure-' in elem:
                     if not request.POST[elem]:
@@ -317,7 +317,7 @@ def new_recipe(request):
                             'ingredient_id': elem.split('-')[-1],
                             'ingredient_field': 'measure',
                             'status': 400,
-                            'error': 'Пожалуйста, выберите единицу измерения ингредиента'
+                            'error': 'Укажи в чем измеряется ингредиент'
                         }, status=200)
 
 
@@ -326,14 +326,7 @@ def new_recipe(request):
                 return JsonResponse(data={
                         'form_id': 'photo',
                         'status': 400,
-                        'error': 'Пожалуйста, загрузите фото блюда'
-                    }, status=200)
-            else:
-                if request.FILES.get('photo').size > 1024 * 1024 * 30:
-                    return JsonResponse(data={
-                        'form_id': 'photo',
-                        'status': 400,
-                        'error': 'Размер фото не должен превышать 30 мб'
+                        'error': 'Загрузи фото блюда'
                     }, status=200)
 
 
@@ -341,13 +334,13 @@ def new_recipe(request):
             for elem in request.POST:
                 if 'step-description-' in elem:
                     if request.POST[elem]:
-                        if len(request.POST[elem]) > 5000:
+                        if len(request.POST[elem]) > 1200:
                             return JsonResponse(data={
                                 'form_id': 'step',
                                 'step_id': elem.split('-')[-1],
                                 'step_field': 'desc',
                                 'status': 400,
-                                'error': 'Описание шага должно содержать не более 5000 символов'
+                                'error': 'Опиши шаг покороче, до 1200 символов'
                             }, status=200)
                     else:
                         return JsonResponse(data={
@@ -355,22 +348,8 @@ def new_recipe(request):
                             'step_id': elem.split('-')[-1],
                             'step_field': 'desc',
                             'status': 400,
-                            'error': 'Пожалуйста, опишите шаг приготовления'
+                            'error': 'Опиши, что нужно сделать на этом шаге'
                         }, status=200)
-
-            # check step photos
-            for elem in request.FILES:
-                if 'step-photo' in elem:
-                    if request.FILES.get(elem).size > 1024 * 1024 * 15:
-                        return JsonResponse(data={
-                            'form_id': 'step',
-                            'step_id': elem.split('-')[-1],
-                            'step_field': 'photo',
-                            'status': 400,
-                            'error': 'Размер фото не должен превышать 15 мб'
-                        }, status=200)
-
-
 
 
             folder_id = ''.join([str(random.randint(0, 9)) for x in range(7)])
@@ -775,7 +754,7 @@ def settings_profile(request):
                 return JsonResponse(data={
                         'form_id': 'username',
                         'status': 400,
-                        'error': 'Пожалуйста, введите имя'
+                        'error': 'Укажи имя'
                     }, status=200)
     return render(request, 'recipes/settings/profile.html', {
         'title': 'Настройки профиля - Мама, я повар!',
@@ -792,7 +771,7 @@ def settings_account(request):
                     return JsonResponse(data={
                         'form_id': 'email',
                         'status': 400,
-                        'error': 'Пользователь с такой почтой уже зарегистрирован'
+                        'error': 'Эта почта уже используется, попробуй другую'
                     }, status=200)
                 elif request.POST.get("email") and request.POST.get('email') != request.user.email:
                     user = User.objects.get(id=request.user.id)
@@ -803,7 +782,7 @@ def settings_account(request):
                     return JsonResponse(data={
                         'form_id': 'email',
                         'status': 400,
-                        'error': 'Пожалуйста, введите почту'
+                        'error': 'Укажи почту'
                     }, status=200)
         elif 'password_old' in request.POST:  # Установка нового пароля
             form = ChangePasswordForm(request.POST)
@@ -819,19 +798,19 @@ def settings_account(request):
                             return JsonResponse(data={
                                 'form_id': 'password-new-repeat',
                                 'status': 400,
-                                'error': 'Пароли не совпадают'
+                                'error': 'Пароли не совпадают, попробуй ещё раз'
                             }, status=200)
                     else:
                         return JsonResponse(data={
                             'form_id': 'password-old',
                             'status': 400,
-                            'error': 'Введен неверный пароль'
+                            'error': 'Неправильный пароль, попробуй ещё раз'
                         }, status=200)
                 else:
                     return JsonResponse(data={
                         'form_id': 'password-empty',
                         'status': 400,
-                        'error': 'Пожалуйста, введите данные'
+                        'error': 'Укажи текущий пароль'
                     }, status=200)
 
     return render(request, 'recipes/settings/account.html', {
@@ -876,26 +855,26 @@ def edit_recipe(request, id):
         if form.is_valid():
             # check title
             if request.POST['title']:
-                if len(form.cleaned_data['title']) > 70:
+                if len(form.cleaned_data['title']) > 80:
                     return JsonResponse(data={
                         'form_id': 'title',
                         'status': 400,
-                        'error': 'Название рецепта должно содержать не более 70 символов'
+                        'error': 'Укажи более короткое название блюда, до 80 символов'
                     }, status=200)
             else:
                 return JsonResponse(data={
                     'form_id': 'title',
                     'status': 400,
-                    'error': 'Пожалуйста, введите название рецепта'
+                    'error': 'Укажи название блюда'
                 }, status=200)
 
             # check description
             if request.POST['description']:
-                if len(form.cleaned_data['description']) > 150:
+                if len(form.cleaned_data['description']) > 180:
                     return JsonResponse(data={
                         'form_id': 'desc',
                         'status': 400,
-                        'error': 'Описание рецепта должно содержать не более 150 символов'
+                        'error': 'Опиши рецепт покороче, до 180 символов'
                     }, status=200)
 
             # check category
@@ -903,7 +882,7 @@ def edit_recipe(request, id):
                 return JsonResponse(data={
                     'form_id': 'cat',
                     'status': 400,
-                    'error': 'Пожалуйста, выберите категорию блюда'
+                    'error': 'Укажи категорию блюда'
                 }, status=200)
 
             # check time cooking
@@ -911,14 +890,14 @@ def edit_recipe(request, id):
                 if (request.POST.get("cooking_time_hours") == '' or int(request.POST.get("cooking_time_hours")) == 0) and int(request.POST.get("cooking_time_minutes")) <= 0:
                     return JsonResponse(data={
                         'form_id': 'cooking-time',
-                        'error': 'Пожалуйста, укажите время приготовления',
+                        'error': 'Укажи время приготовления блюда',
                         'status': 400,
                     }, status=200)
             else:
                 if request.POST.get("cooking_time_hours") == '0' or request.POST.get("cooking_time_hours") == '':
                     return JsonResponse(data={
                         'form_id': 'cooking-time',
-                        'error': 'Пожалуйста, укажите время приготовления',
+                        'error': 'Укажи время приготовления блюда',
                         'status': 400,
                     }, status=200)
 
@@ -926,13 +905,13 @@ def edit_recipe(request, id):
             for elem in request.POST:
                 if 'ingredient-name-' in elem:
                     if request.POST[elem]:
-                        if len(request.POST[elem]) > 40:
+                        if len(request.POST[elem]) > 80:
                             return JsonResponse(data={
                                 'form_id': 'ingredient',
                                 'ingredient_id': elem.split('-')[-1],
                                 'ingredient_field': 'name',
                                 'status': 400,
-                                'error': 'Название блюда должно содержать не более 40 символов'
+                                'error': 'Укажи более короткое название ингредиента, до 80 символов'
                             }, status=200)
                     else:
                         return JsonResponse(data={
@@ -940,7 +919,7 @@ def edit_recipe(request, id):
                             'ingredient_id': elem.split('-')[-1],
                             'ingredient_field': 'name',
                             'status': 400,
-                            'error': 'Пожалуйста, введите название ингредиента'
+                            'error': 'Укажи название ингредиента'
                         }, status=200)
                 if 'ingredient-measure-' in elem:
                     if not request.POST[elem]:
@@ -949,7 +928,7 @@ def edit_recipe(request, id):
                             'ingredient_id': elem.split('-')[-1],
                             'ingredient_field': 'measure',
                             'status': 400,
-                            'error': 'Пожалуйста, выберите единицу измерения ингредиента'
+                            'error': 'Укажи в чем измеряется ингредиент'
                         }, status=200)
 
 
@@ -958,14 +937,7 @@ def edit_recipe(request, id):
                 return JsonResponse(data={
                         'form_id': 'photo',
                         'status': 400,
-                        'error': 'Пожалуйста, загрузите фото блюда'
-                    }, status=200)
-            else:
-                if request.FILES.get('photo').size > 1024 * 1024 * 30:
-                    return JsonResponse(data={
-                        'form_id': 'photo',
-                        'status': 400,
-                        'error': 'Размер фото не должен превышать 30 мб'
+                        'error': 'Загрузи фото блюда'
                     }, status=200)
 
 
@@ -973,13 +945,13 @@ def edit_recipe(request, id):
             for elem in request.POST:
                 if 'step-description-' in elem:
                     if request.POST[elem]:
-                        if len(request.POST[elem]) > 5000:
+                        if len(request.POST[elem]) > 1200:
                             return JsonResponse(data={
                                 'form_id': 'step',
                                 'step_id': elem.split('-')[-1],
                                 'step_field': 'desc',
                                 'status': 400,
-                                'error': 'Описание шага должно содержать не более 5000 символов'
+                                'error': 'Опиши шаг покороче, до 1200 символов'
                             }, status=200)
                     else:
                         return JsonResponse(data={
@@ -987,19 +959,7 @@ def edit_recipe(request, id):
                             'step_id': elem.split('-')[-1],
                             'step_field': 'desc',
                             'status': 400,
-                            'error': 'Пожалуйста, опишите шаг приготовления'
-                        }, status=200)
-
-            # check step photos
-            for elem in request.FILES:
-                if 'step-photo' in elem:
-                    if request.FILES.get(elem).size > 1024 * 1024 * 15:
-                        return JsonResponse(data={
-                            'form_id': 'step',
-                            'step_id': elem.split('-')[-1],
-                            'step_field': 'photo',
-                            'status': 400,
-                            'error': 'Размер фото не должен превышать 15 мб'
+                            'error': 'Опиши, что нужно сделать на этом шаге'
                         }, status=200)
 
 
@@ -1190,7 +1150,7 @@ def new_comment(request):
         if len(text) < 1:
             return JsonResponse(data={
                 'status': 400,
-                'error': 'Пожалуйста, введите текст комментария'
+                'error': 'Напиши, чем тебе понравился рецепт'
             }, status=200)
         else:
             comment = Comment(comment=text, com_post_id=post_id, com_user=request.user)

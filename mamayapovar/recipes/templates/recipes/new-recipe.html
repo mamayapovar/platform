@@ -10,7 +10,7 @@
 		<fieldset class="form-section  new-recipe-section  new-recipe-section--main" id="new-recipe-main">
 			<legend class="section-h2  form-section__title">Основное</legend>
 			<div class="form-field  new-recipe-section__field  new-recipe-section__field--title">
-				<label class="form-field__label" for="title">Название рецепта</label>
+				<label class="form-field__label" for="title">Название блюда</label>
 				<input type="text" name="title" id="title" class="input" placeholder="Шарлотка с яблоками" autofocus
 					autocomplete="off">
 				<label class="form-field__error  hidden" for="title">
@@ -57,14 +57,13 @@
 				<div class="form-field  new-recipe-section__field  new-recipe-section__field--persons">
 					<label class="form-field__label" for="persons">Количество порций</label>
 					<div class="counter">
-						<button type="button" class="btn  counter__btn  counter__btn--minus  disabled" tabindex="-1"
-							aria-label="Убрать порцию">
+						<button type="button" class="btn  btn--default  btn--icon  counter__btn  counter__btn--minus" aria-label="Убрать порцию" disabled>
 							<svg class="icon" aria-hidden="true" focusable="false">
 								<use href="{% static 'recipes/img/sprite.svg' %}#minus" />
 							</svg>
 						</button>
 						<input type="number" name="persons" id="persons" value="1" class="input  counter__input" autocomplete="off">
-						<button type="button" class="btn  counter__btn  counter__btn--plus" aria-label="Добавить порцию">
+						<button type="button" class="btn  btn--default  btn--icon  counter__btn  counter__btn--plus" aria-label="Добавить порцию">
 							<svg class="icon" aria-hidden="true" focusable="false">
 								<use href="{% static 'recipes/img/sprite.svg' %}#plus" />
 							</svg>

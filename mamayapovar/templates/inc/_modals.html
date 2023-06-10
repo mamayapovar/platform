@@ -4,16 +4,18 @@
 
 <div class="graph-modal">
 	{% if request.user.is_authenticated %}
-	<div class="graph-modal__container  dialog__container  dialog__container--error" role="dialog" aria-modal="true" data-graph-target="delete-account">
+	<div class="graph-modal__container  dialog__container  dialog__container--important" role="dialog" aria-modal="true" data-graph-target="delete-account">
     <div class="graph-modal__content  dialog__content">
-			<div class="dialog__icon">
-				<svg class="icon" aria-hidden="true" focusable="false">
-					<use href="{% static 'recipes/img/sprite.svg' %}#delete"/>
-				</svg>
-			</div>
-			<div class="dialog__info">
-				<h2 class="section-h3  dialog__title">Удаление аккаунта</h2>
-				<p class="dialog__desc">Вы уверены, что хотите удалить свой аккаунт? Ваши рецепты и комментарии будут удалены навсегда.</p>
+			<div class="dialog__top">
+				<div class="dialog__icon">
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#delete"/>
+					</svg>
+				</div>
+				<div class="dialog__info">
+					<h2 class="section-h3  dialog__title">Удалить аккаунт?</h2>
+					<p class="dialog__desc">Рецепты, комментарии и другая связанная информация с аккаунтом будет удалена навсегда</p>
+				</div>
 			</div>
       <div class="dialog__bottom">
 				<button class="btn  btn--default  btn--small  dialog__btn  js-modal-close">Отменить</button>
@@ -21,20 +23,43 @@
       </div>
     </div>
   </div>
-	<div class="graph-modal__container  dialog__container  dialog__container--error" role="dialog" aria-modal="true" data-graph-target="delete-recipe">
+
+	<div class="graph-modal__container  dialog__container  dialog__container--important" role="dialog" aria-modal="true" data-graph-target="delete-recipe">
     <div class="graph-modal__content  dialog__content">
-			<div class="dialog__icon">
-				<svg class="icon" aria-hidden="true" focusable="false">
-					<use href="{% static 'recipes/img/sprite.svg' %}#delete"/>
-				</svg>
-			</div>
-			<div class="dialog__info">
-				<h2 class="section-h3  dialog__title">Удаление рецепта</h2>
-				<p class="dialog__desc">Вы уверены, что хотите навсегда удалить этот рецепт?</p>
+			<div class="dialog__top">
+				<div class="dialog__icon">
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#delete"/>
+					</svg>
+				</div>
+				<div class="dialog__info">
+					<h2 class="section-h3  dialog__title">Удалить рецепт?</h2>
+					<p class="dialog__desc">После удаления восстановить рецепт будет невозможно</p>
+				</div>
 			</div>
       <div class="dialog__bottom">
 				<button class="btn  btn--default  btn--small  dialog__btn  js-modal-close">Отменить</button>
-				<button class="btn  btn--important  btn--small  dialog__btn  js-modal-close" data-post-button-delete  data-url_root>Удалить</button>
+				<button class="btn  btn--important  btn--small  dialog__btn  js-modal-close" data-button-delete-post  data-url_root>Удалить</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="graph-modal__container  dialog__container  dialog__container--important" role="dialog" aria-modal="true" data-graph-target="delete-comment">
+    <div class="graph-modal__content  dialog__content">
+			<div class="dialog__top">
+				<div class="dialog__icon">
+					<svg class="icon" aria-hidden="true" focusable="false">
+						<use href="{% static 'recipes/img/sprite.svg' %}#delete"/>
+					</svg>
+				</div>
+				<div class="dialog__info">
+					<h2 class="section-h3  dialog__title">Удалить комментарий?</h2>
+					<p class="dialog__desc">После удаления восстановить комментарий будет невозможно</p>
+				</div>
+			</div>
+      <div class="dialog__bottom">
+				<button class="btn  btn--default  btn--small  dialog__btn  js-modal-close">Отменить</button>
+				<button class="btn  btn--important  btn--small  dialog__btn  js-modal-close" data-button-delete-comment  data-url_root>Удалить</button>
 			</div>
 		</div>
 	</div>
@@ -88,6 +113,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="graph-modal__container  popup__container" role="dialog" aria-modal="true" data-graph-target="auth">
 		<button class="btn-reset js-modal-close graph-modal__close  btn  btn--other" aria-label="Закрыть модальное окно">
 			<svg class="icon" aria-hidden="true" focusable="false">

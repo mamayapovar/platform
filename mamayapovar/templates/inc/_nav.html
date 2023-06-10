@@ -7,7 +7,7 @@
 	<div class="container">
 		<div class="header__inner">
 			<div class="header__left">
-				<a href="/" class="header__logo" title="Вернуться на главную страницу">
+				<a href="/" class="header__logo" title="Вернуться на главную">
 					<img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
 				</a>
 				<a href="#skip-link" class="skip-link">Перейти к контенту</a>
@@ -18,8 +18,7 @@
 						<input type="text" name="query" id="search-query" class="input  search-query__input  header__input"
 							placeholder="Поиск" autocomplete="off" autocapitalize="off" spellcheck="false"
 							aria-label="Введите запрос" data-url_root="{% url 'momental_search' %}" data-search-query>
-						<button type="button" class="btn-reset  search-query__btn" aria-label="Очистить поле поиска" tabindex="-1"
-							data-search-clear>
+						<button type="button" class="btn-reset  search-query__btn" aria-label="Очистить поле поиска" data-search-clear  disabled>
 							<svg class="icon" aria-hidden="true" focusable="false">
 								<use href="{% static 'recipes/img/sprite.svg' %}#cross" />
 							</svg>
@@ -40,7 +39,7 @@
 				</form>
 			</div>
 			<div class="header__right">
-				<a href="{% url 'new_recipe' %}" class="btn  btn--left" aria-label="Создать новый рецепт">
+				<a href="{% url 'new_recipe' %}" class="btn  btn--left  btn--small" aria-label="Создать новый рецепт">
 					Создать
 					<svg class="icon " aria-hidden="true" focusable="false">
 						<use href="{% static 'recipes/img/sprite.svg' %}#plus" />
@@ -51,12 +50,12 @@
 					{% if has %}
 					<a href="{% url 'user_profile' request.user.id %}" class="header-profile__avatar"
 						aria-label="Перейти в профиль">
-						<img src="{% get_avatar_url request.user.id %}" width="56" height="56" alt="Фото профиля">
+						<img src="{% get_avatar_url request.user.id %}" width="48" height="48" alt="Фото профиля">
 					</a>
 					{% else %}
 					<a href="{% url 'user_profile' request.user.id %}" class="header-profile__avatar"
 						aria-label="Перейти в профиль">
-						<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" width="56" height="56" alt="Фото профиля">
+						<img src="{% static 'recipes/img/placeholder-avatar.jpg' %}" width="48" height="48" alt="Фото профиля">
 					</a>
 					{% endif %}
 					<button class="btn-reset  header-profile__toggle" aria-label="Открыть меню профиля" aria-expanded="false"
@@ -109,7 +108,7 @@
 	<div class="container">
 		<div class="header__inner">
 			<div class="header__left">
-				<a href="/" class="header__logo" title="Вернуться на главную страницу">
+				<a href="/" class="header__logo" title="Вернуться на главную">
 					<img src="{% static 'recipes/img/logo.svg' %}" width="100" height="37" alt="">
 				</a>
 				<a href="#skip-link" class="skip-link">Перейти к контенту</a>
@@ -142,7 +141,7 @@
 				</form>
 			</div>
 			<div class="header__right">
-				<button class="btn  btn--left" data-graph-path="register"
+				<button class="btn  btn--left  btn--small" data-graph-path="register"
 					aria-label="Создать новый рецепт">
 					Создать
 					<svg class="icon" aria-hidden="true" focusable="false">

@@ -2,6 +2,7 @@
 {% load static recipes_extra %}
 
 {% block content1 %}
+{% if recipes %}
 <div class="search__top">
 	<div class="info  search__info">
 		<div class="info__inner">
@@ -10,7 +11,8 @@
 		</div>
 	</div>
 	<!-- ! Фильтры пока находятся в разрабокте -->
-	<div class="filter  search__filter  is-hidden">
+	{% comment %}
+	<div class="filter  search__filter ">
 		<div class="filter__list">
 			<div class="filter__item" data-filter>
 				<button class="btn-reset filter__toggle" aria-label="Открыть фильтр «Время приготовления»"
@@ -62,13 +64,14 @@
 		</div>
 		<button class="btn  filter__clear" data-filter-clear disabled>Очистить фильтры</button>
 	</div>
+	{% endcomment %}
 </div>
+{% endif %}
 <div class="feed  search__feed">
-	<!-- TODO: Если результатов нет -->
 	{% if not recipes %}
-	<div class="feed-placeholder  feed-placeholder--btn">
-		<p class="feed-placeholder__desc">Мы все внимательно посмотрели, но ничего не нашли</p>
-		<p class="feed-placeholder__desc">Попробуйте изменить запрос или посмотрите другие блюда на главной</p>
+	<div class="feed-placeholder">
+		<h3 class="section-h3  feed-placeholder__text">Мы внимательно посмотрели, но ничего не нашли</h3>
+		<p class="feed-placeholder__hint">Попробуй изменить запрос или посмотри другие блюда на главной</p>
 		<a href="/" class="btn  btn--second  btn--small  feed-placeholder__btn">Вернуться на главную</a>
 	</div>
 	{% else %}
@@ -94,7 +97,7 @@
 					</button>
 					<ul role="listbox" class="list-reset  content-more-menu" aria-label="Меню действий" data-menu-more-list>
 						<li role="option" class="content-more-menu__item" data-menu-more-item>
-							<button class="btn-reset  content-more-menu__button" tabindex="-1" data-graph-path="delete-recipe"  data-post-button-delete data-url_root="{% url 'delete_recipe' recipe.id %}">Удалить</button>
+							<button class="btn-reset  content-more-menu__button" tabindex="-1" data-graph-path="delete-recipe"  data-button-delete-post data-url_root="{% url 'delete_recipe' recipe.id %}">Удалить</button>
 						</li>
 						<li role="option" class="content-more-menu__item" data-menu-more-item>
 							<a class="btn-reset  content-more-menu__button" href="{% url 'edit_recipe' recipe.id %}"

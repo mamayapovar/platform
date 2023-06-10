@@ -68,15 +68,15 @@
 			if (success === 'new-recipe'){
 				createToast('info', 'Рецепт отправлен на проверку')
 			} else if (success === 'edit-recipe') {
-				createToast('success', 'Рецепт успешно обновлён')
+				createToast('success', 'Рецепт обновлен')
 			} else if (success === 'update-profile') {
-				createToast('success', 'Профиль успешно обновлён')
+				createToast('success', 'Профиль обновлен')
 			} else if (success === 'update-email') {
-				createToast('success', 'Почта успешно обновлена')
+				createToast('success', 'Почта обновлена')
 			} else if (success === 'update-password') {
-				createToast('success', 'Пароль успешно обновлён')
+				createToast('success', 'Пароль обновлен')
 			} else if (success === 'delete-recipe') {
-				createToast('success', 'Рецепт успешно удалён')
+				createToast('success', 'Рецепт удален')
 			}
 			window.localStorage.removeItem('success')
 		})
@@ -228,7 +228,7 @@
 				data: formData,
 
 				success: function () {
-					return true
+					createToast('success', 'Аватарка обновлена')
 				}
 			});
 		}
@@ -461,7 +461,7 @@
 
 		function predelete_recipe() {
 			const recipeUrl = this.getAttribute("data-url_root")
-			const delBtn = document.querySelector('[data-post-button-delete]')
+			const delBtn = document.querySelector('[data-button-delete-post]')
 			delBtn.setAttribute('data-url_root', `${recipeUrl}`)
 		}
 
@@ -486,11 +486,11 @@
 		}
 
 		$(function () {
-			$('[data-post-button-predelete]').click(predelete_recipe);
+			$('[data-button-predelete-post]').click(predelete_recipe);
 		});
 
 		$(function () {
-			$('[data-post-button-delete]').click(delete_recipe);
+			$('[data-button-delete-post]').click(delete_recipe);
 		});
 
 
@@ -696,11 +696,6 @@
 						$('.form-field--password input').addClass('invalid')
 						$('.form-field--password .form-field__error').removeClass('hidden')
 						$('.form-field--password .form-field__text').text(response.error)
-					} else if (response.status === 400 && response.form_id === 'all') {
-						$('.form-field--email input').addClass('invalid')
-						$('.form-field--password input').addClass('invalid')
-						$('.form-field--password .form-field__error').removeClass('hidden')
-						$('.form-field--password .form-field__text').text(response.error)
 					}
 				}
 			});
@@ -733,10 +728,9 @@
 						let modalContentNew = document.createElement('div')
 						modalContentNew.className = 'graph-modal__content  popup__content  popup__content--success'
 						modalContentNew.innerHTML = `
-							<img class="popup__icon" src="{% static 'recipes/img/success-register.svg' %}" alt="" width="80" height="80">
-							<h2 class="section-h2  popup__title">Добро пожаловать!</h2>
-							<p class="popup__desc">Регистрация прошла успешно</p>
-							<p class="popup__desc">Скоро вас перенаправит на главную</p>
+							<img class="popup__icon" src="{% static 'recipes/img/success-register.svg' %}" alt="" width="96" height="96">
+							<h2 class="section-h2  popup__title">Регистрация завершена</h2>
+							<p class="popup__desc">Ура! Теперь можно обмениваться рецептами с другими участниками платформы</p>
 						`
 						modalContainer.append(modalContentNew)
 						// Перезагрузка страницы
@@ -753,12 +747,6 @@
 						$('.form-field--username-register input').addClass('invalid')
 						$('.form-field--username-register .form-field__error').removeClass('hidden')
 						$('.form-field--username-register .form-field__text').text(response.error)
-					} else if (response.status === 400 && response.form_id === 'all') {
-						$('.form-field--username-register input').addClass('invalid')
-						$('.form-field--password-register input').addClass('invalid')
-						$('.form-field--email-register input').addClass('invalid')
-						$('.form-field--password-register .form-field__error').removeClass('hidden')
-						$('.form-field--password-register .form-field__text').text(response.error)
 					} else if (response.status === 400 && response.form_id === 'only_email') {
 						$('.form-field--username-register input').addClass('invalid')
 						$('.form-field--password-register input').addClass('invalid')
@@ -784,9 +772,9 @@
 		(function(){
 			if (document.querySelector('[data-comments-list]')) {
 				const commentsList = document.querySelector('[data-comments-list]')
-				let btnDel = document.querySelectorAll('[data-delete-comment-button]')
+				let preDelBtns = document.querySelectorAll('[data-button-predelete-comment]')
 
-				const metaCounter = document.querySelector('.content-footer__btn--comment span')
+				// const metaCounter = document.querySelector('.content-footer__btn--comment span')
 				const title = document.querySelector('.comments__title')
 				let titleElements = title.textContent.split(' ')
 				let titleCount = parseInt(titleElements[0])
@@ -799,7 +787,7 @@
 				function updateCount(count) {
 					let titleText = ' ' + morph_word(count, ['комментарий', 'комментария', 'комментариев'])
 					title.textContent = count + titleText
-					metaCounter.textContent = count
+					// metaCounter.textContent = count
 				}
 
 				$('#comments-form').submit(function (e) {
@@ -836,7 +824,7 @@
 											<a href="/user/${response['user_id']}" class="comments-item__author">${response['user']}</a>
 											<time class="comments-item__date" datetime="2022-12-02 16:28">только что</time>
 										</div>
-										<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий" data-delete-comment-button data-url_root="/delete_comment/${response['comment_id']}">
+										<button type="button" class="btn-reset  comments-item__btn  comments-item__btn--delete" aria-label="Удалить комментарий" data-graph-path="delete-comment" data-button-predelete-comment data-url_root="/delete_comment/${response['comment_id']}">
 											<svg class="icon  icon--16" aria-hidden="true" focusable="false">
 												<use href="{% static 'recipes/img/sprite.svg' %}#delete" />
 											</svg>
@@ -858,27 +846,34 @@
 					});
 				});
 
+				function predelete_comment(preDelBtn) {
+					let commentUrl = preDelBtn.getAttribute("data-url_root")
+					const delBtn = document.querySelector('[data-button-delete-comment]')
+					delBtn.setAttribute('data-url_root', `${commentUrl}`)
+				}
+
 				function delete_comment() {
-					var current = $(this);
-					var url_root = current.data('url_root');
-					const btnDel = current.get()[0]
+					var url_root = this.getAttribute("data-url_root")
 
 					$.ajax({
 						url: url_root,
 						type: 'POST',
 
 						success: function () {
+							let comment = document.querySelector(`[data-button-predelete-comment][data-url_root='${url_root}']`).parentNode.parentNode
+
 							titleCount--
 							updateCount(titleCount)
-							const comment = btnDel.parentNode.parentNode
 							comment.remove()
-							createToast('success', 'Комментарий успешно удалён')
+							createToast('success', 'Комментарий удален')
 						}
 					});
 				}
 
-				btnDel.forEach(el => {
-					el.addEventListener('click', delete_comment)
+				preDelBtns.forEach(btn => {
+					btn.addEventListener('click', () => {
+						predelete_comment(btn)
+					})
 				})
 
 				const config = {
@@ -888,10 +883,12 @@
 				const callback = function (mutationsList, observer) {
 					for (let mutation of mutationsList) {
 						if (mutation.type === 'childList') {
-							let btnDel = document.querySelectorAll('[data-delete-comment-button]')
+							let preDelBtns = document.querySelectorAll('[data-button-predelete-comment]')
 
-							btnDel.forEach(el => {
-								el.addEventListener('click', delete_comment)
+							preDelBtns.forEach(btn => {
+								btn.addEventListener('click', () => {
+									predelete_comment(btn)
+								})
 							})
 						}
 					}
@@ -899,6 +896,10 @@
 
 				const observer = new MutationObserver(callback);
 				observer.observe(commentsList, config);
+
+				$(function () {
+					$('[data-button-delete-comment]').click(delete_comment);
+				});
 			}
 		})();
 	</script>
