@@ -573,10 +573,8 @@
 						$('.settings-section__field--new-repeat .form-field__text').text(response.error)
 					} else if (response.status === 400 && response.form_id === 'password-empty') {
 						$('.settings-section__field--old input').addClass('invalid')
-						$('.settings-section__field--new input').addClass('invalid')
-						$('.settings-section__field--new-repeat input').addClass('invalid')
-						$('.settings-section__field--new-repeat .form-field__error').removeClass('hidden')
-						$('.settings-section__field--new-repeat .form-field__text').text(response.error)
+						$('.settings-section__field--old .form-field__error').removeClass('hidden')
+						$('.settings-section__field--old .form-field__text').text(response.error)
 					}
 				}
 			})
