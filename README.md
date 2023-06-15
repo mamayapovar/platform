@@ -6,9 +6,8 @@
 <br>где люди могут делиться своими рецептами и обсуждать их с другими.
 </p>
 <p align="center">
-<a href="https://mamayapovar.ru/">Сайт</a>⠀⠀
-<a href="https://sonniy.notion.site/72491004fa1044d8b0dccf9cdeb44053">О проекте</a>⠀⠀
-<a href="https://sonniy.notion.site/dc78c73a196947be85c434d15fa95582?v=37757ba6e8d1477095099ec10404ba5b">Бэклог</a>
+<a href="https://sonniy.notion.site/72491004fa1044d8b0dccf9cdeb44053">Подробнее о проекте</a>⠀⠀
+<a href="https://sonniy.notion.site/b24de6d1c4c54b448d795778ced458ad?v=5a6fda7d65df4894bb2a323eb854213b">Бэклог</a>
 </p>
 
 ## Как устроена
@@ -17,7 +16,7 @@
 Шаблоны, стили и скрипты платформы обновляются в [отдельном репозитории](https://github.com/mamayapovar/source).
 
 ## Как установить
-Посмотреть текущую версию платформы можно на [сайте](https://mamayapovar.ru/) или установив локальную версию.
+Посмотреть текущую версию платформы можно после установки локальной версии.
 
 Чтобы установить локальную версию:
 
@@ -130,4 +129,5 @@ source venv/bin/activate & cd mamayapovar & python3 manage.py runserver
 На данный момент мы поддерживаем браузеры следующих версий:
 - Safari >= 14
 - Chrome >= 80
-- Firefox >= 72
+- Edge >= 80
+- Firefox >= 80
